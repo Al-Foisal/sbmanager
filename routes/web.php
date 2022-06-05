@@ -18,6 +18,7 @@ use App\Http\Controllers\Customer\ConsumerController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\DueController;
 use App\Http\Controllers\Customer\EmployeeController;
+use App\Http\Controllers\Customer\ExpenseBookController;
 use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\ProductController;
 use App\Http\Controllers\Customer\QuickSellController;
@@ -119,6 +120,14 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::delete('/delete/{id}', 'delete')->name('delete');
         Route::get('/due-or-deposit/{id}/{text}', 'showDueDeposit')->name('showDueDeposit');
         Route::post('/store/due-or-deposit', 'storeDueDeposit')->name('storeDueDeposit');
+    });
+
+    Route::controller(ExpenseBookController::class)->prefix('/expense')->as('expense.')->group(function () {
+        Route::get('/', 'expenseBook')->name('expenseBook');
+        Route::post('/store', 'storeExpenseBook')->name('storeExpenseBook');
+        Route::get('/edit/{expense}', 'editExpenseBook')->name('editExpenseBook');
+        Route::put('/update/{expense}', 'updateExpenseBook')->name('updateExpenseBook');
+        Route::delete('/delete/{expense}', 'deleteExpenseBook')->name('deleteExpenseBook');
     });
 });
 

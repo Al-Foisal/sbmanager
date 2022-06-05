@@ -64,6 +64,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('customer.expense.expenseBook') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p>Expense Book</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('customer.consumers.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>Contact</p>
