@@ -128,6 +128,11 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::get('/edit/{expense}', 'editExpenseBook')->name('editExpenseBook');
         Route::put('/update/{expense}', 'updateExpenseBook')->name('updateExpenseBook');
         Route::delete('/delete/{expense}', 'deleteExpenseBook')->name('deleteExpenseBook');
+
+        //expense list
+        Route::get('/list','expenseBookList')->name('expenseBookList');
+        Route::get('/list/create/{expense_book}','createExpenseBookList')->name('createExpenseBookList');
+        Route::post('/list/store','storeExpenseBookList')->name('storeExpenseBookList');
     });
 });
 

@@ -9,6 +9,7 @@ class ExpenseBookDetail extends Model {
     use HasFactory;
 
     protected $guarded = [];
+    protected $dates   = ['selected_date'];
     public function expenseBook() {
         return $this->belongsTo(ExpenseBook::class);
     }

@@ -12,13 +12,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header bg-success" style="height: 10%;vertical-align: middle;text-align:center;">
+                        <div class="card-header bg-success">
+                            <p>
+                                <h3>Total Balance</h3>
+                                {{ date('F Y') }}
+                            </p>
                             <h2>
-                                <b>Total Transaction</b>
-                            </h2>
-                            <br>
-                            <h2>
-                                <b>৳ {{ 'number_format($total_transaction, 2)' }}</b>
+                                <b>৳ {{ number_format($total_balance, 2) }}</b>
                             </h2>
                         </div>
                     </div>
@@ -33,6 +33,7 @@
                     <h4>Expense Book</h4>
                 </div>
                 <div class="col-sm-6 text-right">
+                    <a href="{{ route('customer.expense.expenseBookList') }}" class="btn btn-light">Expense Lists</a>
                     <button class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Add New Expense</button>
                 </div>
             </div>
@@ -60,8 +61,18 @@
                                                 <img src="{{ asset($expense->image ?? 'images/demo.png') }}" alt="">
                                             </td>
                                             <td>{{ $expense->name }}</td>
+                                            @php
+                                                $amount = 0;
+                                                $amount = DB::table('expense_book_details')
+                                                    ->where('expense_book_id', $expense->id)
+                                                    ->where('shop_id', SID())
+                                                    ->whereYear('created_at','=', $expense->created_at)
+                                                    ->whereMonth('created_at','=', $expense->created_at)
+                                                    ->select('amount')
+                                                    ->sum('amount');
+                                            @endphp
                                             <td style="vertical-align: middle;">৳
-                                                {{ number_format($expense->expenseBookDetails->sum('amount'), 2) }}</td>
+                                                {{ number_format($amount, 2) }}</td>
                                             <td style="vertical-align: middle;text-align:center;">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-danger dropdown-toggle"
@@ -70,16 +81,20 @@
                                                     </button>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item"
-                                                            href="">Pay Salary</a>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('customer.expense.editExpenseBook', $expense) }}">Edit</a>
-                                                        <form action="{{ route('customer.expense.deleteExpenseBook', $expense) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button class="dropdown-item" type="submit"
-                                                                onclick="return(confirm('Are you sure want to delete this item?'))">Delete</button>
-                                                        </form>
+                                                            href="{{ route('customer.expense.createExpenseBookList', $expense) }}">Expence
+                                                            List</a>
+                                                        @if ($expense->shop_id !== null)
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('customer.expense.editExpenseBook', $expense) }}">Edit</a>
+                                                            <form
+                                                                action="{{ route('customer.expense.deleteExpenseBook', $expense) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button class="dropdown-item" type="submit"
+                                                                    onclick="return(confirm('Are you sure want to delete this item?'))">Delete</button>
+                                                            </form>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -131,3 +146,4 @@
         </div>
     </div>
 @endsection
+
