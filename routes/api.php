@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ConsumerController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,5 +34,9 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(CustomerController::class)->group(function () {
     Route::get('shop-list/{customer_id}', 'shopList');
     Route::post('shop-list', 'storeShop');
-    Route::post('/dashboard','dashboard');
+    Route::post('/dashboard', 'dashboard');
 });
+
+Route::apiResource('shops.consumers', ConsumerController::class);
+Route::apiResource('shops.employees', EmployeeController::class);
+Route::apiResource('shops.suppliers', SupplierController::class);
