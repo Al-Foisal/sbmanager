@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class QuickSellController extends Controller {
     public function quicksell() {
         $data              = [];
-        $data['consumers'] = Consumer::all();
+        $data['consumers'] = Consumer::where('shop_id',SID())->get();
 
         return view('customer.transaction.quicksell', $data);
     }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConsumerController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\QuickSellController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,10 @@ Route::controller(CustomerController::class)->group(function () {
     Route::get('shop-list/{customer_id}', 'shopList');
     Route::post('shop-list', 'storeShop');
     Route::post('/dashboard', 'dashboard');
+
+    //quicksell
+    Route::post('/store-quicksell-order/{shop_id}','storeQuicksell');
+    Route::put('/update-quicksell-order/{id}','updateQuicksell');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);
