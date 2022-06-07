@@ -45,3 +45,4 @@ Route::controller(CustomerController::class)->group(function () {
 Route::apiResource('shops.consumers', ConsumerController::class);
 Route::apiResource('shops.employees', EmployeeController::class);
 Route::apiResource('shops.suppliers', SupplierController::class);
+g
