@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ConsumerController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\DueController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\ExpenseBookController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,18 @@ Route::controller(DueController::class)->prefix('/due')->group(function () {
     Route::put('/update', 'update');
     Route::delete('/delete/{id}', 'delete');
     Route::post('/storeDueDeposit', 'storeDueDeposit');
+});
+
+//expense
+Route::controller(ExpenseBookController::class)->prefix('/expense')->group(function () {
+    Route::get('/{shop_id}', 'expenseBook')->name('expenseBook');
+    Route::post('/store', 'storeExpenseBook')->name('storeExpenseBook');
+    Route::put('/update/{expense}', 'updateExpenseBook')->name('updateExpenseBook');
+    Route::delete('/delete/{expense}', 'deleteExpenseBook')->name('deleteExpenseBook');
+
+    //expense list
+    Route::get('/list','expenseBookList')->name('expenseBookList');
+    Route::post('/list/store','storeExpenseBookList')->name('storeExpenseBookList');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);
