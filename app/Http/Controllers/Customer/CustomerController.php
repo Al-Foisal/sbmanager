@@ -14,7 +14,11 @@ class CustomerController extends Controller {
             'customer_id' => Auth::guard('customer')->user()->id,
             'shop_id'     => (int) $request->shop_id,
         ]);
-        $data = [];
+        $data             = [];
+        $data['sales']    = 1;
+        $data['expenses'] = 2;
+        $data['due']      = 3;
+        $data['balance']  = 4;
 
         return view('customer.dashboard', $data);
     }
