@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConsumerController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\DueController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,17 @@ Route::controller(CustomerController::class)->group(function () {
     //transaction
     Route::get('/transaction/{shop_id}', 'transaction');
     Route::get('/transaction-details/{id}', 'transactionDetails');
+});
+
+//due
+Route::controller(DueController::class)->prefix('/due')->group(function () {
+    Route::get('/get-category/{category}/{shop_id}', 'category');
+    Route::get('/', 'index');
+    Route::post('/store', 'store');
+    Route::get('/show/{id}', 'show');
+    Route::put('/update', 'update');
+    Route::delete('/delete/{id}', 'delete');
+    Route::post('/storeDueDeposit', 'storeDueDeposit');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);
