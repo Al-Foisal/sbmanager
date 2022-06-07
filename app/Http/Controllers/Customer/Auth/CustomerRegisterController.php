@@ -37,8 +37,8 @@ class CustomerRegisterController extends Controller {
         return redirect()->route('customer.login')->withToastSuccess('Your request submitted successfully!!');
     }
 
-    public function profile() {
-        $profile = Customer::findOrFail(auth()->guard('customer')->user()->id);
+    public function profile($id) {
+        $profile = Customer::findOrFail($id);
 
         return view('frontend.customer.profile', compact('profile'));
     }

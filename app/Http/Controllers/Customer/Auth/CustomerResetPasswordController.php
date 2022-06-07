@@ -15,7 +15,7 @@ class CustomerResetPasswordController extends Controller {
         return view('customer.auth.reset-password', ['request' => $request]);
     }
 
-    public function storeForgotPassword(Request $request) {
+    public function storeResetPassword(Request $request) {
 
         $validator = Validator::make($request->all(), [
             'token'    => 'required',

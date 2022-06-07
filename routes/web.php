@@ -60,7 +60,7 @@ Route::prefix('/customer')->as('customer.')->middleware('guest:customer')->group
     Route::post('/forgot-password', [CustomerForgotPasswordController::class, 'storeForgotPassword'])->name('storeForgotPassword');
 
     Route::get('/reset-password/{token}', [CustomerResetPasswordController::class, 'resetPassword'])->name('resetPassword');
-    Route::post('/reset-password', [CustomerResetPasswordController::class, 'storeForgotPassword'])->name('storeResetPassword');
+    Route::post('/reset-password', [CustomerResetPasswordController::class, 'storeResetPassword'])->name('storeResetPassword');
 });
 
 Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(function () {
