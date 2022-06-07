@@ -186,6 +186,27 @@ class CustomerController extends Controller {
         return response()->json(['status' => false, 'message' => 'Order placed successfully!!']);
     }
 
-    
+    public function transaction($shop_id) {
+        $data              = [];
+        $data['orders']    = $orders    = Order::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(50);
+        $total_transaction = 0;
+        $count             = 0;
+
+        foreach ($orders as $item) {
+            $total_transaction += $item->subtotal;
+        }
+
+        $data['total_transaction'] = $total_transaction;
+        $data['count']             = $count;
+
+        return $data;
+    }
+
+    public function transactionDetails($id) {
+        $data                = [];
+        $data['transaction'] = Order::where('id', $id)->with('orderProduct')->first();
+
+        return $data;
+    }
 
 }

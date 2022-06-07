@@ -42,6 +42,10 @@ Route::controller(CustomerController::class)->group(function () {
 
     //save order
     Route::post('/order-save', 'orderSave');
+
+    //transaction
+    Route::get('/transaction/{shop_id}', 'transaction');
+    Route::get('/transaction-details/{id}', 'transactionDetails');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);
