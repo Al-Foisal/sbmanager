@@ -18,7 +18,7 @@ class AuthController extends Controller {
 
         $validator = Validator::make($request->all(), [
             'phone'    => 'required',
-            'password' => 'required',
+            'password' => 'required|digits:10',
         ]);
 
         if ($validator->fails()) {
@@ -26,7 +26,16 @@ class AuthController extends Controller {
         }
 
         if (Auth::guard('customer')->attempt(['phone' => $request->phone, 'password' => $request->password])) {
-            return response()->json(['status' => true, 'profile' => auth()->guard('customer')->user()]);
+            
+            $user = Auth::guard('customer')->user();
+
+            $tokenResult = $user->createToken('authToken')->plainTextToken;
+            return response()->json([
+                'status' => true,
+                'access_token' => $tokenResult,
+                'token_type' => 'Bearer',
+                'profile' => $user
+            ]);
         }
 
         return response()->json(['status' => false]);
@@ -35,10 +44,11 @@ class AuthController extends Controller {
 
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name'    => 'required',
-            'phone'   => 'required|unique:customers',
-            'email'   => 'required|email|unique:customers,email',
-            'address' => 'required',
+            'name'     => 'required',
+            'phone'    => 'required|unique:customers',
+            'email'    => 'required|email|unique:customers,email',
+            'address'  => 'required',
+            'password' => 'required|digits:10',
         ]);
 
         if ($validator->fails()) {
