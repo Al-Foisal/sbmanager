@@ -14,6 +14,43 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 
 class AuthController extends Controller {
+    public function checkUser(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|numeric|digits:11',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => 'Invalid phone number!!']);
+        }
+
+        $check = Customer::where('phone', $request->phone)->first();
+
+        if ($check) {
+            return response()->json(['status' => true]);
+        }
+
+        $check->phone = $request->phone;
+        $check->otp   = rand(111111, 999999);
+        $check->save();
+
+        return response()->json(['status' => 'new']);
+
+    }
+
+    public function checkOTP(Request $request) {
+        $check = Customer::where('phone', $request->phone)->where('otp', $request->otp)->first();
+
+        if (!$check) {
+            return response()->json(['status' => false, 'message' => 'Invalid OTP number!!']);
+        }
+
+        $check->otp = null;
+        $check->save();
+
+        return response()->json(['status' => true]);
+
+    }
+
     public function login(Request $request) {
 
         $validator = Validator::make($request->all(), [
@@ -26,15 +63,16 @@ class AuthController extends Controller {
         }
 
         if (Auth::guard('customer')->attempt(['phone' => $request->phone, 'password' => $request->password])) {
-            
+
             $user = Auth::guard('customer')->user();
 
             $tokenResult = $user->createToken('authToken')->plainTextToken;
+
             return response()->json([
-                'status' => true,
+                'status'       => true,
                 'access_token' => $tokenResult,
-                'token_type' => 'Bearer',
-                'profile' => $user
+                'token_type'   => 'Bearer',
+                'profile'      => $user,
             ]);
         }
 
@@ -46,7 +84,7 @@ class AuthController extends Controller {
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
             'phone'    => 'required|unique:customers',
-            'email'    => 'required|email|unique:customers,email',
+            'email'    => 'nullable|email|unique:customers,email',
             'address'  => 'required',
             'password' => 'required|digits:10',
         ]);
