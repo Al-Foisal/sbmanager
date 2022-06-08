@@ -55,7 +55,7 @@ Route::controller(CustomerController::class)->group(function () {
 //due
 Route::controller(DueController::class)->prefix('/due')->group(function () {
     Route::get('/get-category/{category}/{shop_id}', 'category');
-    Route::get('/', 'index');
+    Route::get('/{shop_id}', 'index');
     Route::post('/store', 'store');
     Route::get('/show/{id}', 'show');
     Route::put('/update', 'update');

@@ -98,13 +98,13 @@
                                 <p>Product List</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ route('admin.subcategory') }}" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{ route('customer.digital_payment') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>Subcategory</p>
+                                <p>Digital Payment</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.allSlider') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>
