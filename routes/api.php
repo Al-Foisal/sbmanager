@@ -25,6 +25,8 @@ return $request->user();
 });
  */
 Route::controller(AuthController::class)->group(function () {
+    Route::post('/checkCustomer', 'checkCustomer');
+    Route::post('/checkOTP', 'checkOTP');
     Route::post('/login', 'login');
     Route::post('/register', 'register');
     Route::post('/forget-password', 'storeForgotPassword');

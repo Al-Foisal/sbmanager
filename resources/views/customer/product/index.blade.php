@@ -26,10 +26,6 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <!-- /.card-header -->
-                        <a href="{{ route('customer.products.create') }}" class="btn btn-outline-primary">Add
-                            Product
-                        </a>
                         <div class="card-body table-responsive" style="height: 500px;">
 
                             <table id="example1" class="table table-bordered table-striped">

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 
 class AuthController extends Controller {
-    public function checkUser(Request $request) {
+    public function checkCustomer(Request $request) {
         $validator = Validator::make($request->all(), [
             'phone' => 'required|numeric|digits:11',
         ]);

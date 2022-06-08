@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -14,9 +15,15 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $products = Product::where('shop_id',SID())->get();
+        $products = Product::where('shop_id', SID())->get();
 
         return view('customer.product.index', compact('products'));
+    }
+
+    public function indexList() {
+        $products = Product::where('shop_id', SID())->get();
+
+        return view('customer.product.index-list', compact('products'));
     }
 
     /**
@@ -25,7 +32,10 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('customer.product.create');
+        $data               = [];
+        $data['categories'] = Category::where('status', 1)->get();
+
+        return view('customer.product.create', $data);
     }
 
     /**
@@ -55,11 +65,25 @@ class ProductController extends Controller {
         }
 
         Product::create([
-            'shop_id'  => SID(),
-            'name'     => $request->name.rand(),
-            'quantity' => $request->quantity,
-            'price'    => $request->price,
-            'image'    => $final_name1 ?? null,
+            'shop_id'            => SID(),
+            'name'               => $request->name,
+            'quantity'           => $request->quantity,
+            'price'              => $request->price,
+            'buying_price'       => $request->buying_price,
+            'details'            => $request->details,
+            'category_id'        => $request->category_id,
+            'subcategory_id'     => $request->subcategory_id,
+            'online'             => $request->online,
+            'unit'               => $request->unit,
+            'wholesale_price'    => $request->wholesale_price,
+            'wholesale_quantity' => $request->wholesale_quantity,
+            'stock_alert'        => $request->stock_alert,
+            'vat'                => $request->vat,
+            'warranty'           => $request->warranty,
+            'warranty_type'      => $request->warranty_type,
+            'discount'           => $request->discount,
+            'discount_type'      => $request->discount_type,
+            'image'              => $final_name1 ?? null,
         ]);
 
         return redirect()->back()->withToastSuccess('Product added successfully!!');
@@ -83,7 +107,9 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product) {
-        return view('customer.product.edit', compact('product'));
+        $categories = Category::where('status', 1)->get();
+
+        return view('customer.product.edit', compact('product','categories'));
     }
 
     /**
@@ -125,9 +151,23 @@ class ProductController extends Controller {
         }
 
         $product->update([
-            'name'     => $request->name,
-            'quantity' => $request->quantity,
-            'price'    => $request->price,
+            'name'               => $request->name,
+            'quantity'           => $request->quantity,
+            'price'              => $request->price,
+            'buying_price'       => $request->buying_price,
+            'details'            => $request->details,
+            'category_id'        => $request->category_id,
+            'subcategory_id'     => $request->subcategory_id,
+            'online'             => $request->online,
+            'unit'               => $request->unit,
+            'wholesale_price'    => $request->wholesale_price,
+            'wholesale_quantity' => $request->wholesale_quantity,
+            'stock_alert'        => $request->stock_alert,
+            'vat'                => $request->vat,
+            'warranty'           => $request->warranty,
+            'warranty_type'      => $request->warranty_type,
+            'discount'           => $request->discount,
+            'discount_type'      => $request->discount_type,
         ]);
 
         return redirect()->route('customer.products.index')->withToastSuccess('Product updated successfully!!');

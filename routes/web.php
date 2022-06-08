@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Auth\AdminResetPasswordController;
 use App\Http\Controllers\Backend\Auth\BackendManagementController;
 use App\Http\Controllers\Backend\CompanyInfoController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\GeneralController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
@@ -76,6 +77,7 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
     Route::resource('/suppliers', SupplierController::class);
     Route::resource('/employees', EmployeeController::class);
     Route::resource('/products', ProductController::class);
+    Route::get('/product-list', [ProductController::class, 'indexList'])->name('products.indexList');
 
     Route::controller(CartController::class)->group(function () {
         //cart
@@ -130,9 +132,9 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::delete('/delete/{expense}', 'deleteExpenseBook')->name('deleteExpenseBook');
 
         //expense list
-        Route::get('/list','expenseBookList')->name('expenseBookList');
-        Route::get('/list/create/{expense_book}','createExpenseBookList')->name('createExpenseBookList');
-        Route::post('/list/store','storeExpenseBookList')->name('storeExpenseBookList');
+        Route::get('/list', 'expenseBookList')->name('expenseBookList');
+        Route::get('/list/create/{expense_book}', 'createExpenseBookList')->name('createExpenseBookList');
+        Route::post('/list/store', 'storeExpenseBookList')->name('storeExpenseBookList');
     });
 });
 
@@ -197,3 +199,4 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
 
 Route::get('/cc', [CartController::class, 'cc']);
 Route::get('/get-category/{category}', [DueController::class, 'category']);
+Route::get('/get-subcategory/{id}', [GeneralController::class, 'getSubcategory']);
