@@ -25,6 +25,7 @@ use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\ProductController;
 use App\Http\Controllers\Customer\QuickSellController;
 use App\Http\Controllers\Customer\ShopController;
+use App\Http\Controllers\Customer\SMSMarkettingController;
 use App\Http\Controllers\Customer\SupplierController;
 use App\Http\Controllers\Customer\TransactionController;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -139,6 +140,10 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
     });
 
     Route::resource('/digital_payments', DigitalPaymentController::class);
+
+    Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function(){
+        Route::get('/','index')->name('index');
+    });
 });
 
 //backend

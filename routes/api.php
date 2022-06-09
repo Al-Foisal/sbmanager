@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\DigitalPaymentController;
 use App\Http\Controllers\Api\DueController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,17 +67,18 @@ Route::controller(DueController::class)->prefix('/due')->group(function () {
 
 //expense
 Route::controller(ExpenseBookController::class)->prefix('/expense')->group(function () {
-    Route::get('/{shop_id}', 'expenseBook')->name('expenseBook');
-    Route::post('/store', 'storeExpenseBook')->name('storeExpenseBook');
-    Route::put('/update/{expense}', 'updateExpenseBook')->name('updateExpenseBook');
-    Route::delete('/delete/{expense}', 'deleteExpenseBook')->name('deleteExpenseBook');
+    Route::get('/{shop_id}', 'expenseBook');
+    Route::post('/store', 'storeExpenseBook');
+    Route::put('/update/{expense}', 'updateExpenseBook');
+    Route::delete('/delete/{expense}', 'deleteExpenseBook');
 
     //expense list
-    Route::get('/list', 'expenseBookList')->name('expenseBookList');
-    Route::post('/list/store', 'storeExpenseBookList')->name('storeExpenseBookList');
+    Route::get('/list/{shop_id}', 'expenseBookList');
+    Route::post('/list/store', 'storeExpenseBookList');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);
 Route::apiResource('shops.employees', EmployeeController::class);
 Route::apiResource('shops.suppliers', SupplierController::class);
+Route::apiResource('shops.products', ProductController::class);
 Route::apiResource('shops.digital_payments', DigitalPaymentController::class);

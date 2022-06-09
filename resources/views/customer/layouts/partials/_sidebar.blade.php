@@ -104,14 +104,14 @@
                                 <p>Digital Payment</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ route('admin.allSlider') }}" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{ route('customer.sms.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>
-                                    Main Slider
+                                    SMS Marketting
                                 </p>
                             </a>
-                        </li> --}}
+                        </li>
                     </ul>
                 </li> 
                 {{-- instructor activities

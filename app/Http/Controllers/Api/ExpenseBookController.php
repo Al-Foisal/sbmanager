@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\File;
 class ExpenseBookController extends Controller {
     public function expenseBook($shop_id) {
         $data                  = [];
-        $data['expenses']      = ExpenseBook::where('shop_id', $shop_id)->orWhere('shop_id', null)->get();
+        $data['expenses']      = ExpenseBook::where('shop_id', $shop_id)->orWhere('shop_id', null)->with('expenseBookDetails')->get();
         $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
             ->whereMonth('created_at', '=', now())
             ->select('amount')
@@ -51,6 +51,10 @@ class ExpenseBookController extends Controller {
     }
 
     public function updateExpenseBook(Request $request, ExpenseBook $expense) {
+
+        if($expense->shop_id === null){
+            return response()->json(['status'=>false]);
+        }
 
         if ($request->hasFile('image')) {
 
@@ -100,7 +104,7 @@ class ExpenseBookController extends Controller {
         return response()->json(['status'=>true]);
     }
 
-    public function expenseBookList(Request $request) {
+    public function expenseBookList(Request $request,$shop_id) {
         $data = [];
         $type = request()->type;
 
@@ -128,51 +132,51 @@ class ExpenseBookController extends Controller {
 
 // } else
         if ($type === 'today') {
-            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereDay('created_at', '=', now())
+            $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereDay('created_at', '=', now())
                 ->with('expenseBook')
                 ->get();
 
-            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereDay('created_at', '=', now())
+            $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereDay('created_at', '=', now())
                 ->select('amount')
                 ->sum('amount');
         } elseif ($type === 'week') {
-            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereBetween('created_at', [
+            $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereBetween('created_at', [
                 Carbon::now()->startOfWeek(Carbon::SUNDAY),
                 Carbon::now()->endOfWeek(Carbon::SATURDAY),
             ])
                 ->with('expenseBook')
                 ->get();
 
-            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereBetween('created_at', [
+            $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereBetween('created_at', [
                 Carbon::now()->startOfWeek(Carbon::SUNDAY),
                 Carbon::now()->endOfWeek(Carbon::SATURDAY),
             ])
                 ->select('amount')
                 ->sum('amount');
         } elseif ($type === 'month') {
-            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereMonth('created_at', '=', now())
+            $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', '=', now())
                 ->with('expenseBook')
                 ->get();
 
-            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereMonth('created_at', '=', now())
+            $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', '=', now())
                 ->select('amount')
                 ->sum('amount');
         } elseif ($type === 'year') {
-            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
+            $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->with('expenseBook')
                 ->get();
 
-            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
+            $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->select('amount')
                 ->sum('amount');
         } else {
 
-            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
+            $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->whereMonth('created_at', '=', now())
                 ->with('expenseBook')
                 ->get();
 
-            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
+            $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->whereMonth('created_at', '=', now())
                 ->select('amount')
                 ->sum('amount');
