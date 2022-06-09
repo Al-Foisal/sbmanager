@@ -21,6 +21,8 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('backend/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/select2-bootstrap4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('backend/toastr/toastr.min.css') }}">
 
     @yield('cssLink')
 
@@ -88,6 +90,9 @@
     <!-- Select2 -->
     <script src="{{ asset('backend/js/select2.full.min.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('backend/toastr/toastr.min.js') }}"></script>
+
     <!-- AdminLTE App -->
     <script src="{{ asset('backend/js/adminlte.min.js') }}"></script>
 
@@ -107,7 +112,8 @@
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
-                allowClear: true
+                allowClear: true,
+                tags: true
             });
         });
     </script>

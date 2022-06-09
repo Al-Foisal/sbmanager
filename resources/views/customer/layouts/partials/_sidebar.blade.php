@@ -99,7 +99,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('customer.digital_payment') }}" class="nav-link">
+                            <a href="{{ route('customer.digital_payments.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Digital Payment</p>
                             </a>

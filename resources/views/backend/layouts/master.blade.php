@@ -20,6 +20,8 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('backend/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/select2-bootstrap4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('backend/toastr/toastr.min.css') }}">
 
     @yield('cssLink')
 
@@ -81,6 +83,8 @@
     <script src="{{ asset('backend/js/buttons.colVis.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('backend/js/select2.full.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('backend/toastr/toastr.min.js') }}"></script>
 
     <!-- AdminLTE App -->
     <script src="{{ asset('backend/js/adminlte.min.js') }}"></script>

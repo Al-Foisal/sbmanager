@@ -19,11 +19,10 @@ class CreateDigitalPaymentsTable extends Migration
             $table->string('name');
             $table->unsignedInteger('amount');
             $table->string('phone');
-            $table->string('email');
-            $table->string('address');
-            $table->string('status');
-            $table->string('link');
-            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('address')->nullable();
+            $table->string('status')->nullable();
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }

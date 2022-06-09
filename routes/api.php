@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConsumerController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\DigitalPaymentController;
 use App\Http\Controllers\Api\DueController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
@@ -71,10 +72,11 @@ Route::controller(ExpenseBookController::class)->prefix('/expense')->group(funct
     Route::delete('/delete/{expense}', 'deleteExpenseBook')->name('deleteExpenseBook');
 
     //expense list
-    Route::get('/list','expenseBookList')->name('expenseBookList');
-    Route::post('/list/store','storeExpenseBookList')->name('storeExpenseBookList');
+    Route::get('/list', 'expenseBookList')->name('expenseBookList');
+    Route::post('/list/store', 'storeExpenseBookList')->name('storeExpenseBookList');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);
 Route::apiResource('shops.employees', EmployeeController::class);
 Route::apiResource('shops.suppliers', SupplierController::class);
+Route::apiResource('shops.digital_payments', DigitalPaymentController::class);

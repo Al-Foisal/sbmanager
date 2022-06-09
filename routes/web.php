@@ -17,6 +17,7 @@ use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\ConsumerController;
 use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Customer\DigitalPaymentController;
 use App\Http\Controllers\Customer\DueController;
 use App\Http\Controllers\Customer\EmployeeController;
 use App\Http\Controllers\Customer\ExpenseBookController;
@@ -136,6 +137,8 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::get('/list/create/{expense_book}', 'createExpenseBookList')->name('createExpenseBookList');
         Route::post('/list/store', 'storeExpenseBookList')->name('storeExpenseBookList');
     });
+
+    Route::resource('/digital_payments', DigitalPaymentController::class);
 });
 
 //backend
@@ -199,4 +202,5 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
 
 Route::get('/cc', [CartController::class, 'cc']);
 Route::get('/get-category/{category}', [DueController::class, 'category']);
+Route::get('/get-consumer', [GeneralController::class, 'getConsumer']);
 Route::get('/get-subcategory/{id}', [GeneralController::class, 'getSubcategory']);
