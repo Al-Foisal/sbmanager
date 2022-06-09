@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalPayment;
+use App\Models\Due;
+use App\Models\ExpenseBookDetail;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
@@ -48,11 +51,32 @@ class CustomerController extends Controller {
     }
 
     public function dashboard(Request $request) {
-        $data             = [];
-        $data['sales']    = 1;
-        $data['expenses'] = 2;
-        $data['due']      = 3;
-        $data['balance']  = 4;
+        $data           = [];
+        $data           = [];
+        $data['sales']  = Order::whereDay('created_at', today())->where('shop_id', $request->shop_id)->select('subtotal')->sum('subtotal');
+        $dues           = Due::where('shop_id', $request->shop_id)->with('dueDetails')->get();
+        $total_due      = 0;
+        $total_deposite = 0;
+
+        foreach ($dues as $due) {
+
+            foreach ($due->dueDetails as $d) {
+
+                if ($d->due_type === 'Due' && $d->created_at == today()) {
+                    $total_due += $d->amount;
+                } elseif ($d->due_type === 'Deposit' && $d->created_at == today()) {
+                    $total_deposite += $d->amount;
+                }
+
+            }
+
+        }
+
+        $data['expenses'] = ExpenseBookDetail::where('shop_id', $request->shop_id)->whereDay('created_at', '=', today())
+            ->select('amount')
+            ->sum('amount');
+        $data['due']     = $total_due;
+        $data['balance'] = $total_deposite;
 
         return $data;
     }
@@ -162,8 +186,14 @@ class CustomerController extends Controller {
         $order = Order::create($data);
 
         if ($request->payment_method === 'Digital Payment') {
-            $order->payment_link = 'routename/' . $order->id;
-            $order->save();
+            DigitalPayment::create([
+                'shop_id' => $request->shop_id,
+                'name'    => $order->consumer->name,
+                'phone'   => $order->consumer->name,
+                'amount'  => $request->subtotal,
+                'status'  => 'pending',
+                'link'    => 'payment-link/' . $request->shop_id . bin2hex(random_bytes(5)) . time(),
+            ]);
         }
 
         foreach ($request->cart as $cart) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalPayment;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
@@ -39,8 +40,14 @@ class OrderController extends Controller {
         $order = Order::create($data);
 
         if ($request->payment_method === 'Digital Payment') {
-            $order->payment_link = 'routename/'.$order->id;
-            $order->save();
+            DigitalPayment::create([
+                'shop_id' => SID(),
+                'name'    => $order->consumer->name,
+                'phone'   => $order->consumer->phone,
+                'amount'  => $request->subtotal,
+                'status'  => 'pending',
+                'link'    => 'payment-link/' . SID() . bin2hex(random_bytes(5)) . time(),
+            ]);
         }
 
         foreach (Cart::content() as $cart) {

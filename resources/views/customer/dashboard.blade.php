@@ -25,7 +25,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Today's Sale</span>
-                            <span class="info-box-number">৳ {{ 0 }}</span>
+                            <span class="info-box-number">৳ {{ $sales }}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -38,7 +38,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Today's Expenses</span>
-                            <span class="info-box-number">৳ {{ 0 }}</span>
+                            <span class="info-box-number">৳ {{ $expenses }}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -51,7 +51,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Today's Due</span>
-                            <span class="info-box-number">৳ {{ 0 }}</span>
+                            <span class="info-box-number">৳ {{ $due }}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -64,7 +64,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Today's Balance</span>
-                            <span class="info-box-number">৳ {{ 0 }}</span>
+                            <span class="info-box-number">৳ {{ $balance }}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
