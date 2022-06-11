@@ -82,7 +82,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview nav-header">
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ route('admin.category') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Category</p>
@@ -93,7 +93,7 @@
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Subcategory</p>
                             </a>
-                        </li> --}}
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.emi_times.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>

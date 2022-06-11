@@ -10,6 +10,8 @@ use App\Http\Controllers\Backend\CompanyInfoController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EMITimeController;
 use App\Http\Controllers\Backend\GeneralController;
+use App\Http\Controllers\Backend\MainMenu\CategoryController;
+use App\Http\Controllers\Backend\MainMenu\SubcategoryController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
@@ -183,6 +185,28 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
 
         Route::get('/customer-list', 'customerList')->name('customerList');
         Route::get('/user-list', 'userList')->name('userList');
+    });
+
+    //category
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/category', 'category')->name('category');
+        Route::get('/create-category', 'createCategory')->name('createCategory');
+        Route::post('/store-category', 'storeCategory')->name('storeCategory');
+        Route::get('/edit-category/{id}', 'editCategory')->name('editCategory');
+        Route::patch('/update-category/{id}', 'updateCategory')->name('updateCategory');
+        Route::post('/active-category/{id}', 'activeCategory')->name('activeCategory');
+        Route::post('/inactive-category/{id}', 'inactiveCategory')->name('inactiveCategory');
+    });
+
+    //subcategory
+    Route::controller(SubcategoryController::class)->group(function () {
+        Route::get('/subcategory', 'subcategory')->name('subcategory');
+        Route::get('/create-subcategory', 'createSubcategory')->name('createSubcategory');
+        Route::post('/store-subcategory', 'storeSubcategory')->name('storeSubcategory');
+        Route::get('/edit-subcategory/{id}', 'editSubcategory')->name('editSubcategory');
+        Route::patch('/update-subcategory/{id}', 'updateSubcategory')->name('updateSubcategory');
+        Route::post('/active-subcategory/{id}', 'activeSubcategory')->name('activeSubcategory');
+        Route::post('/inactive-subcategory/{id}', 'inactiveSubcategory')->name('inactiveSubcategory');
     });
 
     Route::resource('/emi_times', EMITimeController::class);

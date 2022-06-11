@@ -12,13 +12,13 @@ class SubcategoryController extends Controller {
     public function subcategory() {
         $subcategories = Subcategory::with('category')->get();
 
-        return view('backend.main_menu.subcategory.index', compact('subcategories'));
+        return view('backend.subcategory.index', compact('subcategories'));
     }
 
     public function createSubcategory() {
         $categories = Category::where('status', 1)->get();
 
-        return view('backend.main_menu.subcategory.create', compact('categories'));
+        return view('backend.subcategory.create', compact('categories'));
     }
 
     public function storeSubcategory(Request $request) {
@@ -34,7 +34,6 @@ class SubcategoryController extends Controller {
         $store_data->category_id = $request->category_id;
         $store_data->name        = $request->name;
         $store_data->status      = 1;
-        $store_data->on_front    = 0;
         $store_data->save();
 
         return redirect()->route('admin.subcategory')->withToastSuccess('Subcategory added successfully!!');
@@ -44,7 +43,7 @@ class SubcategoryController extends Controller {
         $subcategory = Subcategory::where('id', $id)->first();
         $categories  = Category::where('status', 1)->get();
 
-        return view('backend.main_menu.subcategory.edit', compact('subcategory', 'categories'));
+        return view('backend.subcategory.edit', compact('subcategory', 'categories'));
     }
 
     public function updateSubcategory(Request $request, $id) {
@@ -83,23 +82,4 @@ class SubcategoryController extends Controller {
 
         return redirect()->route('admin.subcategory')->withToastSuccess('Subcategory inactivated successfully!!');
     }
-
-    public function onFrontSubcategory(Request $request, $id) {
-        $subcategory = Subcategory::findOrFail($id);
-
-        $subcategory->on_front = 1;
-        $subcategory->save();
-
-        return redirect()->route('admin.subcategory')->withToastSuccess('Subcategory added to main menu successfully!!');
-    }
-
-    public function removeOnFrontSubcategory(Request $request, $id) {
-        $subcategory = Subcategory::findOrFail($id);
-
-        $subcategory->on_front = 0;
-        $subcategory->save();
-
-        return redirect()->route('admin.subcategory')->withToastSuccess('Subcategory remove from main menu successfully!!');
-    }
-
 }
