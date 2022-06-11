@@ -5,8 +5,10 @@ use App\Http\Controllers\Backend\Auth\AdminLoginController;
 use App\Http\Controllers\Backend\Auth\AdminRegistrationController;
 use App\Http\Controllers\Backend\Auth\AdminResetPasswordController;
 use App\Http\Controllers\Backend\Auth\BackendManagementController;
+use App\Http\Controllers\Backend\BankController;
 use App\Http\Controllers\Backend\CompanyInfoController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\EMITimeController;
 use App\Http\Controllers\Backend\GeneralController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
@@ -141,8 +143,8 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
 
     Route::resource('/digital_payments', DigitalPaymentController::class);
 
-    Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function(){
-        Route::get('/','index')->name('index');
+    Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 });
 
@@ -182,6 +184,9 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
         Route::get('/customer-list', 'customerList')->name('customerList');
         Route::get('/user-list', 'userList')->name('userList');
     });
+
+    Route::resource('/emi_times', EMITimeController::class);
+    Route::resource('/banks', BankController::class);
 
     //customer or user contact route
     Route::get('/contatc', [DashboardController::class, 'showContact'])->name('showContact');

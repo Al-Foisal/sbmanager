@@ -73,16 +73,16 @@
 
 
                 {{-- category --}}
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-circle text-warning"></i>
                         <p class="text">
-                            Main Menu
+                            Settings
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview nav-header">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.category') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Category</p>
@@ -93,17 +93,25 @@
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Subcategory</p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a href="{{ route('admin.allSlider') }}" class="nav-link">
+                            <a href="{{ route('admin.emi_times.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>
-                                    Main Slider
+                                    EMI Times
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.banks.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>
+                                    Banks
                                 </p>
                             </a>
                         </li>
                     </ul>
-                </li> --}}
+                </li>
 
                 {{-- instructor activities
                 <li class="nav-item">
