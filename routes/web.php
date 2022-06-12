@@ -166,6 +166,7 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::get('/details', 'details')->name('details');
     });
 });
+me
 
 //backend
 Route::prefix('/admin')->as('admin.')->middleware('guest:admin')->group(function () {
