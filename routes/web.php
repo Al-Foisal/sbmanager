@@ -32,6 +32,7 @@ use App\Http\Controllers\Customer\QuickSellController;
 use App\Http\Controllers\Customer\ShopController;
 use App\Http\Controllers\Customer\SMSMarkettingController;
 use App\Http\Controllers\Customer\SupplierController;
+use App\Http\Controllers\Customer\TopupController;
 use App\Http\Controllers\Customer\TransactionController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
@@ -154,8 +155,15 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::get('/details/{id}', 'details')->name('details');
     });
 
+    //sms
     Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function () {
         Route::get('/', 'index')->name('index');
+    });
+
+    //topup
+    Route::controller(TopupController::class)->prefix('/topup')->as('topup.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/details', 'details')->name('details');
     });
 });
 
