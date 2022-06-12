@@ -6,18 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Division;
 use Illuminate\Http\Request;
 
-class DivisionController extends Controller
-{
+class DivisionController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $data = [];
-        $data['divisions']=Division::all();
-        return view('backend.division.index',$data);
+    public function index() {
+        $data              = [];
+        $data['divisions'] = Division::all();
+
+        return view('backend.division.index', $data);
     }
 
     /**
@@ -25,8 +24,7 @@ class DivisionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -36,10 +34,10 @@ class DivisionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         Division::create($request->all());
-        return redirect()->back();
+
+        return redirect()->back()->withToastSuccess('Division added successfully!!');
     }
 
     /**
@@ -48,8 +46,7 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -59,9 +56,8 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Division $division) {
+        return view('divisions.edit', compact('divisions'));
     }
 
     /**
@@ -71,9 +67,10 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, Division $division) {
+        $division->update($request->all());
+
+        return redirect()->route('admin.division.index')->withToastSuccess('Division updated successfully!!');
     }
 
     /**
@@ -82,8 +79,7 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

@@ -14,7 +14,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($shop_id) {
-        $products = Product::where('shop_id', SID())->get();
+        $products = Product::where('shop_id', $shop_id)->get();
 
         return $products;
     }
