@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class EMI extends Model {
     use HasFactory;
     protected $guarded = [];
+    public function bank() {
+        return $this->belongsTo(Bank::class);
+    }
 }

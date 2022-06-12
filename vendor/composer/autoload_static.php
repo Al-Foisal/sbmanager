@@ -131,6 +131,10 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
             'Laravel\\Sail\\' => 13,
             'Laravel\\Breeze\\' => 15,
         ),
+        'J' => 
+        array (
+            'Jorenvh\\Share\\' => 14,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -415,6 +419,10 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
         array (
             0 => __DIR__ . '/..' . '/laravel/breeze/src',
         ),
+        'Jorenvh\\Share\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -558,8 +566,10 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
         'App\\Http\\Controllers\\Backend\\Auth\\AdminRegistrationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/Auth/AdminRegistrationController.php',
         'App\\Http\\Controllers\\Backend\\Auth\\AdminResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/Auth/AdminResetPasswordController.php',
         'App\\Http\\Controllers\\Backend\\Auth\\BackendManagementController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/Auth/BackendManagementController.php',
+        'App\\Http\\Controllers\\Backend\\BankController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/BankController.php',
         'App\\Http\\Controllers\\Backend\\CompanyInfoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/CompanyInfoController.php',
         'App\\Http\\Controllers\\Backend\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/DashboardController.php',
+        'App\\Http\\Controllers\\Backend\\EMITimeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/EMITimeController.php',
         'App\\Http\\Controllers\\Backend\\GeneralController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/GeneralController.php',
         'App\\Http\\Controllers\\Backend\\MainMenu\\CategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/MainMenu/CategoryController.php',
         'App\\Http\\Controllers\\Backend\\MainMenu\\SubcategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/MainMenu/SubcategoryController.php',
@@ -577,6 +587,7 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
         'App\\Http\\Controllers\\Customer\\CustomerDashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/CustomerDashboardController.php',
         'App\\Http\\Controllers\\Customer\\DigitalPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/DigitalPaymentController.php',
         'App\\Http\\Controllers\\Customer\\DueController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/DueController.php',
+        'App\\Http\\Controllers\\Customer\\EMIController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/EMIController.php',
         'App\\Http\\Controllers\\Customer\\EmployeeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/EmployeeController.php',
         'App\\Http\\Controllers\\Customer\\ExpenseBookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/ExpenseBookController.php',
         'App\\Http\\Controllers\\Customer\\OrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Customer/OrderController.php',
@@ -2779,6 +2790,9 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'Jorenvh\\Share\\Providers\\ShareServiceProvider' => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src/Providers/ShareServiceProvider.php',
+        'Jorenvh\\Share\\Share' => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src/Share.php',
+        'Jorenvh\\Share\\ShareFacade' => __DIR__ . '/..' . '/jorenvanhocht/laravel-share/src/ShareFacade.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'Laravel\\Breeze\\BreezeServiceProvider' => __DIR__ . '/..' . '/laravel/breeze/src/BreezeServiceProvider.php',
         'Laravel\\Breeze\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallCommand.php',

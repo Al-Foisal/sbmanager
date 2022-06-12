@@ -47,13 +47,13 @@ class ExpenseBookController extends Controller {
             'name'    => $request->name,
         ]);
 
-        return response()->json(['status'=>true,'message'=>'Expense book created!!']);
+        return response()->json(['status' => true, 'message' => 'Expense book created!!']);
     }
 
     public function updateExpenseBook(Request $request, ExpenseBook $expense) {
 
-        if($expense->shop_id === null){
-            return response()->json(['status'=>false]);
+        if ($expense->shop_id === null) {
+            return response()->json(['status' => false]);
         }
 
         if ($request->hasFile('image')) {
@@ -89,7 +89,7 @@ class ExpenseBookController extends Controller {
             'name' => $request->name,
         ]);
 
-        return response()->json(['status'=>true,'message'=>'Expense book updated successfully!!']);
+        return response()->json(['status' => true, 'message' => 'Expense book updated successfully!!']);
     }
 
     public function deleteExpenseBook(Request $request, ExpenseBook $expense) {
@@ -101,10 +101,10 @@ class ExpenseBookController extends Controller {
 
         $expense->delete();
 
-        return response()->json(['status'=>true]);
+        return response()->json(['status' => true]);
     }
 
-    public function expenseBookList(Request $request,$shop_id) {
+    public function expenseBookList(Request $request, $shop_id) {
         $data = [];
         $type = request()->type;
 
@@ -219,7 +219,7 @@ class ExpenseBookController extends Controller {
             'created_at'      => $request->current_date ?? now(),
         ]);
 
-        return response()->json(['status'=>true,'message'=>'Expense updated successfully!!']);
+        return response()->json(['status' => true, 'message' => 'Expense updated successfully!!']);
     }
 
 }

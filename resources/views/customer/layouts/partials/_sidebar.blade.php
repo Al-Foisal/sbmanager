@@ -114,105 +114,36 @@
                         </li>
                     </ul>
                 </li> 
-                {{-- instructor activities
+                {{-- instructor activities --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-circle text-warning"></i>
                         <p class="text">
-                            Instructor Deeds
+                            Advanced
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview nav-header">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.instructor.allCourses') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>All Courses</p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a href="{{ route('admin.instructor.createCourses') }}" class="nav-link">
+                            <a href="{{ route('customer.emi.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>Create Courses</p>
+                                <p>EMI</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.coupons.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>Coupon</p>
                             </a>
-                        </li>
-                    </ul>
-                </li> --}}
-                {{-- Job activities
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p class="text">
-                            Job
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview nav-header">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.job.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>Job List</p>
-                            </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li> 
-                <li class="nav-item">
-                    <a href="{{ route('admin.blogs.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-circle text-danger"></i>
-                        <p>Blog</p>
-                    </a>
-                </li> --}}
-
-
-
-                {{-- order
-                @if (auth()->guard('admin')->user()->order_history == 1)
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon far fa-circle text-warning"></i>
-                            <p class="text">
-                                Order
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview nav-header">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.cancelOrder') }}" class="nav-link">
-                                    <i class="nav-icon far fa-circle text-danger"></i>
-                                    <p>Canceled Order</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.pendingOrder') }}" class="nav-link">
-                                    <i class="nav-icon far fa-circle text-danger"></i>
-                                    <p>Pending Order</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.confirmOrder') }}" class="nav-link">
-                                    <i class="nav-icon far fa-circle text-danger"></i>
-                                    <p>Confirm Order</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.shippedOrder') }}" class="nav-link">
-                                    <i class="nav-icon far fa-circle text-danger"></i>
-                                    <p>Shipped Order</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif --}}
-
-
-
-
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

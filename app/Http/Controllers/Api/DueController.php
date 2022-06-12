@@ -160,7 +160,7 @@ class DueController extends Controller {
             ]);
         }
 
-        return response()->json(['status' => true, 'message' => 'Due book updated!!']);
+        return response()->json(['status' => true, 'message' => 'Due book added!!']);
     }
 
     public function show($id) {

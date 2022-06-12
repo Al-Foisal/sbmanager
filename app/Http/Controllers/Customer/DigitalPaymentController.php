@@ -16,8 +16,18 @@ class DigitalPaymentController extends Controller {
     public function index() {
         $data = [];
 
-        $data['payments']  = DigitalPayment::where('shop_id', SID())->get();
-        $data['consumers'] = Consumer::where('shop_id', SID())->get();
+        $data['payments']    = DigitalPayment::where('shop_id', SID())->get();
+        $data['consumers']   = Consumer::where('shop_id', SID())->get();
+        $data['socialShare'] = \Share::page(
+            'https://abc.com/digitalpayment',
+            'Make your digital payment through this link.',
+        )
+            ->facebook()
+            ->twitter()
+            ->reddit()
+            ->linkedin()
+            ->whatsapp()
+            ->telegram();
 
         return view('customer.digital_payment.index', $data);
     }

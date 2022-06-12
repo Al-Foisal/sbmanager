@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ConsumerController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\DigitalPaymentController;
 use App\Http\Controllers\Api\DueController;
+use App\Http\Controllers\Api\EMIController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
 use App\Http\Controllers\Api\ProductController;
@@ -75,6 +76,15 @@ Route::controller(ExpenseBookController::class)->prefix('/expense')->group(funct
     //expense list
     Route::get('/list/{shop_id}', 'expenseBookList');
     Route::post('/list/store', 'storeExpenseBookList');
+});
+
+//emi
+Route::controller(EMIController::class)->prefix('/emi')->group(function () {
+    Route::get('/bank','bank');
+    Route::get('/emi_time','emiTime');
+    Route::get('/{shop_id}', 'index')->name('index');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/details/{id}', 'details')->name('details');
 });
 
 Route::apiResource('shops.consumers', ConsumerController::class);

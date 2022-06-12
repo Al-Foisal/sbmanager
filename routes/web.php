@@ -23,6 +23,7 @@ use App\Http\Controllers\Customer\ConsumerController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\DigitalPaymentController;
 use App\Http\Controllers\Customer\DueController;
+use App\Http\Controllers\Customer\EMIController;
 use App\Http\Controllers\Customer\EmployeeController;
 use App\Http\Controllers\Customer\ExpenseBookController;
 use App\Http\Controllers\Customer\OrderController;
@@ -144,6 +145,14 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
     });
 
     Route::resource('/digital_payments', DigitalPaymentController::class);
+
+    Route::controller(EMIController::class)->prefix('/emi')->as('emi.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/month', 'month')->name('month');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/details/{id}', 'details')->name('details');
+    });
 
     Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function () {
         Route::get('/', 'index')->name('index');

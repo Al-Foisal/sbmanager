@@ -1,6 +1,40 @@
 @extends('customer.layouts.master')
 @section('title', SHOP()->name)
+@section('cssStyle')
+    <style>
+        .social-btn-sp #social-links {
+            margin: 0 auto;
+            max-width: 500px;
+        }
 
+        .social-btn-sp #social-links ul li {
+            display: inline-block;
+        }
+
+        .social-btn-sp #social-links ul li a {
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin: 1px;
+            font-size: 30px;
+        }
+
+        table #social-links {
+            display: inline-table;
+        }
+
+        table #social-links ul li {
+            display: inline;
+        }
+
+        table #social-links ul li a {
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin: 1px;
+            font-size: 15px;
+            background: #e3e3ea;
+        }
+    </style>
+@endsection
 @section('backend')
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -43,7 +77,13 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control js-copytextarea" id="validationTooltipUsername"
-                                value="Username" aria-describedby="validationTooltipUsernamePrepend">
+                                value="Username" aria-describedby="validationTooltipUsernamePrepend" readonly>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary btn-sm"
+                                style="padding:1% 10% 1% 10%;margin-top:2%;"
+                                data-toggle="modal" data-target="#shareLink">Share Your
+                                Link</button>
                         </div>
                     </div>
                 </div>
@@ -165,6 +205,24 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="shareLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Share Your Link</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="social-btn-sp mt-3">
+                        {!! $socialShare !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('jsScript')
@@ -181,8 +239,8 @@
 
         copyTextareaBtn.addEventListener('click', function(event) {
             var copyTextarea = document.querySelector('.js-copytextarea');
-            // copyTextarea.focus();
-            // copyTextarea.select();
+            copyTextarea.focus();
+            copyTextarea.select();
 
             try {
                 var successful = document.execCommand('copy');
