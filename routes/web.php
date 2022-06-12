@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\AreaController;
 use App\Http\Controllers\Backend\Auth\AdminForgotPasswordController;
 use App\Http\Controllers\Backend\Auth\AdminLoginController;
 use App\Http\Controllers\Backend\Auth\AdminRegistrationController;
@@ -8,11 +9,14 @@ use App\Http\Controllers\Backend\Auth\BackendManagementController;
 use App\Http\Controllers\Backend\BankController;
 use App\Http\Controllers\Backend\CompanyInfoController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\DistrictController;
+use App\Http\Controllers\Backend\DivisionController;
 use App\Http\Controllers\Backend\EMITimeController;
 use App\Http\Controllers\Backend\GeneralController;
 use App\Http\Controllers\Backend\MainMenu\CategoryController;
 use App\Http\Controllers\Backend\MainMenu\SubcategoryController;
 use App\Http\Controllers\Backend\PageController;
+use App\Http\Controllers\Backend\ShopTypeController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
 use App\Http\Controllers\Customer\Auth\CustomerRegisterController;
@@ -166,7 +170,6 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::get('/details', 'details')->name('details');
     });
 });
-me
 
 //backend
 Route::prefix('/admin')->as('admin.')->middleware('guest:admin')->group(function () {
@@ -226,6 +229,11 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
         Route::post('/active-subcategory/{id}', 'activeSubcategory')->name('activeSubcategory');
         Route::post('/inactive-subcategory/{id}', 'inactiveSubcategory')->name('inactiveSubcategory');
     });
+
+    Route::resource('/shop_types', ShopTypeController::class);
+    Route::resource('/divisions', DivisionController::class);
+    Route::resource('/districts', DistrictController::class);
+    Route::resource('/areas', AreaController::class);
 
     Route::resource('/emi_times', EMITimeController::class);
     Route::resource('/banks', BankController::class);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Division;
 use Illuminate\Http\Request;
 
 class DivisionController extends Controller
@@ -14,7 +15,9 @@ class DivisionController extends Controller
      */
     public function index()
     {
-        //
+        $data = [];
+        $data['divisions']=Division::all();
+        return view('backend.division.index',$data);
     }
 
     /**
@@ -35,7 +38,8 @@ class DivisionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Division::create($request->all());
+        return redirect()->back();
     }
 
     /**

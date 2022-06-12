@@ -94,6 +94,35 @@
                                 <p>Subcategory</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.shop_types.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Shop Type</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.divisions.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Division</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.districts.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>District</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.areas.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Areas</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="{{ route('admin.emi_times.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
@@ -102,6 +131,7 @@
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="{{ route('admin.banks.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
@@ -110,6 +140,7 @@
                                 </p>
                             </a>
                         </li>
+
                     </ul>
                 </li>
 
