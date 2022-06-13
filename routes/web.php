@@ -38,6 +38,7 @@ use App\Http\Controllers\Customer\SMSMarkettingController;
 use App\Http\Controllers\Customer\SupplierController;
 use App\Http\Controllers\Customer\TopupController;
 use App\Http\Controllers\Customer\TransactionController;
+use App\Http\Controllers\FrontendController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +52,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
+Route::controller(FrontendController::class)->group(function () {
+    Route::get('/online-market', 'onlineMarket')->name('onlineMarket');
+    Route::get('/online-market/category-product/{slug}', 'categoryProduct')->name('categoryProduct');
+    Route::get('/online-market/product/{slug}', 'productDetails')->name('productDetails');
+    Route::get('/online-market/cart', 'cartProduct')->name('cartProduct');
 
+});
+
+Route::controller(CartController::class)->group(function () {
+    //cart
+    Route::post('/add-to-cart', 'addToCart');
+    // Route::post('/add-to-cart/discount', 'extraDiscount');
+    // Route::get('/cart', 'cart')->name('cart');
+    // Route::get('/cart/{order_id}', 'cartOrder')->name('cartOrder');
+    // Route::post('/update-cart', 'updateCart')->name('updateCart');
+    Route::get('/remove-from-cart/{rowId}', 'removeFromCart')->name('removeFromCart');
+    // Route::get('destroy', function () {
+    //     Cart::destroy();
+
+    //     return redirect()->route('customer.cart');
+    // });
+});
 Route::get('/', function () {
     return dd(session()->get('order'));
 })->name('home');
@@ -222,7 +244,7 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
         Route::patch('/update-category/{id}', 'updateCategory')->name('updateCategory');
         Route::post('/active-category/{id}', 'activeCategory')->name('activeCategory');
         Route::post('/inactive-category/{id}', 'inactiveCategory')->name('inactiveCategory');
-        
+
         Route::post('/set-online-category/{id}', 'setOnlineCategory')->name('setOnlineCategory');
         Route::post('/remove-online-category/{id}', 'removeOnlineCategory')->name('removeOnlineCategory');
     });
