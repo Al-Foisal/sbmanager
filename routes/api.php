@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DueController;
 use App\Http\Controllers\Api\EMIController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
+use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -80,8 +81,8 @@ Route::controller(ExpenseBookController::class)->prefix('/expense')->group(funct
 
 //emi
 Route::controller(EMIController::class)->prefix('/emi')->group(function () {
-    Route::get('/bank','bank');
-    Route::get('/emi_time','emiTime');
+    Route::get('/bank', 'bank');
+    Route::get('/emi_time', 'emiTime');
     Route::get('/{shop_id}', 'index')->name('index');
     Route::post('/store', 'store')->name('store');
     Route::get('/details/{id}', 'details')->name('details');
@@ -92,3 +93,11 @@ Route::apiResource('shops.employees', EmployeeController::class);
 Route::apiResource('shops.suppliers', SupplierController::class);
 Route::apiResource('shops.products', ProductController::class);
 Route::apiResource('shops.digital_payments', DigitalPaymentController::class);
+
+Route::controller(GeneralController::class)->group(function () {
+    Route::get('/shop_type', 'shopType');
+    Route::get('/division', 'division');
+    Route::get('/district', 'district');
+    Route::get('/area', 'area');
+    Route::get('/get_district/{division_id}', 'districtByDivision');
+});

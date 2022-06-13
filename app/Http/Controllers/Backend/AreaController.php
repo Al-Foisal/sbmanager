@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
+use App\Models\Division;
 use Illuminate\Http\Request;
 
-class AreaController extends Controller
-{
+class AreaController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $data          = [];
+        $data['areas'] = Area::with('district', 'division')->get();
+
+        return view('backend.area.index',$data);
     }
 
     /**
@@ -22,9 +25,11 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $data              = [];
+        $data['divisions'] = Division::all();
+
+        return view('backend.area.create', $data);
     }
 
     /**
@@ -33,9 +38,10 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        Area::create($request->all());
+
+        return redirect()->back()->withToastSuccess('Area created successfully!!');
     }
 
     /**
@@ -44,8 +50,7 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -55,9 +60,12 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        $data             = [];
+        $data['area']     = Area::find($id);
+        $data['divisions'] = Division::all();
+
+        return view('backend.area.edit', $data);
     }
 
     /**
@@ -67,9 +75,11 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        $area = Area::find($id);
+        $area->update($request->all());
+
+        return redirect()->route('admin.areas.index')->withToastSuccess('Area updated successfully');
     }
 
     /**
@@ -78,8 +88,7 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

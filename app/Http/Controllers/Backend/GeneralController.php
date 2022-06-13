@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Consumer;
+use App\Models\District;
+use App\Models\Division;
 use App\Models\Subcategory;
 
 class GeneralController extends Controller {
@@ -17,5 +19,11 @@ class GeneralController extends Controller {
         $consumer = Consumer::where('shop_id', SID())->get();
 
         return json_encode($consumer);
+    }
+
+    public function getDistrict($id) {
+        $district = District::where('division_id', $id)->get();
+
+        return json_encode($district);
     }
 }

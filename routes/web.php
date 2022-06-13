@@ -264,3 +264,4 @@ Route::get('/cc', [CartController::class, 'cc']);
 Route::get('/get-category/{category}', [DueController::class, 'category']);
 Route::get('/get-consumer', [GeneralController::class, 'getConsumer']);
 Route::get('/get-subcategory/{id}', [GeneralController::class, 'getSubcategory']);
+Route::get('/get-district/{id}', [GeneralController::class, 'getDistrict']);

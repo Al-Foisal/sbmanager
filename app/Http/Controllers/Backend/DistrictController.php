@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\District;
+use App\Models\Division;
 use Illuminate\Http\Request;
 
-class DistrictController extends Controller
-{
+class DistrictController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $data              = [];
+        $data['districts'] = District::with('division')->get();
+        $data['divisions'] = Division::all();
+
+        return view('backend.district.index', $data);
     }
 
     /**
@@ -22,8 +26,7 @@ class DistrictController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -33,9 +36,10 @@ class DistrictController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        District::create($request->all());
+
+        return redirect()->back()->withToastSuccess('Districe created successfully!!');
     }
 
     /**
@@ -44,8 +48,7 @@ class DistrictController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -55,9 +58,12 @@ class DistrictController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        $data              = [];
+        $data['district']  = District::find($id);
+        $data['divisions'] = Division::all();
+
+        return view('backend.district.edit', $data);
     }
 
     /**
@@ -67,9 +73,11 @@ class DistrictController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        $district = District::find($id);
+        $district->update($request->all());
+
+        return redirect()->route('admin.districts.index')->withToastSuccess('District updated successfully');
     }
 
     /**
@@ -78,8 +86,7 @@ class DistrictController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

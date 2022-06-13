@@ -57,7 +57,7 @@ class DivisionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Division $division) {
-        return view('divisions.edit', compact('divisions'));
+        return view('backend.division.edit', compact('division'));
     }
 
     /**
@@ -70,7 +70,7 @@ class DivisionController extends Controller {
     public function update(Request $request, Division $division) {
         $division->update($request->all());
 
-        return redirect()->route('admin.division.index')->withToastSuccess('Division updated successfully!!');
+        return redirect()->route('admin.divisions.index')->withToastSuccess('Division updated successfully!!');
     }
 
     /**
