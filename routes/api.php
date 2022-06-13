@@ -42,6 +42,12 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(CustomerController::class)->group(function () {
     Route::get('shop-list/{customer_id}', 'shopList');
     Route::post('shop-list', 'storeShop');
+
+    //online shop
+    Route::get('/order-list/{shop_id}', 'orderList');
+    Route::get('/order-details/{id}', 'orderDetails');
+    Route::get('/online-product/{shop_id}', 'onlineProduct');
+
     Route::post('/dashboard', 'dashboard');
 
     //quicksell

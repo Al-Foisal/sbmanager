@@ -81,8 +81,13 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
     Route::post('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
 
     Route::controller(ShopController::class)->prefix('/shop')->as('shop.')->group(function () {
+        Route::get('/online-shop', 'onlineShop')->name('onlineShop');
         Route::get('/list', 'list')->name('list');
         Route::post('/store', 'store')->name('store');
+
+        Route::get('/order-list', 'orderList')->name('orderList');
+        Route::get('/order-details/{id}', 'orderDetails')->name('orderDetails');
+        Route::get('/online-product', 'onlineProduct')->name('onlineProduct');
     });
 
     Route::resource('/consumers', ConsumerController::class);

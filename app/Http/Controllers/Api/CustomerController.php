@@ -154,7 +154,7 @@ class CustomerController extends Controller {
 
         }
 
-        return response()->json(['status' => true]);
+        return response()->json(['status' => true, 'order' => $order]);
     }
 
     public function orderSave(Request $request) {
@@ -237,6 +237,28 @@ class CustomerController extends Controller {
         $data['transaction'] = Order::where('id', $id)->with('orderProduct')->first();
 
         return $data;
+    }
+
+    public function orderList($shop_id) {
+        $data           = [];
+        $data['orders'] = Order::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('orderProduct')->paginate(50);
+
+        return $data;
+    }
+
+    public function orderDetails($id) {
+        $data          = [];
+        $data['order'] = $order = Order::find($id);
+
+        $data['orderProduct'] = OrderProduct::where('order_id', $order->id)->get();
+
+        return $data;
+    }
+
+    public function onlineProduct($shop_id) {
+        $products = Product::where('shop_id', $shop_id)->where('online', 1)->paginate(50);
+
+        return $products;
     }
 
 }

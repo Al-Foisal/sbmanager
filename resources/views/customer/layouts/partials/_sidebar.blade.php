@@ -124,12 +124,12 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview nav-header">
-                        {{-- <li class="nav-item">
-                            <a href="{{ route('admin.instructor.allCourses') }}" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{ route('customer.shop.onlineShop') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>All Courses</p>
+                                <p>Online Shop</p>
                             </a>
-                        </li> --}}
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('customer.emi.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
