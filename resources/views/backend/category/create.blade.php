@@ -35,6 +35,11 @@
                                     <input type="text" class="form-control" id="exampleInputEmail1" value="{{ old('name') }}"
                                         placeholder="Enter category name" name="name">
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="">Image</label>
+                                    <input type="file" class="form-control" id="" name="image">
+                                </div>
                             </div>
                             <!-- /.card-body -->
 

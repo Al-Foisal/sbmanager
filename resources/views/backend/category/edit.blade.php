@@ -36,6 +36,12 @@
                                     <input type="text" class="form-control" id="exampleInputEmail1"
                                         value="{{ $category->name }}" name="name">
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="">Image</label>
+                                    <input type="file" class="form-control" id="" name="image">
+                                </div>
+                                <img src="{{ asset($category->image??'images/demo.pnd') }}" style="height:50px;width:50px;">
                             </div>
                             <!-- /.card-body -->
 

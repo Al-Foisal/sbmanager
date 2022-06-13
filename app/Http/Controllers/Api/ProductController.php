@@ -14,7 +14,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($shop_id) {
-        $products = Product::where('shop_id', $shop_id)->get();
+        $products = Product::where('shop_id', $shop_id)->with('category', 'subcategory')->get();
 
         return $products;
     }
@@ -87,7 +87,8 @@ class ProductController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id,Product $product) {
+    public function update(Request $request, $id, Product $product) {
+
         if ($request->hasFile('image')) {
 
             $image_file = $request->file('image');

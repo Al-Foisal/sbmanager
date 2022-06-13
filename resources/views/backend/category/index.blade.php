@@ -34,40 +34,73 @@
                                 <thead>
                                     <tr>
                                         <th>Action</th>
+                                        <th>Image</th>
                                         <th>Name</th>
                                         <th>Status</th>
+                                        <th>Online?</th>
                                         <th>Created_at</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($categories as $category)
                                         <tr>
-                                            <td class="d-flex justify-content-between">
-                                                <a href="{{ route('admin.editCategory', $category) }}"
-                                                    class="btn btn-info btn-xs"> <i class="fas fa-edit"></i> </a>
-                                                @if ($category->status === 1)
-                                                    <form action="{{ route('admin.inactiveCategory', $category) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            onclick="return(confirm('Are you sure want to INACTIVE this item?'))"
-                                                            class="btn btn-danger btn-xs"> <i
-                                                                class="far fa-thumbs-down"></i>
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <form action="{{ route('admin.activeCategory', $category) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            onclick="return(confirm('Are you sure want to Active this item?'))"
-                                                            class="btn btn-info btn-xs"> <i class="far fa-thumbs-up"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                            <td>
+                                                <!-- Example single danger button -->
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-danger dropdown-toggle"
+                                                        data-toggle="dropdown" aria-expanded="false">
+                                                        Action
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @if ($category->status === 0)
+                                                            <form action="{{ route('admin.activeCategory', $category) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button class="dropdown-item" type="submit"
+                                                                    onclick="return(confirm('Are you sure want to Active this item?'))">Active
+                                                                    Category</button>
+                                                            </form>
+                                                        @else
+                                                            <form
+                                                                action="{{ route('admin.inactiveCategory', $category) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button class="dropdown-item" type="submit"
+                                                                    onclick="return(confirm('Are you sure want to INACTIVE this item?'))">Inactive
+                                                                    Category</button>
+                                                            </form>
+                                                        @endif
+                                                        @if ($category->online === 0)
+                                                            <form
+                                                                action="{{ route('admin.setOnlineCategory', $category) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button class="dropdown-item" type="submit"
+                                                                    onclick="return(confirm('Are you sure want to Active this item?'))">Set
+                                                                    to Online Market</button>
+                                                            </form>
+                                                        @else
+                                                            <form
+                                                                action="{{ route('admin.removeOnlineCategory', $category) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button class="dropdown-item" type="submit"
+                                                                    onclick="return(confirm('Are you sure want to remove from online market?'))">Remove
+                                                                    from Online Market</button>
+                                                            </form>
+                                                        @endif
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.editCategory', $category) }}">Edit</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <img src="{{ asset($category->image ?? 'images/demo.png') }}"
+                                                    style="height:50px;width:50px;">
                                             </td>
                                             <td>{{ $category->name }} <br> Sub={{ $category->subcategories_count }}</td>
                                             <td>{{ $category->is_active }}</td>
+                                            <td>{{ $category->online === 1 ? 'Y' : 'N' }}</td>
                                             <td>{{ $category->created_at }}</td>
                                         </tr>
                                     @endforeach

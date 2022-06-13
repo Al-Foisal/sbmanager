@@ -222,6 +222,9 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
         Route::patch('/update-category/{id}', 'updateCategory')->name('updateCategory');
         Route::post('/active-category/{id}', 'activeCategory')->name('activeCategory');
         Route::post('/inactive-category/{id}', 'inactiveCategory')->name('inactiveCategory');
+        
+        Route::post('/set-online-category/{id}', 'setOnlineCategory')->name('setOnlineCategory');
+        Route::post('/remove-online-category/{id}', 'removeOnlineCategory')->name('removeOnlineCategory');
     });
 
     //subcategory
