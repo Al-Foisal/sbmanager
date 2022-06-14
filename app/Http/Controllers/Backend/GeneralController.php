@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Consumer;
 use App\Models\District;
 use App\Models\Division;
@@ -25,5 +26,11 @@ class GeneralController extends Controller {
         $district = District::where('division_id', $id)->get();
 
         return json_encode($district);
+    }
+
+    public function getArea($id) {
+        $area = Area::where('district_id', $id)->get();
+
+        return json_encode($area);
     }
 }

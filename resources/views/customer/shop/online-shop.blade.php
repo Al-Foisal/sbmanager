@@ -71,7 +71,7 @@
                         <img src="{{ asset('images/online-product.svg') }}" alt="">
                         <h6>Online Product</h6>
                     </a>
-                    <a class="text-center btn btn-light rounded" style="padding: 1% 4% 1% 4%;;border: 1px solid;">
+                    <a href="{{ route('customer.shop.editStore') }}" class="text-center btn btn-light rounded" style="padding: 1% 4% 1% 4%;;border: 1px solid;">
                         <img src="{{ asset('images/online-shop-setting.svg') }}" alt="">
                         <h6>Store Setting</h6>
                     </a>

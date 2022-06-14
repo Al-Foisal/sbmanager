@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
+use App\Models\Division;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Models\ShopType;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ShopController extends Controller {
     public function onlineShop() {
@@ -60,10 +66,131 @@ class ShopController extends Controller {
             'name'               => $request->name,
             'image'              => $final_name1,
             'payment_link'       => 'https://abc.com/digital_payment',
-            'online_market_link' => 'https://abc.cm/online-market',
+            'online_market_link' => Str::slug($request->name),
         ]);
 
         return redirect()->back()->withToastSuccess('New shop created successfu;;y!!');
+    }
+
+    public function editStore() {
+        $data = [];
+
+        $data['shop']      = Shop::where('id', SID())->where('customer_id', CID())->first();
+        $data['shop_type'] = ShopType::all();
+        $data['divisions'] = Division::all();
+        $data['slider']    = Slider::where('shop_id', SID())->get();
+
+        return view('customer.shop.shop-edit', $data);
+    }
+
+    public function updateStoreInformation(Request $request, Shop $shop) {
+        $shop->update($request->all());
+
+        return redirect()->back()->withToastSuccess('Store information updated successfully!!');
+    }
+
+    public function updateStoreLogo(Request $request, Shop $shop) {
+
+        if ($request->hasFile('image')) {
+
+            $image_file = $request->file('image');
+
+            if ($image_file) {
+
+                $image_path = public_path($shop->image);
+
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/shop/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name    = $img_gen . '.' . $image_ext;
+                $final_name1 = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+                $shop->update(
+                    [
+                        'image' => $final_name1,
+                    ]
+                );
+            }
+
+        }
+
+        return redirect()->back()->withToastSuccess('Store logo updated successfully!!');
+
+    }
+
+    public function updateStoreSocial(Request $request, Shop $shop) {
+        $shop->update($request->all());
+
+        return redirect()->back()->withToastSuccess('Store social link updated successfully!!');
+    }
+
+    public function updateStoreOML(Request $request, Shop $shop) {
+        $link = Str::slug($request->online_market_link);
+
+        $shops = Shop::select('online_market_link')->get();
+
+        foreach ($shops as $ss) {
+
+            if ($ss === $link) {
+                return redirect()->back()->withToastInfo('The link you are trying, other people has used that link before. Make some change in your link and try again.');
+            }
+
+        }
+
+        $shop->update(['online_market_link' => $link]);
+
+        return redirect()->back()->withToastSuccess('Store online market link updated successfully!!');
+    }
+
+    public function storeShopBanner(Request $request) {
+
+        if ($request->hasFile('image')) {
+
+            $image_file = $request->file('image');
+
+            if ($image_file) {
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/banner/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name    = $img_gen . '.' . $image_ext;
+                $final_name1 = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+            }
+
+        }else {
+            return back();
+        }
+
+        Slider::create([
+            'shop_id' => SID(),
+            'image'   => $final_name1,
+        ]);
+
+        return redirect()->back()->withToastSuccess('Store banner created successfully!!');
+
+    }
+
+    public function deleteShopBanner(Request $request, $id) {
+        $slider     = Slider::find($id);
+        $image_path = public_path($slider->image);
+
+        if (File::exists($image_path)) {
+            File::delete($image_path);
+        }
+
+        $slider->delete();
+
+        return redirect()->back()->withToastSuccess('Store banner deleted successfully!!');
+
     }
 
     public function orderList() {
@@ -86,11 +213,10 @@ class ShopController extends Controller {
         return view('customer.shop.order-details', $data);
     }
 
-    public function onlineProduct()
-    {
-        $products = Product::where('shop_id',SID())->where('online',1)->paginate(50);
+    public function onlineProduct() {
+        $products = Product::where('shop_id', SID())->where('online', 1)->paginate(50);
 
-        return view('customer.shop.online-product',compact('products'));
+        return view('customer.shop.online-product', compact('products'));
     }
 
 }

@@ -11,4 +11,16 @@ class Shop extends Model {
     public function customer() {
         return $this->belongsTo(Customer::class);
     }
+
+    public function division() {
+        return $this->belongsTo(Division::class);
+    }
+
+    public function district() {
+        return $this->belongsTo(District::class);
+    }
+
+    public function area() {
+        return $this->belongsTo(Area::class);
+    }
 }

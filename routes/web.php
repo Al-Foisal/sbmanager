@@ -106,6 +106,13 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::get('/online-shop', 'onlineShop')->name('onlineShop');
         Route::get('/list', 'list')->name('list');
         Route::post('/store', 'store')->name('store');
+        Route::get('/edit-store', 'editStore')->name('editStore');
+        Route::put('/update-store-information/{shop}', 'updateStoreInformation')->name('updateStoreInformation');
+        Route::put('/update-store-logo/{shop}', 'updateStoreLogo')->name('updateStoreLogo');
+        Route::put('/update-store-social/{shop}', 'updateStoreSocial')->name('updateStoreSocial');
+        Route::put('/update-store-oml/{shop}', 'updateStoreOML')->name('updateStoreOML');
+        Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner');
+        Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
 
         Route::get('/order-list', 'orderList')->name('orderList');
         Route::get('/order-details/{id}', 'orderDetails')->name('orderDetails');
@@ -295,3 +302,4 @@ Route::get('/get-category/{category}', [DueController::class, 'category']);
 Route::get('/get-consumer', [GeneralController::class, 'getConsumer']);
 Route::get('/get-subcategory/{id}', [GeneralController::class, 'getSubcategory']);
 Route::get('/get-district/{id}', [GeneralController::class, 'getDistrict']);
+Route::get('/get-area/{id}', [GeneralController::class, 'getArea']);

@@ -10,7 +10,10 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller {
     public function shopList($customer_id) {
@@ -79,6 +82,122 @@ class CustomerController extends Controller {
         $data['balance'] = $total_deposite;
 
         return $data;
+    }
+
+    public function updateStoreInformation(Request $request, Shop $shop) {
+        $shop->update($request->all());
+
+        return response()->json(['status' => true, 'message' => 'Store information updated successfully!!']);
+    }
+
+    public function updateStoreLogo(Request $request, Shop $shop) {
+
+        if ($request->hasFile('image')) {
+
+            $image_file = $request->file('image');
+
+            if ($image_file) {
+
+                $image_path = public_path($shop->image);
+
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/shop/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name    = $img_gen . '.' . $image_ext;
+                $final_name1 = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+                $shop->update(
+                    [
+                        'image' => $final_name1,
+                    ]
+                );
+            }
+
+        }
+
+        return response()->json(['status' => true, 'message' => 'Store logo updated successfully!!']);
+
+    }
+
+    public function updateStoreSocial(Request $request, Shop $shop) {
+        $shop->update($request->all());
+
+        return response()->json(['status' => true, 'message' => 'Store social link updated successfully!!']);
+    }
+
+    public function updateStoreOML(Request $request, Shop $shop) {
+        $link = Str::slug($request->online_market_link);
+
+        $shops = Shop::select('online_market_link')->get();
+
+        foreach ($shops as $ss) {
+
+            if ($ss === $link) {
+                return response()->json(['status' => false, 'message' => 'The link you are trying, other people has used that link before. Make some change in your link and try again.']);
+            }
+
+        }
+
+        $shop->update(['online_market_link' => $link]);
+
+        return response()->json(['status' => true, 'message' => 'Store online market link updated successfully!!']);
+    }
+
+    public function storeShopBanner(Request $request) {
+
+        if ($request->hasFile('image')) {
+
+            $image_file = $request->file('image');
+
+            if ($image_file) {
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/banner/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name    = $img_gen . '.' . $image_ext;
+                $final_name1 = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+            }
+
+        } else {
+            return back();
+        }
+
+        Slider::create([
+            'shop_id' => SID(),
+            'image'   => $final_name1,
+        ]);
+
+        return response()->json(['status' => true, 'message' => 'Store banner created successfully!!']);
+
+    }
+
+    public function deleteShopBanner(Request $request, $id) {
+        $slider     = Slider::find($id);
+        $image_path = public_path($slider->image);
+
+        if (File::exists($image_path)) {
+            File::delete($image_path);
+        }
+
+        $slider->delete();
+
+        return response()->json(['status' => true, 'message' => 'Store banner deleted successfully!!']);
+
+    }
+
+    public function sliderList($shop_id) {
+        $slider = Slider::where('shop_id', $shop_id)->get();
+
+        return $slider;
     }
 
     public function storeQuicksell(Request $request, $shop_id) {

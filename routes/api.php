@@ -43,6 +43,14 @@ Route::controller(CustomerController::class)->group(function () {
     Route::get('shop-list/{customer_id}', 'shopList');
     Route::post('shop-list', 'storeShop');
 
+    Route::put('/update-store-information/{shop}', 'updateStoreInformation')->name('updateStoreInformation');
+    Route::put('/update-store-logo/{shop}', 'updateStoreLogo')->name('updateStoreLogo');
+    Route::put('/update-store-social/{shop}', 'updateStoreSocial')->name('updateStoreSocial');
+    Route::put('/update-store-oml/{shop}', 'updateStoreOML')->name('updateStoreOML');
+    Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner');
+    Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
+    Route::get('/shop/slider-list/{shop_id}','sliderList');
+
     //online shop
     Route::get('/order-list/{shop_id}', 'orderList');
     Route::get('/order-details/{id}', 'orderDetails');
