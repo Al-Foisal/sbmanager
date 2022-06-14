@@ -1,16 +1,6 @@
-<!doctype html>
-<html lang="en">
+@extends('market.master')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
-
-<body>
-
+@section('content')
     <div class="container">
         <div class="row">
             <form class="row g-3">
@@ -34,11 +24,9 @@
             @foreach ($categories as $category)
                 <div class="card bg-light mb-3"
                     style="max-width: 20rem;text-align:center;margin-right:2rem;text-decoration:none;">
-                    <a href="{{ route('categoryProduct', $category->slug) }}"
-                        style="text-decoration:none;color:black;">
+                    <a href="{{ route('categoryProduct', $category->slug) }}" style="text-decoration:none;color:black;">
                         <div class="card-body">
-                            <img src="{{ asset($category->image ?? 'images/demo.png') }}"
-                                style="height:70px;width:70px">
+                            <img src="{{ asset($category->image ?? 'images/demo.png') }}" style="height:70px;width:70px">
                             <h5 class="card-title">
                                 {{ $category->name }}"
                             </h5>
@@ -76,19 +64,4 @@
             @endforeach
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
-    </script>
-</body>
-
-</html>
+@endsection
