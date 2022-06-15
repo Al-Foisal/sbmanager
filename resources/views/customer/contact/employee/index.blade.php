@@ -3,20 +3,20 @@
 
 @section('backend')
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header mmm">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <a href="{{ route('customer.consumers.index') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.consumers.index')) btn btn-info btn-sm @else btn btn-light btn-sm @endif"
+                        class="@if (Illuminate\Support\Facades\Route::is('customer.consumers.index')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif"
                         style="padding: 2px 35px;font-size:20px;">Consumer</a>
 
                     <a href="{{ route('customer.suppliers.index') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.suppliers.index')) btn btn-info btn-sm @else btn btn-light btn-sm @endif"
+                        class="@if (Illuminate\Support\Facades\Route::is('customer.suppliers.index')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif"
                         style="padding: 2px 35px;font-size:20px;">Supplier</a>
 
                     <a href="{{ route('customer.employees.index') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.employees.index')) btn btn-info btn-sm @else btn btn-light btn-sm @endif"
+                        class="@if (Illuminate\Support\Facades\Route::is('customer.employees.index')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif"
                         style="padding: 2px 35px;font-size:20px;">Employee</a>
                 </div>
                 <div class="col-sm-6">

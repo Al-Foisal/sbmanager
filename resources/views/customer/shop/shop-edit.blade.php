@@ -1,13 +1,13 @@
 @extends('customer.layouts.master')
-@section('title', 'Create new product')
+@section('title', 'Store Information')
 
 @section('backend')
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header mmm">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Create New Product</h1>
+                    <h1>Store Information</h1>
                 </div>
                 <div class="col-sm-6">
 
@@ -41,17 +41,28 @@
                                                 placeholder="Enter name" name="name" required>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label>Shop Type</label>
-                                            <select class="form-control select2bs4" style="width: 100%;" name="shop_type_id"
-                                                required>
-                                                <option>Select shop type</option>
-                                                @foreach ($shop_type as $type)
-                                                    <option value="{{ $type->id }}"
-                                                        @if ($shop->shop_type_id === $type->id) selected @endif>
-                                                        {{ $type->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <div class="form-group">
+                                                    <label>Shop Type</label>
+                                                    <select class="form-control select2bs4" style="width: 100%;" name="shop_type_id"
+                                                        required>
+                                                        <option>Select shop type</option>
+                                                        @foreach ($shop_type as $type)
+                                                            <option value="{{ $type->id }}"
+                                                                @if ($shop->shop_type_id === $type->id) selected @endif>
+                                                                {{ $type->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="">Shipping Charge</label>
+                                                    <input type="text" class="form-control" id="" value="{{ $shop->shipping_charge }}"
+                                                        placeholder="Enter shipping charge" name="shipping_charge" >
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="row">

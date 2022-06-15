@@ -39,6 +39,7 @@ use App\Http\Controllers\Customer\SupplierController;
 use App\Http\Controllers\Customer\TopupController;
 use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\SingleShopController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,15 @@ Route::controller(CartController::class)->group(function () {
     //     return redirect()->route('customer.cart');
     // });
 });
+
+Route::controller(SingleShopController::class)->prefix('/shop')->as('shop.')->group(function () {
+    Route::get('/{shop_link}', 'singleShopIndex')->name('singleShopIndex');
+    Route::get('/{shop_link}/{slug}', 'singleShopDetails')->name('singleShopDetails');
+    Route::get('/{shop_link}/online/cart', 'singleShopCart')->name('singleShopCart');
+    Route::get('/{shop_link}/online/checkout', 'singleShopCheckout')->name('singleShopCheckout');
+    Route::post('/{shop_link}/online/place-order', 'singleShopPlaceOrder')->name('singleShopPlaceOrder');
+    Route::get('/{shop_link}/online/order-confirm/{id}', 'singleShopOrderConfirm')->name('singleShopOrderConfirm');
+});
 Route::get('/', function () {
     return dd(session()->get('order'));
 })->name('home');
@@ -101,6 +111,7 @@ Route::prefix('/customer')->as('customer.')->middleware('guest:customer')->group
 Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(function () {
     Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
     Route::post('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
+    Route::get('/pages/{slug}', [CustomerController::class, 'pageDetails'])->name('pageDetails');
 
     Route::controller(ShopController::class)->prefix('/shop')->as('shop.')->group(function () {
         Route::get('/online-shop', 'onlineShop')->name('onlineShop');
@@ -113,10 +124,16 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::put('/update-store-oml/{shop}', 'updateStoreOML')->name('updateStoreOML');
         Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner');
         Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
-
         Route::get('/order-list', 'orderList')->name('orderList');
         Route::get('/order-details/{id}', 'orderDetails')->name('orderDetails');
+        Route::get('/online-order-list', 'onlineOrderList')->name('onlineOrderList');
+        Route::get('/online-order-list/{id}', 'onlineOrderListDetails')->name('onlineOrderListDetails');
+        Route::post('/online-order-staus/{id}', 'onlineOrderStatus')->name('onlineOrderStatus');
+        Route::delete('/online-order-delete', 'onlineOrderDelete')->name('onlineOrderDelete');
         Route::get('/online-product', 'onlineProduct')->name('onlineProduct');
+
+        Route::get('/display-qr-code','displayQRCode')->name('displayQRCode');
+        Route::post('/store-qr-code','storeQRCode')->name('storeQRCode');
     });
 
     Route::resource('/consumers', ConsumerController::class);

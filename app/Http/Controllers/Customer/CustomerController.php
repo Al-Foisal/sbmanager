@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Due;
 use App\Models\ExpenseBookDetail;
 use App\Models\Order;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +30,7 @@ class CustomerController extends Controller {
 
                 if ($d->due_type === 'Due' && $d->created_at == today()) {
                     $total_due += $d->amount;
-                } elseif($d->due_type === 'Deposit' && $d->created_at == today()) {
+                } elseif ($d->due_type === 'Deposit' && $d->created_at == today()) {
                     $total_deposite += $d->amount;
                 }
 
@@ -52,6 +53,12 @@ class CustomerController extends Controller {
         return redirect()
             ->route('customer.login')
             ->withToastSuccess('Logout Successful!!');
+    }
+
+    public function pageDetails($slug) {
+        $page = Page::where('slug', $slug)->first();
+
+        return view('customer.page-details', compact('page'));
     }
 
 }

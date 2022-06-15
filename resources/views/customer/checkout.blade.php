@@ -20,7 +20,7 @@
 
 @endsection
 @section('backend')
-    <section class="content">
+    <section class="content mmm">
         <form action="{{ route('customer.placeOrder') }}" method="post">
             @csrf
             <div class="container-fluid">

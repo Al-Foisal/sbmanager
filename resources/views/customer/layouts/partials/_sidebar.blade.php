@@ -1,13 +1,31 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="{{ route('customer.dashboard') }}" class="brand-link">
-        <img src="{{ asset($company->logo ?? '') }}" alt="admin" class="brand-image  elevation-3" style="opacity: .8">
-    </a>
+<style>
+    [class*=sidebar-dark-] {
+        background-color: #28a745;
+    }
 
+    [class*=sidebar-dark-] .sidebar a {
+        color: #ffffff;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: #ffffff;
+    }
+
+    [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
+        color: #ffffff;
+    }
+
+    .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+    .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+        background-color: #17a2b8;
+        color: #fff;
+    }
+</style>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="user-panel pb-3 mb-3 d-flex" style="border: none;">
             <div class="image">
                 <img src="{{ asset(shop()->image) }}" class="img-circle elevation-2" alt="AI">
             </div>
@@ -32,7 +50,7 @@
                     </form>
                 </li>
 
-                
+
 
                 {{-- tally --}}
                 <li class="nav-item">
@@ -43,7 +61,7 @@
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    
+
                     <ul class="nav nav-treeview nav-header">
                         <li class="nav-item">
                             <a href="{{ route('customer.transaction') }}" class="nav-link">
@@ -84,7 +102,7 @@
                     </ul>
                 </li>
 
-                
+
 
 
                 {{-- standard --}}
@@ -118,7 +136,7 @@
                             </a>
                         </li>
                     </ul>
-                </li> 
+                </li>
                 {{-- instructor activities --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -148,7 +166,7 @@
                             </a>
                         </li>
                     </ul>
-                </li> 
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

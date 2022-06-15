@@ -13,7 +13,6 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('backend/css/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -21,18 +20,22 @@
 @endsection
 @section('backend')
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header mmm">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <a href="{{ route('customer.quicksell') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.quicksell')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/sell.png') }}" style="height:27px;padding:0 10px 0 0"> Quick Sell</a>
+                        class="@if (Illuminate\Support\Facades\Route::is('customer.quicksell')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif"
+                        style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/sell.png') }}"
+                            style="height:27px;padding:0 10px 0 0"> Quick Sell</a>
 
                     <a href="{{ route('customer.products.index') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.products.index')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/product-list-icon.png') }}" style="height:27px;padding:0 10px 0 0"> Product List</a>
+                        class="@if (Illuminate\Support\Facades\Route::is('customer.products.index')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif"
+                        style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/product-list-icon.png') }}"
+                            style="height:27px;padding:0 10px 0 0"> Product List</a>
                 </div>
                 <div class="col-sm-6">
-                    
+
                 </div>
             </div>
         </div><!-- /.container-fluid -->

@@ -36,13 +36,13 @@
     </style>
 @endsection
 @section('backend')
-    <section class="content-header">
+    <section class="content-header mmm">
         <div class="container-fluid">
             <div class="card">
                 <div class="p-3 mb-5">
                     <div class="d-flex justify-content-end">
                         <a class="btn btn-light btn-sm mr-3" style="border:1px solid; padding:1% 10% 1% 10%;margin-top:2%;"
-                            href="{{ SHOP()->online_market_link }}">Visite Your Site</a>
+                            href="{{ route('shop.singleShopIndex', SHOP()->online_market_link) }}" target="_blank">Visite Your Site</a>
                         <button class="btn btn-light btn-sm" style="border:1px solid; padding:1% 10% 1% 10%;margin-top:2%;"
                             data-toggle="modal" data-target="#shareLink">Share Your
                             Link</button>
@@ -50,28 +50,36 @@
                 </div>
                 <div class="mb-5 d-flex justify-content-around">
                     <div class="text-center bg-primary rounded" style="    padding: 2% 10% 1% 10%;">
-                        <h6>Online Product</h6>
-                        <p>0</p>
+                        <h6>Active Order</h6>
+                        <p>{{ $active_order }}</p>
                     </div>
                     <div class="text-center bg-primary rounded" style="    padding: 2% 10% 1% 10%;">
                         <h6>Online Product</h6>
-                        <p>0</p>
+                        <p>{{ $online_product }}</p>
                     </div>
                     <div class="text-center bg-primary rounded" style="    padding: 2% 10% 1% 10%;">
-                        <h6>Online Product</h6>
-                        <p>0</p>
+                        <h6>Earned</h6>
+                        <p>TK: {{ number_format($earn,2) }}</p>
                     </div>
                 </div>
                 <div class="mb-5 d-flex justify-content-around">
-                    <a href="{{ route('customer.shop.orderList') }}" class="text-center btn btn-light rounded" style="padding: 1% 4% 1% 5%;;border: 1px solid;">
+                    <a href="{{ route('customer.shop.orderList') }}" class="text-center btn btn-light rounded"
+                        style="padding: 1% 4% 1% 5%;;border: 1px solid;">
                         <img src="{{ asset('images/order-list.svg') }}" alt="">
                         <h6>Order List</h6>
                     </a>
-                    <a href="{{ route('customer.shop.onlineProduct') }}" class="text-center btn btn-light rounded" style="padding: 1% 3% 1% 4%;;border: 1px solid;">
+                    <a href="{{ route('customer.shop.onlineOrderList') }}" class="text-center btn btn-light rounded"
+                        style="padding: 1% 4% 1% 5%;;border: 1px solid;">
+                        <img src="{{ asset('images/order-list.svg') }}" alt="">
+                        <h6>Online Order List</h6>
+                    </a>
+                    <a href="{{ route('customer.shop.onlineProduct') }}" class="text-center btn btn-light rounded"
+                        style="padding: 1% 3% 1% 4%;;border: 1px solid;">
                         <img src="{{ asset('images/online-product.svg') }}" alt="">
                         <h6>Online Product</h6>
                     </a>
-                    <a href="{{ route('customer.shop.editStore') }}" class="text-center btn btn-light rounded" style="padding: 1% 4% 1% 4%;;border: 1px solid;">
+                    <a href="{{ route('customer.shop.editStore') }}" class="text-center btn btn-light rounded"
+                        style="padding: 1% 4% 1% 4%;;border: 1px solid;">
                         <img src="{{ asset('images/online-shop-setting.svg') }}" alt="">
                         <h6>Store Setting</h6>
                     </a>

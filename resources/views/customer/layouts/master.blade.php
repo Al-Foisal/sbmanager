@@ -31,8 +31,12 @@
 
     @yield('cssStyle')
     <style>
-        .apply-border{
+        .apply-border {
             border: 1px solid #ccc;
+        }
+
+        .content-wrapper>.mmm {
+            padding: 3rem 0.5rem;
         }
     </style>
 </head>

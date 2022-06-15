@@ -314,25 +314,25 @@ class CustomerController extends Controller {
                 'link'    => 'payment-link/' . $request->shop_id . bin2hex(random_bytes(5)) . time(),
             ]);
         }
-
-        foreach ($request->cart as $cart) {
+        $carts = $request->cart;
+        foreach ($carts as $cart) {
             $order_product              = new OrderProduct();
             $order_product->shop_id     = $request->shop_id;
             $order_product->consumer_id = $request->consumer_id;
             $order_product->order_id    = $order->id;
-            $order_product->product_id  = $cart->id;
-            $order_product->quantity    = $cart->qty;
-            $order_product->price       = $cart->price;
+            $order_product->product_id  = $cart["id"];
+            $order_product->quantity    = $cart["qty"];
+            $order_product->price       = $cart["price"];
             $order_product->save();
 
-            $product          = Product::find($cart->id);
-            $updated_quantity = $product->quantity - $cart->qty;
+            $product          = Product::find($cart["id"]);
+            $updated_quantity = $product->quantity - $cart["price"];
             $product->update([
                 'quantity' => $updated_quantity <= 0 ? 0 : $updated_quantity,
             ]);
         }
 
-        return response()->json(['status' => false, 'message' => 'Order placed successfully!!']);
+        return response()->json(['status' => true, 'message' => 'Order placed successfully!!']);
     }
 
     public function transaction($shop_id) {

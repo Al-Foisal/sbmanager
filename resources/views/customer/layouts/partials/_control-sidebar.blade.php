@@ -9,11 +9,8 @@
                     <button type="submit" class="btn btn-link">Logoutd</button>
                 </form>
             </li>
-            <li style="background:white;">
-                <form action="{{ route('customer.logout') }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-link">Logoutd</button>
-                </form>
+            <li style="background:white;padding: 0.5rem;" class="mb-1">
+                <a href="">QR Code</a>
             </li>
         </ul>
     </div>

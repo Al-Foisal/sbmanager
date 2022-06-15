@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Division;
+use App\Models\OnlineOrder;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
@@ -20,7 +21,7 @@ class ShopController extends Controller {
     public function onlineShop() {
         $data                = [];
         $data['socialShare'] = \Share::page(
-            SHOP()->online_market_link,
+            route('shop.singleShopIndex', SHOP()->online_market_link),
             'Make your digital payment through this link.',
         )
             ->facebook()
@@ -30,6 +31,9 @@ class ShopController extends Controller {
             ->whatsapp()
             ->telegram();
 
+        $data['active_order'] = OnlineOrder::where('shop_id',SID())->where('status','!=',5)->count();
+        $data['online_product'] = Product::where('shop_id',SID())->whereNotNull('category_id')->count();
+        $data['earn'] = OnlineOrder::where('shop_id',SID())->where('status',5)->select(['total'])->sum('total');
         return view('customer.shop.online-shop', $data);
     }
 
@@ -166,7 +170,7 @@ class ShopController extends Controller {
                 $image_file->move($image_url, $img_name);
             }
 
-        }else {
+        } else {
             return back();
         }
 
@@ -211,6 +215,42 @@ class ShopController extends Controller {
         $data['orderProduct'] = OrderProduct::where('order_id', $order->id)->get();
 
         return view('customer.shop.order-details', $data);
+    }
+
+    public function onlineOrderList() {
+        $data           = [];
+        $data['orders'] = OnlineOrder::where('shop_id', SID())->orderBy('id', 'desc')->with('onlineOrderProducts')->paginate(50);
+
+        return view('customer.shop.online-order-list', $data);
+    }
+
+    public function onlineOrderListDetails($id) {
+        $data          = [];
+        $data['order'] = $order = OnlineOrder::where('id', $id)->first();
+
+        if (!$order || $order->shop_id !== SID()) {
+            return back();
+        }
+
+        $data['shop'] = SHOP();
+        // $data['orderProduct'] = OnlineOrderProduct::where('online_order_id', $order->id)->get();
+
+        return view('customer.shop.online-order-details', $data);
+    }
+
+    public function onlineOrderStatus(Request $request, $id) {
+        $order         = OnlineOrder::find($id);
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->back()->withToastSuccess('Order status updated!!');
+    }
+
+    public function onlineOrderDelete(Request $request) {
+        $order = OnlineOrder::find($request->id);
+        $order->delete();
+
+        return redirect()->route('customer.shop.onlineOrderList')->withToastSuccess('Order Deleted!!');
     }
 
     public function onlineProduct() {
