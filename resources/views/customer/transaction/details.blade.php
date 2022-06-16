@@ -67,11 +67,11 @@
                 </div>
                 <div style="width: 50%;float: left;text-align:right">
                     @if ($transaction->payment_method !== 'Quick Sell')
-                        <a href="{{ route('customer.cartOrder', $transaction->id) }}"
+                        <a href="{{ route('customer.cartOrder', Crypt::encryptString($transaction->id)) }}"
                             class="btn btn-primary mb-2 text-right">Edit shopping cart
                         </a>
                     @else
-                        <a href="{{ route('customer.editQuicksell', $transaction->id) }}"
+                        <a href="{{ route('customer.editQuicksell', Crypt::encryptString($transaction->id)) }}"
                             class="btn btn-primary mb-2 text-right">Edit shopping cart
                         </a>
                     @endif

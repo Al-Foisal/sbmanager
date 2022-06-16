@@ -107,6 +107,7 @@ return array(
     'App\\Models\\OrderProduct' => $baseDir . '/app/Models/OrderProduct.php',
     'App\\Models\\Page' => $baseDir . '/app/Models/Page.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
+    'App\\Models\\QRCode' => $baseDir . '/app/Models/QRCode.php',
     'App\\Models\\Shop' => $baseDir . '/app/Models/Shop.php',
     'App\\Models\\ShopType' => $baseDir . '/app/Models/ShopType.php',
     'App\\Models\\Slider' => $baseDir . '/app/Models/Slider.php',

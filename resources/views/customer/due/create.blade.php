@@ -13,7 +13,6 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('backend/css/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -99,7 +98,8 @@
                                                 <!-- checkbox -->
                                                 <div class="form-group d-flex justify-content-between">
                                                     <div class="icheck-danger">
-                                                        <input type="radio" name="due_type" id="radiodanger4" value="Due" checked>
+                                                        <input type="radio" name="due_type" id="radiodanger4"
+                                                            value="Due" checked>
                                                         <label for="radiodanger4">
                                                             Due
                                                         </label>
@@ -121,18 +121,20 @@
                                 <div class="form-group consumer_body">
                                     <label>Name</label>
                                     <select class="form-control js-example-tags" style="width: 100%;" name="due_to_id">
-                                        
+                                        @if ($rc)
+                                            <option value="{{ $rc->id }}">{{ $rc->name }}</option>
+                                        @endif
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Phone number</label>
                                     <input type="number" class="form-control" name="phone"
-                                        placeholder="Enter phone number">
+                                        placeholder="Enter phone number" @if ($rc) value="{{ $rc->phone ?? '' }}" @endif>
                                 </div>
                                 <div class="form-group">
                                     <label>Amount</label>
                                     <input type="number" class="form-control" name="amount" placeholder="Enter due amount"
-                                        required>
+                                        @if ($rc) value="{{ $amount }}" @endif required>
                                 </div>
                                 <div class="form-group">
                                     <label>Due details(optional)</label>
@@ -159,7 +161,7 @@
         $(".js-example-tags").select2({
             tags: true
         });
-        
+
         $(document).ready(function() {
             $('input[name="due_to"]').on('click', function() {
                 var category = $(this).val();
@@ -182,7 +184,7 @@
                 }
             })
 
-            
+
         });
     </script>
 @endsection

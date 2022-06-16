@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Consumer;
 use App\Models\Order;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class QuickSellController extends Controller {
     public function quicksell() {
         $data              = [];
-        $data['consumers'] = Consumer::where('shop_id',SID())->get();
+        $data['consumers'] = Consumer::where('shop_id', SID())->get();
 
         return view('customer.transaction.quicksell', $data);
     }
@@ -54,6 +56,12 @@ class QuickSellController extends Controller {
     }
 
     public function editQuicksell($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
         $order     = Order::find($id);
         $consumers = Consumer::all();
 

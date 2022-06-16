@@ -72,8 +72,11 @@
                                                         {{ $count }} Items</span>
                                                 @endif
                                             </td>
+                                            @php
+                                                $order_id = Crypt::encryptString($order->id);
+                                            @endphp
                                             <td style="vertical-align: middle;text-align:center;">
-                                                <a href="{{ route('customer.transactionDetails', $order->id) }}"
+                                                <a href="{{ route('customer.transactionDetails', $order_id) }}"
                                                     class="btn btn-dark">
                                                     VIEW DETAILS
                                                 </a>

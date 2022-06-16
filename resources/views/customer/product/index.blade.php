@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body table-responsive" style="height: 500px;">
+                        <div class="card-body table-responsive" style="height: 400px;">
 
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>

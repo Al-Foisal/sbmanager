@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopType;
 use App\Models\Slider;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -31,14 +32,21 @@ class ShopController extends Controller {
             ->whatsapp()
             ->telegram();
 
-        $data['active_order'] = OnlineOrder::where('shop_id',SID())->where('status','!=',5)->count();
-        $data['online_product'] = Product::where('shop_id',SID())->whereNotNull('category_id')->count();
-        $data['earn'] = OnlineOrder::where('shop_id',SID())->where('status',5)->select(['total'])->sum('total');
+        $data['active_order']   = OnlineOrder::where('shop_id', SID())->where('status', '!=', 5)->count();
+        $data['online_product'] = Product::where('shop_id', SID())->whereNotNull('category_id')->count();
+        $data['earn']           = OnlineOrder::where('shop_id', SID())->where('status', 5)->select(['total'])->sum('total');
+
         return view('customer.shop.online-shop', $data);
     }
 
     public function list() {
         $data = [];
+        
+        //reset all session
+        session()->forget('discount');
+        session()->forget('subtotal');
+        session()->forget('shop_id');
+        Cart::destroy();
 
         $data['shops'] = Shop::where('customer_id', Auth::id())->get();
 

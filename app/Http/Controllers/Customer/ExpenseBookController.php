@@ -99,7 +99,7 @@ class ExpenseBookController extends Controller {
         if (File::exists($image_path)) {
             File::delete($image_path);
         }
-        
+
         $expense->delete();
 
         return redirect()->back()->withToastSuccess('Expense book deleted successfully!!');
@@ -108,22 +108,11 @@ class ExpenseBookController extends Controller {
     public function expenseBookList(Request $request) {
         $data = [];
         $type = request()->type;
-// dd($request->selected_date);
-        // if ($request->selected_date) {
-        //     $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', $request->selected_date)
-        //     ->whereMonth('created_at', '=', $request->selected_date)
-        //         ->with('expenseBook')
-        //         ->get();
-                
-        //         $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', $request->selected_date)
-        //         ->whereMonth('created_at', '=', $request->selected_date)
-        //         ->select('amount')
-        //         ->sum('amount');
-        //         dd($data);
-        // } else
+
         if ($type === 'today') {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereDay('created_at', '=', now())
                 ->with('expenseBook')
+                ->orderBy('id', 'desc')
                 ->get();
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereDay('created_at', '=', now())
@@ -135,6 +124,7 @@ class ExpenseBookController extends Controller {
                 Carbon::now()->endOfWeek(Carbon::SATURDAY),
             ])
                 ->with('expenseBook')
+                ->orderBy('id', 'desc')
                 ->get();
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereBetween('created_at', [
@@ -146,6 +136,7 @@ class ExpenseBookController extends Controller {
         } elseif ($type === 'month') {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereMonth('created_at', '=', now())
                 ->with('expenseBook')
+                ->orderBy('id', 'desc')
                 ->get();
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereMonth('created_at', '=', now())
@@ -154,16 +145,17 @@ class ExpenseBookController extends Controller {
         } elseif ($type === 'year') {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
                 ->with('expenseBook')
+                ->orderBy('id', 'desc')
                 ->get();
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
                 ->select('amount')
                 ->sum('amount');
-        } else {
+        } elseif ($type === 'all') {
 
-            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
-                ->whereMonth('created_at', '=', now())
+            $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())
                 ->with('expenseBook')
+                ->orderBy('id', 'desc')
                 ->get();
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
@@ -172,8 +164,9 @@ class ExpenseBookController extends Controller {
                 ->sum('amount');
         }
 
-        $data['type'] = $type ?? null;
+        $data['type']          = $type ?? null;
         $data['selected_date'] = $request->selected_date ?? null;
+
         return view('customer.expense.expense-book-list', $data);
     }
 

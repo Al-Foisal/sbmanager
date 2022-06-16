@@ -8,18 +8,20 @@ use App\Models\Due;
 use App\Models\DueDetail;
 use App\Models\Employee;
 use App\Models\Supplier;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 
 class DueController extends Controller {
     public function category($category) {
 
         if ($category === 'Consumer') {
-            $person = Consumer::where('shop_id',SID())->get();
+            $person = Consumer::where('shop_id', SID())->get();
         } elseif ($category === 'Supplier') {
-            $person = Supplier::where('shop_id',SID())->get();
+            $person = Supplier::where('shop_id', SID())->get();
         } elseif ($category === 'Employee') {
-            $person = Employee::where('shop_id',SID())->get();
+            $person = Employee::where('shop_id', SID())->get();
         }
 
         return response()->json($person);
@@ -56,8 +58,28 @@ class DueController extends Controller {
         return view('customer.due.index', $data);
     }
 
-    public function create() {
-        $data              = [];
+    public function create(Request $request) {
+        // rc = requested consumer
+        $data = [];
+
+        if (!empty($request->amount)) {
+            try {
+                $consumer_id    = Crypt::decryptString($request->consumer_id);
+                $data['amount'] = Crypt::decryptString($request->amount);
+            } catch (DecryptException $e) {
+                return back();
+            }
+
+            if ($consumer_id !== 0) {
+                $data['rc'] = Consumer::find($consumer_id);
+            }
+
+        } else {
+            $data['rc'] = false;
+        }
+
+        
+
         $data['consumers'] = Consumer::all();
 
         return view('customer.due.create', $data);
@@ -167,7 +189,7 @@ class DueController extends Controller {
             ]);
         }
 
-        return redirect()->back()->withToastSuccess('Due book updated!!');
+        return redirect()->route('customer.due.index')->withToastSuccess('Due book updated!!');
     }
 
     public function show($id) {

@@ -45,38 +45,41 @@
                                             <td class="d-flex justify-content-between">
                                                 <a href="{{ route('admin.pageEdit', $page) }}"
                                                     class="btn btn-info btn-xs"> <i class="fas fa-edit"></i> </a>
-                                                @if ($page->status === 1)
-                                                    <form action="{{ route('admin.pageInactive', $page) }}"
-                                                        method="post">
+                                                @if ($page->id !== 5)
+                                                    @if ($page->status === 1)
+                                                        <form action="{{ route('admin.pageInactive', $page) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                onclick="return(confirm('Are you sure want to INACTIVE this item?'))"
+                                                                class="btn btn-danger btn-xs"> <i
+                                                                    class="far fa-thumbs-down"></i>
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <form action="{{ route('admin.pageActive', $page) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                onclick="return(confirm('Are you sure want to Active this item?'))"
+                                                                class="btn btn-info btn-xs"> <i
+                                                                    class="far fa-thumbs-up"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    <form action="{{ route('admin.pageDelete', $page) }}" method="post">
                                                         @csrf
+                                                        @method('delete')
                                                         <button type="submit"
-                                                            onclick="return(confirm('Are you sure want to INACTIVE this item?'))"
-                                                            class="btn btn-danger btn-xs"> <i
-                                                                class="far fa-thumbs-down"></i>
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <form action="{{ route('admin.pageActive', $page) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            onclick="return(confirm('Are you sure want to Active this item?'))"
-                                                            class="btn btn-info btn-xs"> <i class="far fa-thumbs-up"></i>
+                                                            onclick="return(confirm('Are you sure want to delete this item?'))"
+                                                            class="btn btn-danger btn-xs"> <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </form>
                                                 @endif
-                                                <form action="{{ route('admin.pageDelete', $page) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit"
-                                                        onclick="return(confirm('Are you sure want to delete this item?'))"
-                                                        class="btn btn-danger btn-xs"> <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
                                             </td>
                                             <td>{{ $page->title }}</td>
-                                            <td>{!! $page->details !!}</td>
+                                            <td>{{ \Illuminate\Support\Str::words(strip_tags($page->details), 50, '...') }}
+                                            </td>
                                             <td>{{ $page->created_at }}</td>
                                         </tr>
                                     @endforeach

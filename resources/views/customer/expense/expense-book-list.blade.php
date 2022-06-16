@@ -10,7 +10,7 @@
     <section class="content mmm">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-6">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-header bg-success" style="height: 10%">
                             <p>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                {{-- <div class="col-6">
                     <div class="card">
                         <div class="card-header bg-success" style="height: 10%">
                             <p>
@@ -35,7 +35,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
@@ -43,6 +43,8 @@
         <div class="container-fluid">
             <div class="">
                 <div class="d-flex justify-content-around">
+                    <a href="{{ route('customer.expense.expenseBookList', ['type' => 'all']) }}"
+                        class="btn btn-light border pr-5 pl-5 @if($type === 'all') btn-dark @endif">ALL</a>
                     <a href="{{ route('customer.expense.expenseBookList', ['type' => 'today']) }}"
                         class="btn btn-light border pr-5 pl-5 @if($type === 'today') btn-dark @endif">Today</a>
                     <a href="{{ route('customer.expense.expenseBookList', ['type' => 'week']) }}"

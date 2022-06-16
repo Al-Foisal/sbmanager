@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Customer\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +31,10 @@ class CustomerRegisterController extends Controller {
             'password' => bcrypt($request->password),
             'phone'    => $request->phone,
             'address'  => $request->address,
+            'otp'      => rand(111111, 999999),
         ]);
+
+        //need sms getway to send otp to customer
 
         return redirect()->route('customer.login')->withToastSuccess('Your request submitted successfully!!');
     }

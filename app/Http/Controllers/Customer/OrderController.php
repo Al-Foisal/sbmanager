@@ -9,9 +9,14 @@ use App\Models\OrderProduct;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class OrderController extends Controller {
     public function placeOrder(Request $request) {
+
+        if (Cart::count() <= 0) {
+            return back();
+        }
 
         if ($request->cash === null && $request->payment_method === 'Cash' && ($request->cash - $request->subtotal) < 0) {
             return redirect()->back()->withToastError('Cash payment input error.');
@@ -70,6 +75,13 @@ class OrderController extends Controller {
         session()->forget('discount');
         session()->forget('subtotal');
         Cart::destroy();
+
+        if ($request->payment_method === 'Due') {
+            $data['consumer_id']    = Crypt::encryptString($request->consumer_id ?? 0);
+            $data['amount']         = Crypt::encryptString($request->subtotal);
+
+            return redirect()->route('customer.due.create', $data);
+        }
 
         return redirect()->route('customer.products.index')->withToastSuccess('Order placed successfully!!');
     }

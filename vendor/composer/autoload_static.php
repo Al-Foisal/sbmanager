@@ -667,6 +667,7 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
         'App\\Models\\OrderProduct' => __DIR__ . '/../..' . '/app/Models/OrderProduct.php',
         'App\\Models\\Page' => __DIR__ . '/../..' . '/app/Models/Page.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
+        'App\\Models\\QRCode' => __DIR__ . '/../..' . '/app/Models/QRCode.php',
         'App\\Models\\Shop' => __DIR__ . '/../..' . '/app/Models/Shop.php',
         'App\\Models\\ShopType' => __DIR__ . '/../..' . '/app/Models/ShopType.php',
         'App\\Models\\Slider' => __DIR__ . '/../..' . '/app/Models/Slider.php',

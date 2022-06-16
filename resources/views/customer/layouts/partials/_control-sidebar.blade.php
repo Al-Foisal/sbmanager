@@ -10,7 +10,11 @@
                 </form>
             </li>
             <li style="background:white;padding: 0.5rem;" class="mb-1">
-                <a href="">QR Code</a>
+                <a href="{{ route('customer.qrcodes.index') }}" class="text-primary">QR Code</a>
+            </li>
+            
+            <li style="background:white;padding: 0.5rem;" class="mb-1">
+                <a href="{{ route('customer.shop.list') }}"class="text-primary">Switch Shop</a>
             </li>
         </ul>
     </div>

@@ -32,6 +32,7 @@ use App\Http\Controllers\Customer\EmployeeController;
 use App\Http\Controllers\Customer\ExpenseBookController;
 use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\ProductController;
+use App\Http\Controllers\Customer\QRCodeController;
 use App\Http\Controllers\Customer\QuickSellController;
 use App\Http\Controllers\Customer\ShopController;
 use App\Http\Controllers\Customer\SMSMarkettingController;
@@ -40,6 +41,7 @@ use App\Http\Controllers\Customer\TopupController;
 use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SingleShopController;
+use App\Models\Page;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +55,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
+
+Route::get('/', function () {
+    $data         = [];
+    $data['page'] = Page::find(5);
+
+    return view('index', $data);
+})->name('home');
+
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/online-market', 'onlineMarket')->name('onlineMarket');
     Route::get('/online-market/category-product/{slug}', 'categoryProduct')->name('categoryProduct');
@@ -84,9 +94,6 @@ Route::controller(SingleShopController::class)->prefix('/shop')->as('shop.')->gr
     Route::post('/{shop_link}/online/place-order', 'singleShopPlaceOrder')->name('singleShopPlaceOrder');
     Route::get('/{shop_link}/online/order-confirm/{id}', 'singleShopOrderConfirm')->name('singleShopOrderConfirm');
 });
-Route::get('/', function () {
-    return dd(session()->get('order'));
-})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -132,14 +139,15 @@ Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(
         Route::delete('/online-order-delete', 'onlineOrderDelete')->name('onlineOrderDelete');
         Route::get('/online-product', 'onlineProduct')->name('onlineProduct');
 
-        Route::get('/display-qr-code','displayQRCode')->name('displayQRCode');
-        Route::post('/store-qr-code','storeQRCode')->name('storeQRCode');
+        Route::get('/display-qr-code', 'displayQRCode')->name('displayQRCode');
+        Route::post('/store-qr-code', 'storeQRCode')->name('storeQRCode');
     });
 
     Route::resource('/consumers', ConsumerController::class);
     Route::resource('/suppliers', SupplierController::class);
     Route::resource('/employees', EmployeeController::class);
     Route::resource('/products', ProductController::class);
+    Route::resource('/qrcodes', QRCodeController::class);
     Route::get('/product-list', [ProductController::class, 'indexList'])->name('products.indexList');
 
     Route::controller(CartController::class)->group(function () {
@@ -255,8 +263,8 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
     });
     Route::controller(BackendManagementController::class)->group(function () {
 
-        Route::get('/customer-list', 'customerList')->name('customerList');
         Route::get('/user-list', 'userList')->name('userList');
+        Route::get('/customer-list', 'customerList')->name('customerList');
     });
 
     //category
