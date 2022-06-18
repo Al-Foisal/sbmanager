@@ -12,11 +12,13 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DistrictController;
 use App\Http\Controllers\Backend\DivisionController;
 use App\Http\Controllers\Backend\EMITimeController;
+use App\Http\Controllers\Backend\FeatureController;
 use App\Http\Controllers\Backend\GeneralController;
 use App\Http\Controllers\Backend\MainMenu\CategoryController;
 use App\Http\Controllers\Backend\MainMenu\SubcategoryController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\ShopTypeController;
+use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
 use App\Http\Controllers\Customer\Auth\CustomerRegisterController;
@@ -248,6 +250,19 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
 
     // Route::resource('/blogs', BlogController::class);
 
+    Route::prefix('web')->group(function () {
+
+        //slider
+        Route::controller(SliderController::class)->group(function () {
+            Route::get('/slider', 'allSlider')->name('allSlider');
+            Route::get('/create-slider', 'createSlider')->name('createSlider');
+            Route::post('/store-slider', 'storeSlider')->name('storeSlider');
+            Route::get('/edit-slider/{slider}', 'editSlider')->name('editSlider');
+            Route::put('/update-slider/{slider}', 'updateSlider')->name('updateSlider');
+            Route::delete('/delete-slider/{slider}', 'deleteSlider')->name('deleteSlider');
+        });
+
+    });
     //admin management
     // ->middleware('admin_user')
     Route::controller(AdminRegistrationController::class)->group(function () {
@@ -296,6 +311,7 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
     Route::resource('/divisions', DivisionController::class);
     Route::resource('/districts', DistrictController::class);
     Route::resource('/areas', AreaController::class);
+    Route::resource('/features', FeatureController::class);
 
     Route::resource('/emi_times', EMITimeController::class);
     Route::resource('/banks', BankController::class);

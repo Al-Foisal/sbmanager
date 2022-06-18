@@ -184,6 +184,7 @@ class ExpenseBookController extends Controller {
 
         $data['type']          = $type ?? null;
         $data['selected_date'] = $request->selected_date ?? null;
+        $data['total_balance'] = (int) $data['total_balance'];
 
         return $data;
     }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class SliderController extends Controller {
     public function allSlider() {
-        $sliders = Slider::all();
+        $sliders = Slider::where('shop_id', null)->get();
 
         return view('backend.slider.all-slider', compact('sliders'));
     }
@@ -22,7 +22,6 @@ class SliderController extends Controller {
     public function storeSlider(Request $request) {
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp',
-            'link'  => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -49,7 +48,6 @@ class SliderController extends Controller {
 
         Slider::create([
             'image' => $final_name1,
-            'link'  => $request->link,
         ]);
 
         return redirect()->back()->withToastSuccess("Slider added!!");
@@ -63,7 +61,6 @@ class SliderController extends Controller {
     public function updateSlider(Request $request, Slider $slider) {
         $validator = Validator::make($request->all(), [
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'link'  => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -94,9 +91,6 @@ class SliderController extends Controller {
             }
 
         }
-
-        $slider->link = $request->link;
-        $slider->save();
 
         return redirect()->back()->withToastSuccess("Slider added!!");
 
