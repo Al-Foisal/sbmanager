@@ -145,6 +145,13 @@
 
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.showContact') }}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>Contact</p>
+                    </a>
+                </li>
                 
                 {{-- website info --}}
                 <li class="nav-item">
@@ -169,6 +176,15 @@
                                 <i class="nav-icon far fa-circle text-danger"></i>
                                 <p>
                                     Features
+                                </p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('admin.packages.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>
+                                    Packages
                                 </p>
                             </a>
                         </li>

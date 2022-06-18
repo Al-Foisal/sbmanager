@@ -16,6 +16,7 @@ use App\Http\Controllers\Backend\FeatureController;
 use App\Http\Controllers\Backend\GeneralController;
 use App\Http\Controllers\Backend\MainMenu\CategoryController;
 use App\Http\Controllers\Backend\MainMenu\SubcategoryController;
+use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\ShopTypeController;
 use App\Http\Controllers\Backend\SliderController;
@@ -43,7 +44,6 @@ use App\Http\Controllers\Customer\TopupController;
 use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SingleShopController;
-use App\Models\Page;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
 
@@ -58,12 +58,8 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', function () {
-    $data         = [];
-    $data['page'] = Page::find(5);
-
-    return view('index', $data);
-})->name('home');
+Route::get('/', [FrontendController::class, 'homePage'])->name('home');
+Route::post('/submit-contact', [FrontendController::class, 'submitContact'])->name('submitContact');
 
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/online-market', 'onlineMarket')->name('onlineMarket');
@@ -307,12 +303,14 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
         Route::post('/inactive-subcategory/{id}', 'inactiveSubcategory')->name('inactiveSubcategory');
     });
 
+    //website
+    Route::resource('/features', FeatureController::class);
+    Route::resource('/packages', PackageController::class);
+
     Route::resource('/shop_types', ShopTypeController::class);
     Route::resource('/divisions', DivisionController::class);
     Route::resource('/districts', DistrictController::class);
     Route::resource('/areas', AreaController::class);
-    Route::resource('/features', FeatureController::class);
-
     Route::resource('/emi_times', EMITimeController::class);
     Route::resource('/banks', BankController::class);
 
