@@ -115,7 +115,7 @@ Route::prefix('/customer')->as('customer.')->middleware('guest:customer')->group
     Route::post('/reset-password', [CustomerResetPasswordController::class, 'storeResetPassword'])->name('storeResetPassword');
 });
 
-Route::prefix('/customer')->as('customer.')->middleware('auth:customer')->group(function () {
+Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->group(function () {
     Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
     Route::post('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
     Route::get('/pages/{slug}', [CustomerController::class, 'pageDetails'])->name('pageDetails');

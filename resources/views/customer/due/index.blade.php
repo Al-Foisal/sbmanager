@@ -81,7 +81,7 @@
                                                 </td>
                                                 <td style="vertical-align: middle;text-align:center;">
                                                     <a class="btn btn-primary btn-block"
-                                                        href="{{ route('customer.due.show', $due) }}">View Details</a>
+                                                        href="{{ route('customer.due.show', Crypt::encryptString($due->id)) }}">View Details</a>
                                                 </td>
                                             </tr>
                                         @endif

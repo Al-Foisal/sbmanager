@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller {
@@ -106,10 +108,17 @@ class ProductController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product) {
+    public function edit($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $product    = Product::find($id);
         $categories = Category::where('status', 1)->get();
 
-        return view('customer.product.edit', compact('product','categories'));
+        return view('customer.product.edit', compact('product', 'categories'));
     }
 
     /**

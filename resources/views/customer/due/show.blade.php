@@ -74,7 +74,7 @@
                                                     </button>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('customer.due.edit', $details) }}">Edit</a>
+                                                            href="{{ route('customer.due.edit', Crypt::encryptString($details->id)) }}">Edit</a>
                                                         <form action="{{ route('customer.due.delete', $details) }}"
                                                             method="post">
                                                             @csrf

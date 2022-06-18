@@ -55,7 +55,7 @@
                                     @foreach ($suppliers as $supplier)
                                         <tr>
                                             <td class="d-flex justify-content-between">
-                                                <a href="{{ route('customer.suppliers.edit', $supplier) }}"
+                                                <a href="{{ route('customer.suppliers.edit', Crypt::encryptString($supplier->id)) }}"
                                                     class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                                                 <form action="{{ route('customer.suppliers.destroy', $supplier) }}"
                                                     method="post">

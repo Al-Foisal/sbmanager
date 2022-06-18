@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 
 class SupplierController extends Controller {
@@ -84,7 +86,15 @@ class SupplierController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Supplier $supplier) {
+    public function edit($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $supplier = Supplier::find($id);
+
         return view('customer.contact.supplier.edit', compact('supplier'));
     }
 

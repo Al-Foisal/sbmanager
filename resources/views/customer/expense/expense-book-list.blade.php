@@ -43,8 +43,8 @@
         <div class="container-fluid">
             <div class="">
                 <div class="d-flex justify-content-around">
-                    <a href="{{ route('customer.expense.expenseBookList', ['type' => 'all']) }}"
-                        class="btn btn-light border pr-5 pl-5 @if($type === 'all') btn-dark @endif">ALL</a>
+                    <a href="{{ route('customer.expense.expenseBookList') }}"
+                        class="btn btn-light border pr-5 pl-5 @if($type === null) btn-dark @endif">ALL</a>
                     <a href="{{ route('customer.expense.expenseBookList', ['type' => 'today']) }}"
                         class="btn btn-light border pr-5 pl-5 @if($type === 'today') btn-dark @endif">Today</a>
                     <a href="{{ route('customer.expense.expenseBookList', ['type' => 'week']) }}"

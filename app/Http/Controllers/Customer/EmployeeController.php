@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 
 class EmployeeController extends Controller {
@@ -14,7 +16,7 @@ class EmployeeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $employees = Employee::where('shop_id',SID())->paginate(50);
+        $employees = Employee::where('shop_id', SID())->paginate(50);
 
         return view('customer.contact.employee.index', compact('employees'));
     }
@@ -86,7 +88,15 @@ class EmployeeController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee) {
+    public function edit($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $employee = Employee::find($id);
+
         return view('customer.contact.employee.edit', compact('employee'));
     }
 

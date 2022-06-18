@@ -78,8 +78,6 @@ class DueController extends Controller {
             $data['rc'] = false;
         }
 
-        
-
         $data['consumers'] = Consumer::all();
 
         return view('customer.due.create', $data);
@@ -193,6 +191,12 @@ class DueController extends Controller {
     }
 
     public function show($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
         $data        = [];
         $data['due'] = $due = Due::where('id', $id)->where('shop_id', SID())->with('dueDetails')->first();
 
@@ -219,6 +223,12 @@ class DueController extends Controller {
     }
 
     public function edit($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
         $dueDetails = DueDetail::where('id', $id)->with('due')->first();
 
         if ($dueDetails->due->shop_id != SID()) {

@@ -7,7 +7,9 @@ use App\Models\Employee;
 use App\Models\ExpenseBook;
 use App\Models\ExpenseBookDetail;
 use Carbon\Carbon;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 
 class ExpenseBookController extends Controller {
@@ -51,11 +53,28 @@ class ExpenseBookController extends Controller {
         return redirect()->back()->withToastSuccess('Expense book created!!');
     }
 
-    public function editExpenseBook(ExpenseBook $expense) {
+    public function editExpenseBook($id) {
+
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $expense = ExpenseBook::find($id);
+
         return view('customer.expense.edit-expense-book', compact('expense'));
     }
 
-    public function updateExpenseBook(Request $request, ExpenseBook $expense) {
+    public function updateExpenseBook(Request $request, $id) {
+
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $expense = ExpenseBook::find($id);
 
         if ($request->hasFile('image')) {
 
@@ -93,7 +112,15 @@ class ExpenseBookController extends Controller {
         return redirect()->route('customer.expense.expenseBook')->withToastSuccess('Expense book updated successfully!!');
     }
 
-    public function deleteExpenseBook(Request $request, ExpenseBook $expense) {
+    public function deleteExpenseBook(Request $request, $id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $expense = ExpenseBook::find($id);
+
         $image_path = public_path($expense->image);
 
         if (File::exists($image_path)) {
@@ -151,15 +178,14 @@ class ExpenseBookController extends Controller {
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
                 ->select('amount')
                 ->sum('amount');
-        } elseif ($type === 'all') {
+        } else {
 
             $data['expenses'] = ExpenseBookDetail::where('shop_id', SID())
                 ->with('expenseBook')
                 ->orderBy('id', 'desc')
                 ->get();
 
-            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())->whereYear('created_at', '=', now())
-                ->whereMonth('created_at', '=', now())
+            $data['total_balance'] = ExpenseBookDetail::where('shop_id', SID())
                 ->select('amount')
                 ->sum('amount');
         }
@@ -170,7 +196,15 @@ class ExpenseBookController extends Controller {
         return view('customer.expense.expense-book-list', $data);
     }
 
-    public function createExpenseBookList(ExpenseBook $expense_book) {
+    public function createExpenseBookList($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $expense_book = ExpenseBook::find($id);
+
         $data                 = [];
         $data['expense_book'] = $expense_book;
         $data['employees']    = Employee::where('shop_id', SID())->get();

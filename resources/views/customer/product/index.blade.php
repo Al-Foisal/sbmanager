@@ -31,7 +31,7 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Action</th>
+                                        {{-- <th>Action</th> --}}
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Quantity</th>
@@ -42,7 +42,7 @@
                                 <tbody>
                                     @foreach ($products as $product)
                                         <tr>
-                                            <td class="d-flex justify-content-between">
+                                            {{-- <td class="d-flex justify-content-between">
                                                 <a href="{{ route('customer.products.edit', $product) }}"
                                                     class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                                                 <form action="{{ route('customer.products.destroy', $product) }}"
@@ -54,7 +54,7 @@
                                                         class="btn btn-danger btn-xs"> <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <img src="{{ asset($product->image === null ? 'images/user.png' : $product->image) }}"
                                                     style="height:50px;width:50px">

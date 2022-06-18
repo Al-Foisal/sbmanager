@@ -81,11 +81,11 @@
                                                     </button>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('customer.expense.createExpenseBookList', $expense) }}">Expence
+                                                            href="{{ route('customer.expense.createExpenseBookList', Crypt::encryptString($expense->id)) }}">Expence
                                                             List</a>
                                                         @if ($expense->shop_id !== null)
                                                             <a class="dropdown-item"
-                                                                href="{{ route('customer.expense.editExpenseBook', $expense) }}">Edit</a>
+                                                                href="{{ route('customer.expense.editExpenseBook', Crypt::encryptString($expense->id)) }}">Edit</a>
                                                             <form
                                                                 action="{{ route('customer.expense.deleteExpenseBook', $expense) }}"
                                                                 method="post">

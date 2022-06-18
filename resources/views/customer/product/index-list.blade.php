@@ -3,8 +3,8 @@
 
 @section('backend')
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid mmm">
+    <section class="content-header mmm">
+        <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>Product in your shop</h1>
@@ -40,7 +40,7 @@
                                     @foreach ($products as $product)
                                         <tr>
                                             <td class="d-flex justify-content-between">
-                                                <a href="{{ route('customer.products.edit', $product) }}"
+                                                <a href="{{ route('customer.products.edit', Crypt::encryptString($product->id)) }}"
                                                     class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                                                 <form action="{{ route('customer.products.destroy', $product) }}"
                                                     method="post">
