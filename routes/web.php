@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\ShopTypeController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\Backend\SubscriptionController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
 use App\Http\Controllers\Customer\Auth\CustomerRegisterController;
@@ -139,6 +140,10 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
 
         Route::get('/display-qr-code', 'displayQRCode')->name('displayQRCode');
         Route::post('/store-qr-code', 'storeQRCode')->name('storeQRCode');
+
+        //subscription
+        Route::get('/subscription-list', 'subscriptionList')->name('subscriptionList');
+        Route::get('/subscription-booking/{id}', 'subscriptionBooking')->name('subscriptionBooking');
     });
 
     Route::resource('/consumers', ConsumerController::class);
@@ -147,6 +152,8 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
     Route::resource('/products', ProductController::class);
     Route::resource('/qrcodes', QRCodeController::class);
     Route::get('/product-list', [ProductController::class, 'indexList'])->name('products.indexList');
+    Route::get('/product/stock-alert', [ProductController::class, 'stockAlert'])->name('products.stockAlert');
+    Route::put('/product/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.updateQuantity');
 
     Route::controller(CartController::class)->group(function () {
         //cart
@@ -219,6 +226,7 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
     //sms
     Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
     });
 
     //topup
@@ -313,6 +321,7 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
     Route::resource('/areas', AreaController::class);
     Route::resource('/emi_times', EMITimeController::class);
     Route::resource('/banks', BankController::class);
+    Route::resource('/subscriptions', SubscriptionController::class);
 
     //customer or user contact route
     Route::get('/contatc', [DashboardController::class, 'showContact'])->name('showContact');

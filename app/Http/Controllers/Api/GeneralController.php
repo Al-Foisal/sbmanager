@@ -38,4 +38,10 @@ class GeneralController extends Controller {
 
         return $district;
     }
+
+    public function areaByDistrict($discrict_id) {
+        $area = Area::where('discrict_id', $discrict_id)->get();
+
+        return $area;
+    }
 }

@@ -49,12 +49,13 @@ Route::controller(CustomerController::class)->group(function () {
     Route::put('/update-store-oml/{shop}', 'updateStoreOML')->name('updateStoreOML');
     Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner');
     Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
-    Route::get('/shop/slider-list/{shop_id}','sliderList');
+    Route::get('/shop/slider-list/{shop_id}', 'sliderList');
 
     //online shop
     Route::get('/order-list/{shop_id}', 'orderList');
     Route::get('/order-details/{id}', 'orderDetails');
     Route::get('/online-product/{shop_id}', 'onlineProduct');
+    Route::get('/online-product-details/{id}', 'onlineProductDetails');
 
     Route::post('/dashboard', 'dashboard');
 
@@ -68,6 +69,15 @@ Route::controller(CustomerController::class)->group(function () {
     //transaction
     Route::get('/transaction/{shop_id}', 'transaction');
     Route::get('/transaction-details/{id}', 'transactionDetails');
+
+    //online order
+    Route::get('/online-order-list/{shop_id}', 'onlineOrderList');
+    Route::post('/search-online-order-list', 'searchOnlineOrderList');
+
+    //subscription
+    Route::get('/subscription-list','subscriptionList');
+
+    Route::put('/product/update-quantity', 'updateQuantity');
 });
 
 //due
@@ -114,4 +124,5 @@ Route::controller(GeneralController::class)->group(function () {
     Route::get('/district', 'district');
     Route::get('/area', 'area');
     Route::get('/get_district/{division_id}', 'districtByDivision');
+    Route::get('/get_area/{district_id}', 'areaByDistrict');
 });

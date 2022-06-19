@@ -9,7 +9,7 @@
     </style>
 @endsection
 @section('backend')
-    <form action="" method="post">
+    <form action="" method="">
         <section class="content-header mmm">
             <div class="container">
                 <div class="row p-5">

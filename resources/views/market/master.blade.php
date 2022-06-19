@@ -21,12 +21,12 @@
     <div class="content-fluide">
         <footer class="fixed-bottom bg-info">
             <div class="row text-center" style="padding: 10px 0">
-                <div class="col-md-6">
+                <div class="col-6">
                     <a href="{{ route('onlineMarket') }}">
                         <i class="fas fa-home" style="font-size: 30px;color:white;"></i>
                     </a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <a href="{{ route('cartProduct') }}">
                         <i class="fas fa-shopping-cart" style="font-size: 30px;color:white;"></i>
                     </a>

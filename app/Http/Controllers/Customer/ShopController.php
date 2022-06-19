@@ -12,9 +12,12 @@ use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopType;
 use App\Models\Slider;
+use App\Models\Subscription;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
@@ -41,7 +44,7 @@ class ShopController extends Controller {
 
     public function list() {
         $data = [];
-        
+
         //reset all session
         session()->forget('discount');
         session()->forget('subtotal');
@@ -265,6 +268,26 @@ class ShopController extends Controller {
         $products = Product::where('shop_id', SID())->where('online', 1)->paginate(50);
 
         return view('customer.shop.online-product', compact('products'));
+    }
+
+    public function subscriptionList() {
+        $data                  = [];
+        $data['subscriptions'] = Subscription::all();
+
+        return view('customer.shop.subscription-list', $data);
+    }
+
+    public function subscriptionBooking($id) {
+        try {
+            $id = Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            return back();
+        }
+
+        $data                 = [];
+        $data['subscription'] = Subscription::find($id);
+
+        return view('customer.shop.subscription-booking', $data);
     }
 
 }

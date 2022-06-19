@@ -10,7 +10,7 @@
                     <h1>Product in your shop</h1>
                 </div>
                 <div class="col-sm-6">
-                    
+
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -23,7 +23,13 @@
                 <div class="col-12">
                     <div class="card">
                         <!-- /.card-header -->
-                        
+                        <div class="d-flex justify-content-satrt mt-3 ml-3">
+                            <a href="{{ route('customer.products.create') }}" class="btn btn-primary mr-3">Add
+                                Product
+                            </a>
+                            <a href="{{ route('customer.products.stockAlert') }}" class="btn btn-primary">Stock Alert
+                            </a>
+                        </div>
                         <div class="card-body table-responsive" style="height: 500px;">
 
                             <table id="example1" class="table table-bordered table-striped">
@@ -65,13 +71,6 @@
                             </table>
                             {{-- {{ $products->links() }} --}}
                         </div>
-                        <tfoot>
-                            <tr>
-                                <a href="{{ route('customer.products.create') }}" class="btn btn-primary">Add
-                                    Product
-                                </a>
-                            </tr>
-                        </tfoot>
                         <!-- /.card-body -->
                     </div>
                     <!-- /.card -->

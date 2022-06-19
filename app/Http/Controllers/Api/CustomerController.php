@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\DigitalPayment;
 use App\Models\Due;
 use App\Models\ExpenseBookDetail;
+use App\Models\OnlineOrder;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Slider;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -54,7 +56,6 @@ class CustomerController extends Controller {
     }
 
     public function dashboard(Request $request) {
-        $data           = [];
         $data           = [];
         $data['sales']  = Order::whereDay('created_at', today())->where('shop_id', $request->shop_id)->select('subtotal')->sum('subtotal');
         $dues           = Due::where('shop_id', $request->shop_id)->with('dueDetails')->get();
@@ -172,7 +173,7 @@ class CustomerController extends Controller {
         }
 
         Slider::create([
-            'shop_id' => SID(),
+            'shop_id' => $request->shop_id,
             'image'   => $final_name1,
         ]);
 
@@ -314,7 +315,9 @@ class CustomerController extends Controller {
                 'link'    => 'payment-link/' . $request->shop_id . bin2hex(random_bytes(5)) . time(),
             ]);
         }
+
         $carts = $request->cart;
+
         foreach ($carts as $cart) {
             $order_product              = new OrderProduct();
             $order_product->shop_id     = $request->shop_id;
@@ -375,9 +378,53 @@ class CustomerController extends Controller {
     }
 
     public function onlineProduct($shop_id) {
-        $products = Product::where('shop_id', $shop_id)->where('online', 1)->paginate(50);
+        $products = Product::where('shop_id', $shop_id)->where('online', 1)->whereNotNull('category_id')->paginate(50);
 
         return $products;
+    }
+
+    public function onlineProductDetails($id) {
+        $product = Product::find($id);
+
+        if ($product->online !== 1 && $product->category_id === null) {
+            return response()->json(['status' => false]);
+        }
+
+        return $product;
+    }
+
+    public function onlineOrderList($shop_id) {
+        $data                 = [];
+        $data['online_order'] = OnlineOrder::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('onlineOrderProducts')->paginate(50);
+
+        return $data;
+    }
+
+    public function searchOnlineOrderList(Request $request) {
+
+        $search           = $request->input('search');
+        $data             = [];
+        $data['products'] = OnlineOrder::query()
+            ->where('shop_id', $request->shop_id)
+            ->where('phone', 'LIKE', "%{$search}%")
+            ->orWhere('status', $request->status)
+            ->paginate(28);
+        $data['search'] = $search;
+
+        return $data;
+    }
+
+    public function subscriptionList() {
+        $subscription = Subscription::all();
+
+        return $subscription;
+    }
+
+    public function updateQuantity(Request $request) {
+        $product = Product::find($request->id);
+        $product->update(['quantity' => $request->quantity]);
+
+        return $product;
     }
 
 }

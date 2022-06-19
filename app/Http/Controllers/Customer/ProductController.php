@@ -200,4 +200,17 @@ class ProductController extends Controller {
         return redirect()->back()->withToastSuccess('Product deleted successfully!!');
     }
 
+    public function StockAlert() {
+        $products = Product::where('shop_id', SID())->get();
+
+        return view('customer.product.stock-alert', compact('products'));
+    }
+
+    public function updateQuantity(Request $request) {
+        $product = Product::find($request->id);
+        $product->update(['quantity' => $request->quantity]);
+
+        return redirect()->back()->withToastSuccess('Product quantity updated');
+    }
+
 }

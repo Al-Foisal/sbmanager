@@ -16,6 +16,10 @@
             <li style="background:white;padding: 0.5rem;" class="mb-1">
                 <a href="{{ route('customer.shop.list') }}"class="text-primary">Switch Shop</a>
             </li>
+
+            <li style="background:white;padding: 0.5rem;" class="mb-1">
+                <a href="{{ route('customer.shop.subscriptionList') }}"class="text-primary">Subscription</a>
+            </li>
         </ul>
     </div>
 </aside>

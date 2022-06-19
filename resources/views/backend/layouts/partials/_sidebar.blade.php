@@ -9,7 +9,8 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset(auth()->guard('admin')->user()->image) }}" class="img-circle elevation-2" alt="AI">
+                <img src="{{ asset(auth()->guard('admin')->user()->image) }}" class="img-circle elevation-2"
+                    alt="AI">
             </div>
             <div class="info">
                 <a href="{{ route('admin.dashboard') }}"
@@ -19,7 +20,8 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
@@ -64,7 +66,7 @@
                 </li>
                 {{-- @endif --}}
 
-                
+
                 <li class="nav-item">
                     <a href="{{ route('admin.customerList') }}" class="nav-link">
                         <i class="nav-icon far fa-circle text-warning"></i>
@@ -152,7 +154,13 @@
                         <p>Contact</p>
                     </a>
                 </li>
-                
+                <li class="nav-item">
+                    <a href="{{ route('admin.subscriptions.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>Subscription</p>
+                    </a>
+                </li>
+
                 {{-- website info --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -179,7 +187,7 @@
                                 </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a href="{{ route('admin.packages.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>

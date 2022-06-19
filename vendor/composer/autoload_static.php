@@ -679,6 +679,8 @@ class ComposerStaticInitc072a30624a874fcfc8094f34c4798f5
         'App\\Models\\ShopType' => __DIR__ . '/../..' . '/app/Models/ShopType.php',
         'App\\Models\\Slider' => __DIR__ . '/../..' . '/app/Models/Slider.php',
         'App\\Models\\Subcategory' => __DIR__ . '/../..' . '/app/Models/Subcategory.php',
+        'App\\Models\\Subscription' => __DIR__ . '/../..' . '/app/Models/Subscription.php',
+        'App\\Models\\SubscriptionHistory' => __DIR__ . '/../..' . '/app/Models/SubscriptionHistory.php',
         'App\\Models\\Supplier' => __DIR__ . '/../..' . '/app/Models/Supplier.php',
         'App\\Models\\Topup' => __DIR__ . '/../..' . '/app/Models/Topup.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',

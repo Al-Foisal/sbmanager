@@ -119,6 +119,8 @@ return array(
     'App\\Models\\ShopType' => $baseDir . '/app/Models/ShopType.php',
     'App\\Models\\Slider' => $baseDir . '/app/Models/Slider.php',
     'App\\Models\\Subcategory' => $baseDir . '/app/Models/Subcategory.php',
+    'App\\Models\\Subscription' => $baseDir . '/app/Models/Subscription.php',
+    'App\\Models\\SubscriptionHistory' => $baseDir . '/app/Models/SubscriptionHistory.php',
     'App\\Models\\Supplier' => $baseDir . '/app/Models/Supplier.php',
     'App\\Models\\Topup' => $baseDir . '/app/Models/Topup.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
