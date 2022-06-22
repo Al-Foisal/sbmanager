@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\AdminProductController;
 use App\Http\Controllers\Backend\AreaController;
 use App\Http\Controllers\Backend\Auth\AdminForgotPasswordController;
 use App\Http\Controllers\Backend\Auth\AdminLoginController;
@@ -44,7 +45,10 @@ use App\Http\Controllers\Customer\SupplierController;
 use App\Http\Controllers\Customer\TopupController;
 use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\Payment\OnlineMarketPaymentController;
+use App\Http\Controllers\Payment\SubscriptionPaymentController;
 use App\Http\Controllers\SingleShopController;
+use App\Http\Controllers\SslCommerzPaymentController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Route;
 
@@ -115,9 +119,15 @@ Route::prefix('/customer')->as('customer.')->middleware('guest:customer')->group
 });
 
 Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->group(function () {
-    Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
-    Route::post('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
-    Route::get('/pages/{slug}', [CustomerController::class, 'pageDetails'])->name('pageDetails');
+
+    Route::controller(CustomerController::class)->group(function () {
+
+        Route::post('/logout', 'logout')->name('logout');
+        Route::post('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/pages/{slug}', 'pageDetails')->name('pageDetails');
+        Route::get('/withdraw', 'withdraw')->name('withdraw');
+        Route::post('/withdraw/store', 'storeWithdraw')->name('storeWithdraw');
+    });
 
     Route::controller(ShopController::class)->prefix('/shop')->as('shop.')->group(function () {
         Route::get('/online-shop', 'onlineShop')->name('onlineShop');
@@ -132,11 +142,14 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
         Route::get('/order-list', 'orderList')->name('orderList');
         Route::get('/order-details/{id}', 'orderDetails')->name('orderDetails');
-        Route::get('/online-order-list', 'onlineOrderList')->name('onlineOrderList');
-        Route::get('/online-order-list/{id}', 'onlineOrderListDetails')->name('onlineOrderListDetails');
-        Route::post('/online-order-staus/{id}', 'onlineOrderStatus')->name('onlineOrderStatus');
-        Route::delete('/online-order-delete', 'onlineOrderDelete')->name('onlineOrderDelete');
-        Route::get('/online-product', 'onlineProduct')->name('onlineProduct');
+
+        //paid access//
+        Route::get('/online-order-list', 'onlineOrderList')->name('onlineOrderList')->middleware('checkAccess');
+        Route::get('/online-order-list/{id}', 'onlineOrderListDetails')->name('onlineOrderListDetails')->middleware('checkAccess');
+        Route::post('/online-order-staus/{id}', 'onlineOrderStatus')->name('onlineOrderStatus')->middleware('checkAccess');
+        Route::delete('/online-order-delete', 'onlineOrderDelete')->name('onlineOrderDelete')->middleware('checkAccess');
+        Route::get('/online-product', 'onlineProduct')->name('onlineProduct')->middleware('checkAccess');
+        //--paid access//
 
         Route::get('/display-qr-code', 'displayQRCode')->name('displayQRCode');
         Route::post('/store-qr-code', 'storeQRCode')->name('storeQRCode');
@@ -146,14 +159,11 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::get('/subscription-booking/{id}', 'subscriptionBooking')->name('subscriptionBooking');
     });
 
+    Route::get('/product/list', [ProductController::class, 'indexList'])->name('products.index.list');
     Route::resource('/consumers', ConsumerController::class);
     Route::resource('/suppliers', SupplierController::class);
     Route::resource('/employees', EmployeeController::class);
-    Route::resource('/products', ProductController::class);
     Route::resource('/qrcodes', QRCodeController::class);
-    Route::get('/product-list', [ProductController::class, 'indexList'])->name('products.indexList');
-    Route::get('/product/stock-alert', [ProductController::class, 'stockAlert'])->name('products.stockAlert');
-    Route::put('/product/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.updateQuantity');
 
     Route::controller(CartController::class)->group(function () {
         //cart
@@ -213,26 +223,32 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::post('/list/store', 'storeExpenseBookList')->name('storeExpenseBookList');
     });
 
-    Route::resource('/digital_payments', DigitalPaymentController::class);
+    Route::middleware('checkAccess')->group(function () {
+        Route::resource('/products', ProductController::class);
+        Route::get('/product/stock-alert', [ProductController::class, 'stockAlert'])->name('products.stockAlert');
+        Route::put('/product/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.updateQuantity');
 
-    Route::controller(EMIController::class)->prefix('/emi')->as('emi.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/month', 'month')->name('month');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/details/{id}', 'details')->name('details');
-    });
+        Route::resource('/digital_payments', DigitalPaymentController::class);
 
-    //sms
-    Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/store', 'store')->name('store');
-    });
+        Route::controller(EMIController::class)->prefix('/emi')->as('emi.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/month', 'month')->name('month');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/details/{id}', 'details')->name('details');
+        });
 
-    //topup
-    Route::controller(TopupController::class)->prefix('/topup')->as('topup.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/details', 'details')->name('details');
+        //sms
+        Route::controller(SMSMarkettingController::class)->prefix('/sms')->as('sms.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+        });
+
+        //topup
+        Route::controller(TopupController::class)->prefix('/topup')->as('topup.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/details', 'details')->name('details');
+        });
     });
 });
 
@@ -322,11 +338,19 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
     Route::resource('/emi_times', EMITimeController::class);
     Route::resource('/banks', BankController::class);
     Route::resource('/subscriptions', SubscriptionController::class);
+    Route::get('/subscription/s/histories', [SubscriptionController::class, 'histories'])->name('subscriptions.histories');
+    Route::resource('/products', AdminProductController::class);
 
     //customer or user contact route
-    Route::get('/contatc', [DashboardController::class, 'showContact'])->name('showContact');
-    Route::post('/contact/update/{contact}', [DashboardController::class, 'updateContact'])->name('updateContact');
-    Route::delete('/contact/delete/{contact}', [DashboardController::class, 'deleteContact'])->name('deleteContact');
+    Route::controller(DashboardController::class)->group(function () {
+
+        Route::get('/contatc', 'showContact')->name('showContact');
+        Route::post('/contact/update/{contact}', 'updateContact')->name('updateContact');
+        Route::delete('/contact/delete/{contact}', 'deleteContact')->name('deleteContact');
+        Route::get('/withdraw', 'withdraw')->name('withdraw');
+        Route::get('/withdraw/tracking', 'withdrawTracking')->name('withdrawTracking');
+        Route::post('/withdraw/store', 'storeWithdraw')->name('storeWithdraw');
+    });
 
     Route::controller(CompanyInfoController::class)->group(function () {
         Route::get('/company-info', 'showCompanyInfo')->name('showCompanyInfo');
@@ -351,3 +375,27 @@ Route::get('/get-consumer', [GeneralController::class, 'getConsumer']);
 Route::get('/get-subcategory/{id}', [GeneralController::class, 'getSubcategory']);
 Route::get('/get-district/{id}', [GeneralController::class, 'getDistrict']);
 Route::get('/get-area/{id}', [GeneralController::class, 'getArea']);
+
+//payment
+Route::post('/pay', [SslCommerzPaymentController::class, 'index']);
+Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+
+//subscription payment
+Route::post('/subscription-payment', [SubscriptionPaymentController::class, 'subscriptionPayment'])->name('subscriptionPayment');
+Route::post('/subscription_success', [SubscriptionPaymentController::class, 'subscriptionSuccess']);
+Route::post('/subscription_fail', [SubscriptionPaymentController::class, 'subscriptionFail']);
+Route::post('/subscription_cancel', [SubscriptionPaymentController::class, 'subscriptionCancel']);
+Route::post('/subscription-ipn', [SubscriptionPaymentController::class, 'subscriptionIpn']);
+
+//online-market payment
+Route::post('/online-market-payment', [OnlineMarketPaymentController::class, 'onlineMarketPayment'])->name('onlineMarketPayment');
+Route::post('/online_market_success', [OnlineMarketPaymentController::class, 'onlineMarketSuccess']);
+Route::post('/online_market_fail', [OnlineMarketPaymentController::class, 'onlineMarketFail']);
+Route::post('/online_market_cancel', [OnlineMarketPaymentController::class, 'onlineMarketCancel']);
+// Route::post('/online-market-ipn', [OnlineMarketPaymentController::class, 'onlineMarketIpn']);
+//SSLCOMMERZ END
+
+Route::get('/payments/{link}', [GeneralController::class, 'consumerPayment'])->name('payment.consumerPayment');

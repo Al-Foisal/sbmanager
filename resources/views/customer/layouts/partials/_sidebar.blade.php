@@ -30,13 +30,21 @@
                 <img src="{{ asset(shop()->image) }}" class="img-circle elevation-2" alt="AI">
             </div>
             <div class="info">
-                <a href="{{ route('customer.dashboard') }}" class="d-block">{{ shop()->name }}</a>
+                <form action="{{ route('customer.dashboard') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="shop_id" value="{{ SID() }}">
+                    {{-- <a href="{{ route('customer.dashboard') }}" class=""></a> --}}
+                    <button type="submit" class="d-block btn btn-link text-light">
+                        {{ shop()->name }}
+                    </button>
+                </form>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
@@ -94,7 +102,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('onlineMarket') }}" target="_blank" class="nav-link">
+                            <a href="{{ route('onlineMarket', ['shop_id' => SID()]) }}" target="_blank"
+                                class="nav-link">
                                 <i class="nav-icon far fa-circle text-dark"></i>
                                 <p>Online Market</p>
                             </a>
@@ -102,71 +111,86 @@
                     </ul>
                 </li>
 
+                @if (SHOP()->end_date >= today())
+                    {{-- standard --}}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon far fa-circle text-warning"></i>
+                            <p class="text">
+                                Standard
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview nav-header">
+                            <li class="nav-item">
+                                <a href="{{ route('customer.products.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-dark"></i>
+                                    <p>Product List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('customer.digital_payments.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-dark"></i>
+                                    <p>Digital Payment</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('customer.sms.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-dark"></i>
+                                    <p>
+                                        SMS Marketting
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- instructor activities --}}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon far fa-circle text-warning"></i>
+                            <p class="text">
+                                Advanced
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview nav-header">
+                            <li class="nav-item">
+                                <a href="{{ route('customer.shop.onlineShop') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-dark"></i>
+                                    <p>Online Shop</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('customer.emi.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-dark"></i>
+                                    <p>EMI</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('customer.topup.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-dark"></i>
+                                    <p>Top UP</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="javascript:;" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Standard</p>
+                            <i class="fas fa-lock right"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:;" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Advanced</p>
+                            <i class="fas fa-lock right"></i>
+                        </a>
+                    </li>
+                @endif
 
-
-
-                {{-- standard --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p class="text">
-                            Standard
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview nav-header">
-                        <li class="nav-item">
-                            <a href="{{ route('customer.products.indexList') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>Product List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('customer.digital_payments.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>Digital Payment</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('customer.sms.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>
-                                    SMS Marketting
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- instructor activities --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p class="text">
-                            Advanced
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview nav-header">
-                        <li class="nav-item">
-                            <a href="{{ route('customer.shop.onlineShop') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>Online Shop</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('customer.emi.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>EMI</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('customer.topup.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>Top UP</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

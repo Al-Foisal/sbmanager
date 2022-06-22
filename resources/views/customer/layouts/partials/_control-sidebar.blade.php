@@ -20,6 +20,10 @@
             <li style="background:white;padding: 0.5rem;" class="mb-1">
                 <a href="{{ route('customer.shop.subscriptionList') }}"class="text-primary">Subscription</a>
             </li>
+
+            <li style="background:white;padding: 0.5rem;" class="mb-1">
+                <a href="{{ route('customer.withdraw') }}"class="text-primary">Withdraw Request</a>
+            </li>
         </ul>
     </div>
 </aside>

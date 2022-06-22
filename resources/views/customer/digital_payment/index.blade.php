@@ -76,12 +76,12 @@
                                     <i class="far fa-copy js-textareacopybtn"></i>
                                 </span>
                             </div>
+                            
                             <input type="text" class="form-control js-copytextarea" id="validationTooltipUsername"
-                                value="Username" aria-describedby="validationTooltipUsernamePrepend" readonly>
+                                value="{{ route('payment.consumerPayment', $shop->payment_link) }}" aria-describedby="validationTooltipUsernamePrepend" readonly>
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-primary btn-sm"
-                                style="padding:1% 10% 1% 10%;margin-top:2%;"
+                            <button class="btn btn-primary btn-sm" style="padding:1% 10% 1% 10%;margin-top:2%;"
                                 data-toggle="modal" data-target="#shareLink">Share Your
                                 Link</button>
                         </div>
@@ -133,10 +133,14 @@
                                                 {{ $payment->created_at->format('l m Y, H:i:s A') }}
                                             </td>
                                             <td style="vertical-align: middle;">{{ $payment->amount }}</td>
-                                            <td style="vertical-align: middle;"
-                                                onclick="copyToClipboard('{{ $payment->link }}')">
-                                                <button class="btn btn-info btn-xs">Copy payment link</button>
-                                            </td>
+                                            @if ($payment->link !== null)
+                                                <td style="vertical-align: middle;"
+                                                    onclick="copyToClipboard('{{ route('payment.consumerPayment', $payment->link) }}')">
+                                                    <button class="btn btn-info btn-xs">Copy payment link</button>
+                                                </td>
+                                            @else
+                                                <td>Payment Ok</td>
+                                            @endif
                                             <td style="vertical-align: middle;">
                                                 <button class="btn btn-primary btn-xs">{{ $payment->status }}</button>
                                             </td>
@@ -144,7 +148,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{-- {{ $products->links() }} --}}
+                            {{ $payments->links() }}
                         </div>
                         <!-- /.card-body -->
                     </div>

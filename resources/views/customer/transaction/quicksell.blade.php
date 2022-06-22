@@ -28,8 +28,8 @@
                     <a href="{{ route('customer.quicksell') }}"
                         class="@if (Illuminate\Support\Facades\Route::is('customer.quicksell')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/sell.png') }}" style="height:27px;padding:0 10px 0 0"> Quick Sell</a>
 
-                    <a href="{{ route('customer.products.index') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.products.index')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/product-list-icon.png') }}" style="height:27px;padding:0 10px 0 0"> Product List</a>
+                    <a href="{{ route('customer.products.index.list') }}"
+                        class="@if (Illuminate\Support\Facades\Route::is('customer.products.index.list')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/product-list-icon.png') }}" style="height:27px;padding:0 10px 0 0"> Product List</a>
                 </div>
                 <div class="col-sm-6">
                     

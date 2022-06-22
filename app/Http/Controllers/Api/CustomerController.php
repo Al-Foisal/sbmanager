@@ -402,7 +402,7 @@ class CustomerController extends Controller {
 
     public function searchOnlineOrderList(Request $request) {
 
-        $search           = $request->input('search');
+        $search           = $request->input('phone');
         $data             = [];
         $data['products'] = OnlineOrder::query()
             ->where('shop_id', $request->shop_id)

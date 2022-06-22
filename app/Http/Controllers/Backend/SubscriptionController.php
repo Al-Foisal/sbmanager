@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Subscription;
+use App\Models\SubscriptionHistory;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller {
@@ -69,6 +70,7 @@ class SubscriptionController extends Controller {
      */
     public function update(Request $request, Subscription $subscription) {
         $subscription->update($request->all());
+
         return redirect()->route('admin.subscriptions.index')->withToastSuccess('Package updated successfully!!');
     }
 
@@ -80,5 +82,11 @@ class SubscriptionController extends Controller {
      */
     public function destroy($id) {
         //
+    }
+
+    public function histories() {
+        $histories = SubscriptionHistory::with('subscription','shop')->orderBy('id', 'desc')->paginate(100);
+
+        return view('backend.subscription.histories', compact('histories'));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminOrder;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Feature;
@@ -35,9 +36,10 @@ class FrontendController extends Controller {
     }
 
     public function onlineMarket() {
+        session(['online_market_shop' => request()->shop_id]);
         $data               = [];
         $data['categories'] = Category::where('online', 1)->get();
-        $data['products']   = Product::whereNotNull('category_id')->get();
+        $data['products']   = Product::whereNull('shop_id')->get();
 
         return view('market.online-market', $data);
     }
@@ -56,8 +58,9 @@ class FrontendController extends Controller {
     }
 
     public function cartProduct() {
-        $carts = Cart::content();
+        $carts    = Cart::content();
+        $products = AdminOrder::where('shop_id', session()->get('online_market_shop'))->orderBy('id', 'desc')->get();
 
-        return view('market.cart-product', compact('carts'));
+        return view('market.cart-product', compact('carts', 'products'));
     }
 }

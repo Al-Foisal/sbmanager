@@ -23,8 +23,12 @@
                 <div class="col-12">
                     <div class="">
                         <div class="card-body" style="vertical-align: middle">
-                            <form action="" method="post">
+                            <form action="{{ url('/subscription-payment') }}" method="post">
                                 @csrf
+
+                                <input type="hidden" name="shop_id" value="{{ SID() }}">
+                                <input type="hidden" name="subscription_id" value="{{ $subscription->id }}">
+
                                 <div class="card border-success mb-3" style="max-width: 18rem;margin:auto;">
                                     <div class="card-header bg-transparent border-success">Package Details</div>
                                     <div class="card-body text-dark ">
@@ -45,10 +49,54 @@
                                         </h5>
                                     </div>
                                     <div class="card-footer bg-transparent" style="border-top: 1px solid #28a745">
-                                        <button type="submit" class="btn btn-info btn-block">Pay Now</button>
+                                        <button type="submit" class="btn btn-info btn-block">Pay</button>
                                     </div>
                                 </div>
                             </form>
+                        </div>
+
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Package Info</th>
+                                        <th>Package Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($histories as $history)
+                                        <tr>
+                                            <td style="vertical-align: middle">
+                                                Name: <b>{{ $history->subscription->name }}</b> <br>
+                                                Duration:
+                                                <b>{{ $history->starting_from->format("l m, Y") . ' to ' . $history->ending_at->format("l m, Y") }}</b>
+                                            </td>
+                                            <td style="vertical-align: middle">
+                                                
+                                                    Price: <b>{{ $history->amount }}/=</b>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
 
                         <!-- /.card-body -->

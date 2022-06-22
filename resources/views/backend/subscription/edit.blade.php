@@ -1,4 +1,4 @@
-@extends('customer.layouts.master')
+@extends('backend.layouts.master')
 @section('title', 'Update Subscription')
 @section('cssStyle')
     <style>

@@ -66,17 +66,95 @@
                 </li>
                 {{-- @endif --}}
 
-
+                
                 <li class="nav-item">
                     <a href="{{ route('admin.customerList') }}" class="nav-link">
                         <i class="nav-icon far fa-circle text-warning"></i>
                         <p>Customer List</p>
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a href="{{ route('admin.products.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>Product</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.showContact') }}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>Contact</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.subscriptions.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>Subscription</p>
+                    </a>
+                </li>
 
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p class="text">
+                            Withdraw
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview nav-header">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.withdraw') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Withdraw Request</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.withdrawTracking') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Withdraw Tracking</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- website info --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p class="text">
+                            Website
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview nav-header">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.allSlider') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>
+                                    Main Slider
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.features.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>
+                                    Features
+                                </p>
+                            </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('admin.packages.index') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>
+                                    Packages
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-                {{-- category --}}
+                {{-- settings --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-circle text-warning"></i>
@@ -145,57 +223,6 @@
                             </a>
                         </li>
 
-                    </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.showContact') }}" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p>Contact</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.subscriptions.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p>Subscription</p>
-                    </a>
-                </li>
-
-                {{-- website info --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-circle text-warning"></i>
-                        <p class="text">
-                            Website
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview nav-header">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.allSlider') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>
-                                    Main Slider
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.features.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>
-                                    Features
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('admin.packages.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>
-                                    Packages
-                                </p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
 

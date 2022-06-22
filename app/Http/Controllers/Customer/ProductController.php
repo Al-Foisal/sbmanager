@@ -25,7 +25,7 @@ class ProductController extends Controller {
     public function indexList() {
         $products = Product::where('shop_id', SID())->get();
 
-        return view('customer.product.index-list', compact('products'));
+        return view('customer.product.indexlist', compact('products'));
     }
 
     /**

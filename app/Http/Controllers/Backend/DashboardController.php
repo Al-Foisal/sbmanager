@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Contact;
 use App\Models\Customer;
+use App\Models\DigitalAmount;
 use App\Models\OnlineOrder;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Models\WithdrawTracker;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller {
     public function dashboard() {
@@ -50,4 +53,42 @@ class DashboardController extends Controller {
 
         return redirect()->back()->withToastSuccess('Contact Message Deleted Successfully!!');
     }
+
+    public function withdraw() {
+        $withdraw = DigitalAmount::orderBy('updated_at', 'desc')->paginate(100);
+
+        return view('backend.withdraw', compact('withdraw'));
+    }
+
+    public function storeWithdraw(Request $request) {
+        // dd($request->all());
+        $amount  = $request->amount;
+        $id      = $request->id;
+        $digital = DigitalAmount::find($id);
+
+        if ($amount > $digital->amount) {
+            return redirect()->back()->withToastError('Invalid amount input!!');
+        }
+
+        WithdrawTracker::create([
+            'shop_id'      => $digital->shop_id,
+            'amount'       => $request->amount,
+            'account_type' => $digital->account_type,
+            'phone'        => $digital->phone,
+        ]);
+
+        $digital->update([
+            'amount'        => $digital->amount - $amount,
+            'last_withdraw' => now(),
+        ]);
+
+        return redirect()->back()->withToastSuccess('Withdraw successfull');
+    }
+
+    public function withdrawTracking() {
+        $withdraw = WithdrawTracker::orderBy('id', 'desc')->paginate(100);
+
+        return view('backend.withdraw-tracking', compact('withdraw'));
+    }
+
 }

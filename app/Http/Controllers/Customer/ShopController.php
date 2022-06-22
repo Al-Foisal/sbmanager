@@ -13,6 +13,7 @@ use App\Models\Shop;
 use App\Models\ShopType;
 use App\Models\Slider;
 use App\Models\Subscription;
+use App\Models\SubscriptionHistory;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -80,7 +81,7 @@ class ShopController extends Controller {
             'customer_id'        => Auth::id(),
             'name'               => $request->name,
             'image'              => $final_name1,
-            'payment_link'       => 'https://abc.com/digital_payment',
+            'payment_link'       => Str::slug($request->name),
             'online_market_link' => Str::slug($request->name),
         ]);
 
@@ -286,6 +287,7 @@ class ShopController extends Controller {
 
         $data                 = [];
         $data['subscription'] = Subscription::find($id);
+        $data['histories'] = SubscriptionHistory::where('shop_id',SID())->orderBy('id','desc')->with('subscription')->get();
 
         return view('customer.shop.subscription-booking', $data);
     }

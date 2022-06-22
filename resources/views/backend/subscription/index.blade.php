@@ -1,4 +1,4 @@
-@extends('customer.layouts.master')
+@extends('backend.layouts.master')
 @section('title', 'Subscription list')
 
 @section('backend')
@@ -23,9 +23,14 @@
                 <div class="col-12">
                     <div class="card">
                         <!-- /.card-header -->
-                        <a href="{{ route('admin.subscriptions.create') }}" class="btn btn-primary">Add
-                            Subscription
-                        </a>
+                        <div class="d-flex justify-content-start p-3">
+                            <a href="{{ route('admin.subscriptions.create') }}" class="btn btn-primary mr-3">Add
+                                Subscription
+                            </a>
+                            <a href="{{ route('admin.subscriptions.histories') }}" class="btn btn-primary">
+                                Subscription History
+                            </a>
+                        </div>
                         <div class="card-body">
 
                             <table id="example1" class="table table-bordered table-striped">

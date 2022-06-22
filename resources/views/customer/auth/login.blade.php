@@ -34,7 +34,7 @@
                 <form action="{{ route('customer.login') }}" method="post">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Phone number" name="phone" value="01756232223">
+                        <input type="text" class="form-control" placeholder="Phone number" name="phone" value="">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" name="password" value="12345678">
+                        <input type="password" class="form-control" placeholder="Password" name="password" value="">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>

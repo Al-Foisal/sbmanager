@@ -19,7 +19,7 @@
 </head>
 
 <body class="hold-transition bg-info">
-
+    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
     <!-- Just an image -->
     <div class="container-fluide bg-light" style="padding: 2rem">
         {{-- <div class="row"> --}}

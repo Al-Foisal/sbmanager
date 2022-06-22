@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalAmount;
 use App\Models\Due;
 use App\Models\ExpenseBookDetail;
 use App\Models\Order;
@@ -59,6 +60,24 @@ class CustomerController extends Controller {
         $page = Page::where('slug', $slug)->first();
 
         return view('customer.page-details', compact('page'));
+    }
+
+    public function withdraw() {
+        $balance = DigitalAmount::where('shop_id', SID())->first();
+
+        return view('customer.shop.withdraw', compact('balance'));
+    }
+
+    public function storeWithdraw(Request $request) {
+        $digital = DigitalAmount::where('shop_id', SID())->first();
+
+        if (!$digital || $digital->amount < 200) {
+            return back()->withToastError('Insufficient digital balance.');
+        }
+
+        $digital->update(['account_type' => $request->account_type, 'phone' => $request->phone]);
+
+        return redirect()->back()->withToastSuccess('Withdraw request submitted successfully!!');
     }
 
 }

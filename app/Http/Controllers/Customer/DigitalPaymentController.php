@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Consumer;
 use App\Models\DigitalPayment;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 
 class DigitalPaymentController extends Controller {
@@ -16,7 +17,7 @@ class DigitalPaymentController extends Controller {
     public function index() {
         $data = [];
 
-        $data['payments']    = DigitalPayment::where('shop_id', SID())->get();
+        $data['payments']    = DigitalPayment::where('shop_id', SID())->paginate();
         $data['consumers']   = Consumer::where('shop_id', SID())->get();
         $data['socialShare'] = \Share::page(
             'https://abc.com/digitalpayment',
@@ -28,6 +29,9 @@ class DigitalPaymentController extends Controller {
             ->linkedin()
             ->whatsapp()
             ->telegram();
+
+        $data['shop'] = Shop::find(SID());
+        // dd($data['shop']);
 
         return view('customer.digital_payment.index', $data);
     }
@@ -54,7 +58,7 @@ class DigitalPaymentController extends Controller {
             'phone'   => $request->phone,
             'amount'  => $request->amount,
             'status'  => 'pending',
-            'link'    => 'payment-link/' . SID() . bin2hex(random_bytes(5)) . time(),
+            'link'    => SID() . bin2hex(random_bytes(5)) . time(),
         ]);
 
         return redirect()->back()->withToastSuccess('New payment link created.');

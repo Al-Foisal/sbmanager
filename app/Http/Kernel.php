@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAccess;
 use App\Http\Middleware\CheckCustomerSession;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -65,5 +66,6 @@ class Kernel extends HttpKernel {
         'throttle'             => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified'             => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkCustomerSession' => CheckCustomerSession::class,
+        'checkAccess'          => CheckAccess::class,
     ];
 }

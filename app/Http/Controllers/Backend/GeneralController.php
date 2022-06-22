@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Consumer;
+use App\Models\DigitalPayment;
 use App\Models\District;
-use App\Models\Division;
+use App\Models\Shop;
 use App\Models\Subcategory;
 
 class GeneralController extends Controller {
@@ -33,4 +34,20 @@ class GeneralController extends Controller {
 
         return json_encode($area);
     }
+
+    public function consumerPayment($link) {
+
+        $data             = [];
+        $data['consumer'] = $consumer = DigitalPayment::where('link', $link)->first();
+        $shop             = Shop::where('payment_link', $link)->first();
+
+        if (!$consumer && !$shop) {
+            return back();
+        }
+
+        $data['shop'] = Shop::find($consumer->shop_id)??[];
+
+        return view('consumer-payment', $data);
+    }
+
 }

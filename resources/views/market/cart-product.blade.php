@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <h4>Your Order</h4>
+            <h4>Your Cart</h4>
             <hr>
             <table class="table">
                 <thead>
@@ -27,7 +27,14 @@
                                 <span class="badge bg-dark">Pending</span>
                             </td>
                             <td>
-                                <a href="" class="btn btn-success btn-sm">PayNow</a>
+                                <form action="{{ route('onlineMarketPayment') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="shop_id"
+                                        value="{{ session()->get('online_market_shop') }}">
+                                    <input type="hidden" name="product_id" value="{{ $cart->id }}">
+                                    <input type="hidden" name="quantity" value="{{ $cart->qty }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Pay Now</button>
+                                </form>
                             </td>
                             <td>
                                 <span class="badge bg-dark">Pending</span>
@@ -38,6 +45,31 @@
                             </td>
                         @endforeach
                     </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div class="row">
+            <h4>Your Order</h4>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($products as $product)
+                        <tr>
+                            <td>{{ $product->product->name }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td>{{ $product->amount }}</td>
+                            <td>{{ $product->status }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
