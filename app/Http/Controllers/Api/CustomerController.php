@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DigitalAmount;
 use App\Models\DigitalPayment;
 use App\Models\Due;
 use App\Models\ExpenseBookDetail;
@@ -21,9 +22,21 @@ class CustomerController extends Controller {
     public function shopList($customer_id) {
         $data = [];
 
-        $data['shops'] = Shop::where('customer_id', $customer_id)->get();
+        $data['shops'] = Shop::where('customer_id', $customer_id)->with('division','district','area','shopType')->get();
 
         return $data;
+    }
+
+    public function storeWithdraw(Request $request) {
+        $digital = DigitalAmount::where('shop_id', $request->shop_id)->first();
+
+        if (!$digital || $digital->amount < 200) {
+            return back()->withToastError('Insufficient digital balance.');
+        }
+
+        $digital->update(['account_type' => $request->account_type, 'phone' => $request->phone]);
+
+        return response()->json(['status' => true]);
     }
 
     public function storeShop(Request $request) {

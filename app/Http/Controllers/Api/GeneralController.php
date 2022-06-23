@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\DigitalPayment;
 use App\Models\District;
 use App\Models\Division;
+use App\Models\Shop;
 use App\Models\ShopType;
 
 class GeneralController extends Controller {
@@ -43,5 +45,20 @@ class GeneralController extends Controller {
         $area = Area::where('discrict_id', $discrict_id)->get();
 
         return $area;
+    }
+
+    public function consumerPayment($link) {
+
+        $data             = [];
+        $data['consumer'] = $consumer = DigitalPayment::where('link', $link)->first();
+        $shop             = Shop::where('payment_link', $link)->first();
+
+        if (!$consumer && !$shop) {
+            return back();
+        }
+
+        $data['shop'] = Shop::find($consumer->shop_id)??[];
+
+        return $data;
     }
 }

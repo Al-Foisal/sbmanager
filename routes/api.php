@@ -50,7 +50,7 @@ Route::controller(CustomerController::class)->group(function () {
     Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner');
     Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
     Route::get('/shop/slider-list/{shop_id}', 'sliderList');
-
+    Route::post('/withdraw/store', 'storeWithdraw');
     //online shop
     Route::get('/order-list/{shop_id}', 'orderList');
     Route::get('/order-details/{id}', 'orderDetails');
@@ -125,4 +125,5 @@ Route::controller(GeneralController::class)->group(function () {
     Route::get('/area', 'area');
     Route::get('/get_district/{division_id}', 'districtByDivision');
     Route::get('/get_area/{district_id}', 'areaByDistrict');
+    Route::get('/payments/{link}', 'consumerPayment');
 });
