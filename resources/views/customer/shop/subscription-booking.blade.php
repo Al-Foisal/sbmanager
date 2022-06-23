@@ -87,7 +87,7 @@
                                             <td style="vertical-align: middle">
                                                 Name: <b>{{ $history->subscription->name }}</b> <br>
                                                 Duration:
-                                                <b>{{ $history->starting_from->format("l m, Y") . ' to ' . $history->ending_at->format("l m, Y") }}</b>
+                                                <b>{{ $subscription->life_time . $subscription->life_time_type }}</b>
                                             </td>
                                             <td style="vertical-align: middle">
                                                 
