@@ -4,13 +4,27 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\Category;
 use App\Models\DigitalPayment;
 use App\Models\District;
 use App\Models\Division;
 use App\Models\Shop;
 use App\Models\ShopType;
+use App\Models\Subcategory;
 
 class GeneralController extends Controller {
+    public function category() {
+        $category = Category::where('status', 1)->get();
+
+        return $category;
+    }
+
+    public function subcategory($id) {
+        $sub = Subcategory::where('category_id', $id)->where('status', 1)->get();
+
+        return $sub;
+    }
+
     public function shopType() {
         $shop = ShopType::all();
 
@@ -57,8 +71,9 @@ class GeneralController extends Controller {
             return back();
         }
 
-        $data['shop'] = Shop::find($consumer->shop_id)??[];
+        $data['shop'] = Shop::find($consumer->shop_id) ?? [];
 
         return $data;
     }
+
 }

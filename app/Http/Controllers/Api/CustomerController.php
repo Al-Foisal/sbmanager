@@ -19,12 +19,28 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller {
+    public function onlineShop($shop_id) {
+        $data = [];
+
+        $data['active_order']   = OnlineOrder::where('shop_id', $shop_id)->where('status', '!=', 5)->count();
+        $data['online_product'] = Product::where('shop_id', $shop_id)->whereNotNull('category_id')->count();
+        $data['earn']           = OnlineOrder::where('shop_id', $shop_id)->where('status', 5)->select(['total'])->sum('total');
+
+        return $data;
+    }
+
     public function shopList($customer_id) {
         $data = [];
 
-        $data['shops'] = Shop::where('customer_id', $customer_id)->with('division','district','area','shopType')->get();
+        $data['shops'] = Shop::where('customer_id', $customer_id)->with('division', 'district', 'area', 'shopType')->get();
 
         return $data;
+    }
+
+    public function shopDetails($id) {
+        $shop = Shop::find($id);
+
+        return $shop;
     }
 
     public function storeWithdraw(Request $request) {
@@ -131,11 +147,13 @@ class CustomerController extends Controller {
                         'image' => $final_name1,
                     ]
                 );
+
+                return response()->json(['status' => true, 'message' => 'dddddddddd']);
             }
 
         }
 
-        return response()->json(['status' => true, 'message' => 'Store logo updated successfully!!']);
+        return response()->json(['status' => true, 'message' => 'dddddddddd']);
 
     }
 

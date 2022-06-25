@@ -130,20 +130,20 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
     });
 
     Route::controller(ShopController::class)->prefix('/shop')->as('shop.')->group(function () {
-        Route::get('/online-shop', 'onlineShop')->name('onlineShop');
         Route::get('/list', 'list')->name('list');
         Route::post('/store', 'store')->name('store');
         Route::get('/order-list', 'orderList')->name('orderList');
         Route::get('/order-details/{id}', 'orderDetails')->name('orderDetails');
-
+        
         //paid access//
-        Route::get('/edit-store', 'editStore')->name('editStore');
-        Route::put('/update-store-information/{shop}', 'updateStoreInformation')->name('updateStoreInformation');
-        Route::put('/update-store-logo/{shop}', 'updateStoreLogo')->name('updateStoreLogo');
-        Route::put('/update-store-social/{shop}', 'updateStoreSocial')->name('updateStoreSocial');
-        Route::put('/update-store-oml/{shop}', 'updateStoreOML')->name('updateStoreOML');
-        Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner');
-        Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
+        Route::get('/online-shop', 'onlineShop')->name('onlineShop')->middleware('checkAccess');
+        Route::get('/edit-store', 'editStore')->name('editStore')->middleware('checkAccess');
+        Route::put('/update-store-information/{shop}', 'updateStoreInformation')->name('updateStoreInformation')->middleware('checkAccess');
+        Route::put('/update-store-logo/{shop}', 'updateStoreLogo')->name('updateStoreLogo')->middleware('checkAccess');
+        Route::put('/update-store-social/{shop}', 'updateStoreSocial')->name('updateStoreSocial')->middleware('checkAccess');
+        Route::put('/update-store-oml/{shop}', 'updateStoreOML')->name('updateStoreOML')->middleware('checkAccess');
+        Route::post('/store-shop-banner', 'storeShopBanner')->name('storeShopBanner')->middleware('checkAccess');
+        Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner')->middleware('checkAccess');
         Route::get('/online-order-list', 'onlineOrderList')->name('onlineOrderList')->middleware('checkAccess');
         Route::get('/online-order-list/{id}', 'onlineOrderListDetails')->name('onlineOrderListDetails')->middleware('checkAccess');
         Route::post('/online-order-staus/{id}', 'onlineOrderStatus')->name('onlineOrderStatus')->middleware('checkAccess');

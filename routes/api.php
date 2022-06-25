@@ -41,6 +41,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(CustomerController::class)->group(function () {
     Route::get('shop-list/{customer_id}', 'shopList');
+    Route::get('shop-details/{shop_id}', 'shopDetails');
     Route::post('shop-list', 'storeShop');
 
     Route::put('/update-store-information/{shop}', 'updateStoreInformation')->name('updateStoreInformation');
@@ -51,7 +52,9 @@ Route::controller(CustomerController::class)->group(function () {
     Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
     Route::get('/shop/slider-list/{shop_id}', 'sliderList');
     Route::post('/withdraw/store', 'storeWithdraw');
+
     //online shop
+    Route::get('/online-shop/{shop_id}', 'onlineShop');
     Route::get('/order-list/{shop_id}', 'orderList');
     Route::get('/order-details/{id}', 'orderDetails');
     Route::get('/online-product/{shop_id}', 'onlineProduct');
@@ -75,7 +78,7 @@ Route::controller(CustomerController::class)->group(function () {
     Route::post('/search-online-order-list', 'searchOnlineOrderList');
 
     //subscription
-    Route::get('/subscription-list','subscriptionList');
+    Route::get('/subscription-list', 'subscriptionList');
 
     Route::put('/product/update-quantity', 'updateQuantity');
 });
@@ -119,6 +122,8 @@ Route::apiResource('shops.products', ProductController::class);
 Route::apiResource('shops.digital_payments', DigitalPaymentController::class);
 
 Route::controller(GeneralController::class)->group(function () {
+    Route::get('/category', 'category');
+    Route::get('/category/{id}', 'subcategory');
     Route::get('/shop_type', 'shopType');
     Route::get('/division', 'division');
     Route::get('/district', 'district');
