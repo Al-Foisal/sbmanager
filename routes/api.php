@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
 use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SubscriptionPaymentController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -132,3 +133,29 @@ Route::controller(GeneralController::class)->group(function () {
     Route::get('/get_area/{district_id}', 'areaByDistrict');
     Route::get('/payments/{link}', 'consumerPayment');
 });
+
+//subscription payment
+Route::post('/subscription-payment', [SubscriptionPaymentController::class, 'subscriptionPayment']);
+/**
+ * subscription_id
+ * shop_id
+ */
+Route::post('/subscription_success', [SubscriptionPaymentController::class, 'subscriptionSuccess']);
+/**
+ * tran_id
+ * amount
+ * currency
+ */
+Route::post('/subscription_fail', [SubscriptionPaymentController::class, 'subscriptionFail']);
+/**
+ * tran_id
+ */
+Route::post('/subscription_cancel', [SubscriptionPaymentController::class, 'subscriptionCancel']);
+/**
+ * tran_id
+ */
+Route::post('/subscription-ipn', [SubscriptionPaymentController::class, 'subscriptionIpn']);
+/**
+ * tran_id
+ */
+//--subscription payment
