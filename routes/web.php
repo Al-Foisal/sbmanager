@@ -26,6 +26,7 @@ use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
 use App\Http\Controllers\Customer\Auth\CustomerRegisterController;
 use App\Http\Controllers\Customer\Auth\CustomerResetPasswordController;
+use App\Http\Controllers\Customer\BuyController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\ConsumerController;
@@ -127,6 +128,17 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::get('/pages/{slug}', 'pageDetails')->name('pageDetails');
         Route::get('/withdraw', 'withdraw')->name('withdraw');
         Route::post('/withdraw/store', 'storeWithdraw')->name('storeWithdraw');
+    });
+
+    Route::controller(BuyController::class)->prefix('/buy')->as('buy.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::get('/cart','cart')->name('cart');
+        Route::post('/add-to-cart','addToCart');
+        Route::get('/checkout','checkout')->name('checkout');
+        Route::post('/placeOrder','placeOrder')->name('placeOrder');
+        Route::get('/buyBook','buyBook')->name('book');
+        Route::get('/buyBookDetails/{id}','buyBookDetails')->name('buyBookDetails');
+        Route::get('/cartOrder/{id}','cartOrder')->name('cartOrder');
     });
 
     Route::controller(ShopController::class)->prefix('/shop')->as('shop.')->group(function () {

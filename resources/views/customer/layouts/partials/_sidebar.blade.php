@@ -72,15 +72,28 @@
 
                     <ul class="nav nav-treeview nav-header">
                         <li class="nav-item">
-                            <a href="{{ route('customer.transaction') }}" class="nav-link">
+                            <a href="{{ route('customer.buy.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-dark"></i>
-                                <p>Transaction</p>
+                                <p>Buy</p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('customer.buy.book') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-dark"></i>
+                                <p>Buy Book</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('customer.quicksell') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-dark"></i>
                                 <p>Sell</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('customer.transaction') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-dark"></i>
+                                <p>Sell Book</p>
                             </a>
                         </li>
                         <li class="nav-item">

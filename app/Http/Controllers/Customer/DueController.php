@@ -29,7 +29,7 @@ class DueController extends Controller {
 
     public function index() {
         $data         = [];
-        $data['dues'] = $dues = Due::where('shop_id', SID())->orderBy('id', 'desc')->with('dueDetails')->paginate(50);
+        $data['dues'] = $dues = Due::where('shop_id', SID())->orderBy('updated_at', 'desc')->with('dueDetails')->paginate(50);
 
         $data['consumer'] = Due::where('shop_id', SID())->where('due_to', 'Consumer')->count();
         $data['supplier'] = Due::where('shop_id', SID())->where('due_to', 'Supplier')->count();
@@ -64,18 +64,36 @@ class DueController extends Controller {
 
         if (!empty($request->amount)) {
             try {
-                $consumer_id    = Crypt::decryptString($request->consumer_id);
+                $consumer_id = '';
+                $supplier_id = '';
+
+                if ($request->supplier_id) {
+                    $supplier_id = Crypt::decryptString($request->supplier_id);
+                } else {
+                    $consumer_id = Crypt::decryptString($request->consumer_id);
+                }
+
                 $data['amount'] = Crypt::decryptString($request->amount);
             } catch (DecryptException $e) {
                 return back();
             }
 
-            if ($consumer_id !== 0) {
-                $data['rc'] = Consumer::find($consumer_id);
-            }
+        } else {
+            return back();
+        }
+
+        if ($consumer_id !== 'Consumer') {
+            $data['rc'] = Consumer::find($consumer_id);
 
         } else {
-            $data['rc'] = false;
+            $data['rc'] = $consumer_id;
+        }
+
+        if ($supplier_id !== 'Supplier') {
+            $data['rs'] = Consumer::find($supplier_id);
+
+        } else {
+            $data['rs'] = $supplier_id;
         }
 
         $data['consumers'] = Consumer::all();
@@ -158,6 +176,8 @@ class DueController extends Controller {
                 'created_at' => $request->current_date ?? now(),
             ]);
         } else {
+            $due->created_at = now();
+            $due->save();
 
             if ($request->hasFile('image')) {
 
@@ -325,6 +345,9 @@ class DueController extends Controller {
             ]);
         } else {
 
+            $due->created_at = now();
+            $due->save();
+
             if ($request->hasFile('image')) {
 
                 $image_file = $request->file('image');
@@ -390,6 +413,9 @@ class DueController extends Controller {
             return redirect()->back()->withToastError('Access denied');
         }
 
+        $check->created_at = now();
+        $check->save();
+
         if ($request->hasFile('image')) {
 
             $image_file = $request->file('image');
@@ -417,7 +443,7 @@ class DueController extends Controller {
             'created_at' => $request->current_date ?? now(),
         ]);
 
-        return redirect()->route('customer.due.show', $request->due_id);
+        return redirect()->route('customer.due.index', $request->due_id);
     }
 
 }

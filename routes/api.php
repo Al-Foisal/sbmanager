@@ -69,6 +69,7 @@ Route::controller(CustomerController::class)->group(function () {
 
     //save order
     Route::post('/order-save', 'orderSave');
+    Route::post('/buy-order-save', 'buyOrderSave');
 
     //transaction
     Route::get('/transaction/{shop_id}', 'transaction');

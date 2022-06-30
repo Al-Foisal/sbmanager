@@ -10,7 +10,8 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
-class CartController extends Controller {
+class CartController extends Controller 
+{
     public function cart() {
         $data = [];
 

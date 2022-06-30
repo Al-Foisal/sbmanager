@@ -77,7 +77,7 @@ class OrderController extends Controller {
         Cart::destroy();
 
         if ($request->payment_method === 'Due') {
-            $data['consumer_id']    = Crypt::encryptString($request->consumer_id ?? 0);
+            $data['consumer_id']    = Crypt::encryptString($request->consumer_id ?? 'Consumer');
             $data['amount']         = Crypt::encryptString($request->subtotal);
 
             return redirect()->route('customer.due.create', $data);

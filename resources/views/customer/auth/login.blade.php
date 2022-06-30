@@ -51,13 +51,13 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
-                            {{-- <div class="icheck-primary">
-                                <a href="">
+                            <div class="icheck-primary">
+                                <a href="{{ route('customer.register') }}">
                                     <label for="remember">
-                                        Forget your password?
+                                        New! Register with us?
                                     </label>
                                 </a>
-                            </div> --}}
+                            </div>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">

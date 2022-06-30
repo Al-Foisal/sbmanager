@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -23,6 +24,10 @@ class ProductController extends Controller {
     }
 
     public function indexList() {
+        session()->forget('discount');
+        session()->forget('subtotal');
+        Cart::destroy();
+
         $products = Product::where('shop_id', SID())->get();
 
         return view('customer.product.indexlist', compact('products'));

@@ -75,13 +75,13 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
-                            {{-- <div class="icheck-primary">
-                                <a href="">
+                            <div class="icheck-primary">
+                                <a href="{{ route('customer.login') }}">
                                     <label for="remember">
-                                        Forget your password?
+                                        Already have an account?
                                     </label>
                                 </a>
-                            </div> --}}
+                            </div>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">

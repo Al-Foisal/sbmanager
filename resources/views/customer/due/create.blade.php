@@ -63,21 +63,21 @@
                                                 <div class="form-group d-flex justify-content-between">
                                                     <div class="icheck-success">
                                                         <input type="radio" name="due_to" id="radioSuccess1"
-                                                            value="Consumer" checked>
+                                                            value="Consumer" @if($rc) checked @elseif($rs) disabled @endif>
                                                         <label for="radioSuccess1">
                                                             Consumer
                                                         </label>
                                                     </div>
                                                     <div class="icheck-success">
                                                         <input type="radio" name="due_to" id="radioSuccess2"
-                                                            value="Supplier">
+                                                            value="Supplier" @if($rs) checked @endif>
                                                         <label for="radioSuccess2">
                                                             Supplier
                                                         </label>
                                                     </div>
                                                     <div class="icheck-success">
                                                         <input type="radio" name="due_to" id="radioSuccess3"
-                                                            value="Employee">
+                                                            value="Employee" @if($rs) disabled @endif>
                                                         <label for="radioSuccess3">
                                                             Employee
                                                         </label>
@@ -99,14 +99,14 @@
                                                 <div class="form-group d-flex justify-content-between">
                                                     <div class="icheck-danger">
                                                         <input type="radio" name="due_type" id="radiodanger4"
-                                                            value="Due" checked>
+                                                            value="Due" @if($rc) checked @elseif($rs) disabled @endif>
                                                         <label for="radiodanger4">
                                                             Due
                                                         </label>
                                                     </div>
                                                     <div class="icheck-success">
                                                         <input type="radio" name="due_type" id="radioSuccess5"
-                                                            value="Deposit">
+                                                            value="Deposit" @if($rs) checked @elseif($rc) disabled @endif>
                                                         <label for="radioSuccess5">
                                                             Deposit
                                                         </label>
@@ -120,21 +120,24 @@
                                 {{--  --}}
                                 <div class="form-group consumer_body">
                                     <label>Name</label>
-                                    <select class="form-control js-example-tags" style="width: 100%;" name="due_to_id">
-                                        @if ($rc)
+                                    <select class="form-control js-example-tags" style="width: 100%;" name="due_to_id" required>
+                                        @if ($rc && $rc != 'Consumer')
                                             <option value="{{ $rc->id }}">{{ $rc->name }}</option>
+                                        @endif
+                                        @if ($rs && $rs != 'Supplier')
+                                            <option value="{{ $rs->id }}">{{ $rs->name }}</option>
                                         @endif
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Phone number</label>
                                     <input type="number" class="form-control" name="phone"
-                                        placeholder="Enter phone number" @if ($rc) value="{{ $rc->phone ?? '' }}" @endif>
+                                        placeholder="Enter phone number" @if ($rc && $rc != 'Consumer' || $rs && $rs != 'Supplier') value="{{ $rc->phone ?? $rs->phone }}" @endif>
                                 </div>
                                 <div class="form-group">
                                     <label>Amount</label>
                                     <input type="number" class="form-control" name="amount" placeholder="Enter due amount"
-                                        @if ($rc) value="{{ $amount }}" @endif required>
+                                        @if ($rc || $rs) value="{{ $amount }}" @endif required>
                                 </div>
                                 <div class="form-group">
                                     <label>Due details(optional)</label>

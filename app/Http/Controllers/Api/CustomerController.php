@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Buy;
+use App\Models\BuyProduct;
 use App\Models\DigitalAmount;
 use App\Models\DigitalPayment;
 use App\Models\Due;
@@ -38,7 +40,7 @@ class CustomerController extends Controller {
     }
 
     public function shopDetails($id) {
-        $shop = Shop::find($id);
+        $shop = Shop::where('id',$id)->with('division','district','area')->first();
 
         return $shop;
     }
@@ -360,9 +362,52 @@ class CustomerController extends Controller {
             $order_product->save();
 
             $product          = Product::find($cart["id"]);
-            $updated_quantity = $product->quantity - $cart["price"];
+            $updated_quantity = $product->quantity - $cart["qty"];
             $product->update([
                 'quantity' => $updated_quantity <= 0 ? 0 : $updated_quantity,
+            ]);
+        }
+
+        return response()->json(['status' => true, 'message' => 'Order placed successfully!!']);
+    }
+
+    public function buyOrderSave(Request $request) {
+
+        if ($request->cash === null && $request->payment_method === 'Cash' && ($request->cash - $request->subtotal) < 0) {
+            return redirect()->back()->withToastError('Cash payment input error.');
+        }
+
+        if ($request->payment_method === 'Cash') {
+            $cash = $request->subtotal;
+        } else {
+            $cash = 0;
+        }
+
+        $data                   = [];
+        $data['shop_id']        = $request->shop_id;
+        $data['supplier_id']    = $request->supplier_id;
+        $data['total']          = $request->total;
+        $data['subtotal']       = $request->subtotal;
+        $data['discount']       = $request->discount;
+        $data['cash']           = $cash;
+        $data['payment_method'] = $request->payment_method;
+
+        $buy = Buy::create($data);
+
+        $carts = $request->cart;
+
+        foreach ($carts as $cart) {
+            $order_product              = new BuyProduct();
+            $order_product->buy_id    = $buy->id;
+            $order_product->product_id  = $cart["id"];
+            $order_product->quantity    = $cart["qty"];
+            $order_product->price       = $cart["price"];
+            $order_product->save();
+
+            $product          = Product::find($cart["id"]);
+            $updated_quantity = $product->quantity + $cart["qty"];
+            $product->update([
+                'quantity' => $updated_quantity,
             ]);
         }
 

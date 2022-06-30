@@ -46,7 +46,10 @@
                             <a class="nav-link pagescroll" href="#pricing">Our Pricing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pagescroll" href="#cantract">Contract Us</a>
+                            <a class="nav-link pagescroll" href="#cantact">Contract Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('customer.login') }}">Web Login</a>
                         </li>
                     </ul>
                 </div>
@@ -73,17 +76,43 @@
                             <a class="nav-link pagescroll" href="#pricing">Our Pricing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pagescroll" href="#cantract">Contract Us</a>
+                            <a class="nav-link pagescroll" href="#cantact">Contract Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('customer.login') }}">Web Login</a>
                         </li>
                     </ul>
                 </nav>
                 <div class="side-footer w-100">
                     <ul class="social-icons-simple white top40">
-                        <li><a href="javascript:void(0)" class="facebook"><i class="fab fa-facebook-f"></i> </a> </li>
-                        <li><a href="javascript:void(0)" class="twitter"><i class="fab fa-twitter"></i> </a> </li>
-                        <li><a href="javascript:void(0)" class="insta"><i class="fab fa-instagram"></i> </a> </li>
+                        @if ($company->facebook)
+                            <li><a href="{{ $company->facebook }}" class="facebook"><i class="fab fa-facebook-f"></i>
+                                </a> </li>
+                        @endif
+                        @if ($company->twitter)
+                            <li><a href="{{ $company->twitter }}" class="twitter"><i class="fab fa-twitter"></i>
+                                </a> </li>
+                        @endif
+                        @if ($company->linkedin)
+                            <li><a href="{{ $company->linkedin }}" class="linkedin"><i
+                                        class="fab fa-linkedin-in"></i>
+                                </a> </li>
+                        @endif
+                        @if ($company->inatagram)
+                            <li><a href="{{ $company->inatagram }}" class="insta"><i class="fab fa-instagram"></i>
+                                </a> </li>
+                        @endif
+                        @if ($company->youtube)
+                            <li><a href="{{ $company->youtube }}" class="whatsapp"><i class="fab fa-youtube"></i>
+                                </a> </li>
+                        @endif
+
+                        @if ($company->pinterest)
+                            <li><a href="{{ $company->pinterest }}" class="whatsapp"><i class="fab fa-pinterest"></i>
+                                </a> </li>
+                        @endif
                     </ul>
-                    <p class="whitecolor">&copy; <span id="year"></span> Trax. Made With Love by ThemesIndustry
+                    <p class="whitecolor">&copy; <span id="year"></span> Trax. Made With Love by Quicktech IT
                     </p>
                 </div>
             </div>
@@ -160,10 +189,9 @@
                 @foreach ($packages as $package)
                     <div class="item">
                         <div class="col-md-12">
-                            <div class="pricing-item wow fadeInUp animated @if ($key === 1) active selected
-@else
-sale @endif"
-                                data-wow-delay="300ms" data-sale="30">
+                            <div class="pricing-item wow fadeInUp animated @if ($key === 1) active selected @else @endif"
+                                data-wow-delay="300ms">
+                                {{-- sale data-sale="30" --}}
                                 <h3 class="font-light darkcolor">{{ $package->name }}</h3>
                                 <p class="bottom30">{{ $package->title }}</p>
                                 <div class="pricing-price darkcolor"><span
@@ -184,12 +212,11 @@ sale @endif"
     </section>
     <!--Pricing ends-->
     <!--contact us-->
-    <section id="contact" class="position-relative padding_bottom_half">
+    <section id="cantact" class="position-relative padding_bottom_half">
         <div class="container whitebox padding_bottom_half">
             <div class="padding_top">
                 <div class="row">
                     <div class="col-md-12 text-center wow fadeInUp mt-n3" data-wow-delay="300ms">
-                        <span class="defaultcolor">Quisque tellus risus</span>
                         <div class="heading-title bottom25 darkcolor">
                             <h2 class="font-normal darkcolor"> Contact Us </h2>
                         </div>
@@ -237,6 +264,12 @@ sale @endif"
                                 @if ($company->youtube)
                                     <li><a href="{{ $company->youtube }}" class="whatsapp"><i
                                                 class="fab fa-youtube"></i>
+                                        </a> </li>
+                                @endif
+
+                                @if ($company->pinterest)
+                                    <li><a href="{{ $company->pinterest }}" class="whatsapp"><i
+                                                class="fab fa-pinterest"></i>
                                         </a> </li>
                                 @endif
                             </ul>
@@ -295,122 +328,69 @@ sale @endif"
         </div>
     </section>
     <!--contact us end-->
-    <!-- map -->
-    <div class="w-100">
-        <div id="map" class="full-map"></div>
-    </div>
-    <!-- map end -->
-    <!-- Stay connected US -->
-    <section id="stayconnect">
-        <div class="container position-relative">
-            <div class="contactus-wrapp position-absolute shadow-equal">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12">
-                        <div class="heading-title wow fadeInUp text-center text-md-start" data-wow-delay="300ms">
-                            <h3 class="darkcolor bottom20">Stay Connected</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12">
-                        <form class="getin_form wow fadeInUp" data-wow-delay="400ms" onsubmit="return false;">
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12" id="result"></div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="userName" class="d-none"></label>
-                                        <input class="form-control" type="text" placeholder="Name" required
-                                            id="userName" name="userName">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="companyName" class="d-none"></label>
-                                        <input class="form-control" type="text" placeholder="Company"
-                                            id="companyName" name="companyName">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="email" class="d-none"></label>
-                                        <input class="form-control" type="email" placeholder="Email" required
-                                            id="email" name="email">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <button type="submit" class="button gradient-btn w-100"
-                                        id="submit_btn">subscribe</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Contact US ends -->
     <!--Site Footer Here-->
     <footer id="site-footer" class=" bgdark padding_top">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-sm-6">
                     <div class="footer_panel padding_bottom_half bottom20">
-                        <a href="index.html" class="footer_logo bottom25"><img src="images/logo-transparent.png"
-                                alt="trax"></a>
-                        <p class="whitecolor bottom25">Keep away from people who try to belittle your ambitions Small
-                            people always do that but the really great Friendly.</p>
+                        <a href="{{ route('home') }}" class="footer_logo bottom25"><img
+                                src="{{ asset($company->logo) }}" alt="trax"></a>
+                        <p class="whitecolor bottom25">
+                            {{ $company->about }}
+                        </p>
                         <div class="d-table w-100 address-item whitecolor bottom25">
                             <span class="d-table-cell align-middle"><i class="fas fa-mobile-alt"></i></span>
                             <p class="d-table-cell align-middle bottom0">
-                                +01 - 123 - 4567 <a class="d-block" href="mailto:web@support.com">web@support.com</a>
+                                {{ $company->phone_one }} <br>
+                                {{ $company->phone_two }} <br>
+                                {{ $company->phone_three }} <br>
+                                <a class="d-block" href="mailto:{{ $company->email }}">{{ $company->email }}</a>
                             </p>
                         </div>
                         <ul class="social-icons white wow fadeInUp" data-wow-delay="300ms">
-                            <li><a href="javascript:void(0)" class="facebook"><i class="fab fa-facebook-f"></i>
-                                </a> </li>
-                            <li><a href="javascript:void(0)" class="twitter"><i class="fab fa-twitter"></i> </a>
-                            </li>
-                            <li><a href="javascript:void(0)" class="linkedin"><i class="fab fa-linkedin-in"></i>
-                                </a> </li>
-                            <li><a href="javascript:void(0)" class="insta"><i class="fab fa-instagram"></i> </a>
-                            </li>
+                            @if ($company->facebook)
+                                <li><a href="{{ $company->facebook }}" class="facebook"><i
+                                            class="fab fa-facebook-f"></i>
+                                    </a> </li>
+                            @endif
+                            @if ($company->twitter)
+                                <li><a href="{{ $company->twitter }}" class="twitter"><i
+                                            class="fab fa-twitter"></i>
+                                    </a> </li>
+                            @endif
+                            @if ($company->linkedin)
+                                <li><a href="{{ $company->linkedin }}" class="linkedin"><i
+                                            class="fab fa-linkedin-in"></i>
+                                    </a> </li>
+                            @endif
+                            @if ($company->inatagram)
+                                <li><a href="{{ $company->inatagram }}" class="insta"><i
+                                            class="fab fa-instagram"></i>
+                                    </a> </li>
+                            @endif
+                            @if ($company->youtube)
+                                <li><a href="{{ $company->youtube }}" class="whatsapp"><i
+                                            class="fab fa-youtube"></i>
+                                    </a> </li>
+                            @endif
+
+                            @if ($company->pinterest)
+                                <li><a href="{{ $company->pinterest }}" class="whatsapp"><i
+                                            class="fab fa-pinterest"></i>
+                                    </a> </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer_panel padding_bottom_half bottom20">
-                        <h3 class="whitecolor bottom25">Latest News</h3>
-                        <ul class="latest_news whitecolor">
-                            <li> <a href="#.">Aenean tristique justo et... </a> <span
-                                    class="date defaultcolor">15 March 2019</span> </li>
-                            <li> <a href="#.">Phasellus dapibus dictum augue... </a> <span
-                                    class="date defaultcolor">15 March 2019</span> </li>
-                            <li> <a href="#.">Mauris blandit vitae. Praesent non... </a> <span
-                                    class="date defaultcolor">15 March 2019</span> </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-sm-6">
                     <div class="footer_panel padding_bottom_half bottom20 ps-0 ps-lg-5">
                         <h3 class="whitecolor bottom25">Navigation</h3>
                         <ul class="links">
                             <li><a href="#home" class="pagescroll">Home</a></li>
-                            <li><a href="#about" class="pagescroll scrollupto">About Us</a></li>
+                            <li><a href="#feature" class="pagescroll scrollupto">Our Feature</a></li>
                             <li><a href="#pricing" class="pagescroll">Our Pricing</a></li>
-                            <li><a href="#portfolio" class="pagescroll">Portfolio</a></li>
-                            <li><a href="#blog" class="pagescroll">Our Blog</a></li>
-                            <li><a href="#contact" class="pagescroll">Contact Us</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer_panel padding_bottom_half bottom20">
-                        <h3 class="whitecolor bottom25">Business hours</h3>
-                        <p class="whitecolor bottom25">Our support available to help you 24 hours a day, seven days
-                            week</p>
-                        <ul class="hours_links whitecolor">
-                            <li><span>Monday-Saturday:</span> <span>8.00-18.00</span></li>
-                            <li><span>Friday:</span> <span>09:00-21:00</span></li>
-                            <li><span>Sunday:</span> <span>09:00-20:00</span></li>
-                            <li><span>Calendar Events:</span> <span>24-Hour Shift</span></li>
+                            <li><a href="#cantact" class="pagescroll">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>

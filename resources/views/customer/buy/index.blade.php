@@ -7,11 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ route('customer.quicksell') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.quicksell')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/sell.png') }}" style="height:27px;padding:0 10px 0 0"> Quick Sell</a>
-
-                    <a href="{{ route('customer.products.index.list') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.products.index.list')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/product-list-icon.png') }}" style="height:27px;padding:0 10px 0 0"> Product List</a>
+                    <h1>Buy product from your shop product list</h1>
                 </div>
                 <div class="col-sm-6">
                     
@@ -31,36 +27,24 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        {{-- <th>Action</th> --}}
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Quantity</th>
-                                        <th>Price</th>
+                                        <th>Buying Price</th>
+                                        <th>Selling Price</th>
                                         <th>Sell Now</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($products as $product)
                                         <tr>
-                                            {{-- <td class="d-flex justify-content-between">
-                                                <a href="{{ route('customer.products.edit', $product) }}"
-                                                    class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ route('customer.products.destroy', $product) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit"
-                                                        onclick="return(confirm('Are you sure want to delete this item?'))"
-                                                        class="btn btn-danger btn-xs"> <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </td> --}}
                                             <td>
                                                 <img src="{{ asset($product->image === null ? 'images/user.png' : $product->image) }}"
                                                     style="height:50px;width:50px">
                                             </td>
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->quantity }}</td>
+                                            <td>{{ $product->buying_price }}</td>
                                             <td>{{ $product->price }}</td>
                                             <td>
                                                 <a onclick="add_to_cart({{ $product->id }})"
@@ -74,7 +58,7 @@
                         </div>
                         <tfoot>
                             <tr>
-                                <a href="{{ route('customer.cart') }}" class="btn btn-info btn-sm">
+                                <a href="{{ route('customer.buy.cart') }}" class="btn btn-info btn-sm">
                                     <h6 style="width: 50%;text-align:left;float:left;">Total Sale</h6>
                                     <div class="d-flex justify-content-start mr-3"
                                         style="width: 10%;text-align:left;float:left;">
@@ -126,7 +110,7 @@
                 });
                 $.ajax({
                     method: 'POST',
-                    url: "{{ asset('/') }}customer/add-to-cart",
+                    url: "{{ asset('/') }}customer/buy/add-to-cart",
                     data: {
                         id: product_id,
                     },

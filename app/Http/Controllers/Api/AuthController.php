@@ -29,10 +29,6 @@ class AuthController extends Controller {
             return response()->json(['status' => true]);
         }
 
-        $check->phone = $request->phone;
-        $check->otp   = rand(111111, 999999);
-        $check->save();
-
         return response()->json(['status' => 'new']);
 
     }
@@ -83,10 +79,10 @@ class AuthController extends Controller {
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
-            'phone'    => 'required|unique:customers',
+            'phone'    => 'required|unique:customers|digits:11',
             'email'    => 'nullable|email|unique:customers,email',
             'address'  => 'required',
-            'password' => 'required|digits:10',
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
