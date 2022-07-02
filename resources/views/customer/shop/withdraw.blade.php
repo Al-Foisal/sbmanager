@@ -29,7 +29,8 @@
                             <div class="card-body">
                                 <div class="card card-success">
                                     <div class="card-header">
-                                        <h3 class="card-title">Digital Balance: <b>{{ number_format($balance->amount, 2) }}</b>/=
+                                        <h3 class="card-title">Digital Balance:
+                                            <b>{{ number_format($balance->amount ?? 0, 2) }}</b>/=
                                         </h3>
                                     </div>
                                     <div class="card-body">
