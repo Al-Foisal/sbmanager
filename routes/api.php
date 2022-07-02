@@ -53,6 +53,7 @@ Route::controller(CustomerController::class)->group(function () {
     Route::delete('/delete-shop/banner/{id}', 'deleteShopBanner')->name('deleteShopBanner');
     Route::get('/shop/slider-list/{shop_id}', 'sliderList');
     Route::post('/withdraw/store', 'storeWithdraw');
+    Route::get('/digital-balance/{shop_id}', 'digitalBalance');
 
     //online shop
     Route::get('/online-shop/{shop_id}', 'onlineShop');
@@ -69,6 +70,10 @@ Route::controller(CustomerController::class)->group(function () {
 
     //save order
     Route::post('/order-save', 'orderSave');
+
+    //buy
+    Route::get('/buy-book/{shop_id}', 'buyBook');
+    Route::get('/buy-book-details/{shop_id}', 'buyBookDetails');
     Route::post('/buy-order-save', 'buyOrderSave');
 
     //transaction

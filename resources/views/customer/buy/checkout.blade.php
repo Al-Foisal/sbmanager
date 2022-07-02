@@ -195,7 +195,7 @@
     <script>
         $(document).ready(function() {
             $("#cash").keyup(function() {
-                alert($("#employee").is(":checked"))
+                console.log($("#employee").is(":checked"))
                 var subtotal = +$("#subtotal").val();
                 var cash = +$("#cash").val();
                 var change = cash - subtotal;

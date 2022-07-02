@@ -239,11 +239,11 @@ class BuyController extends Controller {
             return redirect()->route('customer.due.create', $data);
         }
 
-        return redirect()->route('customer.products.index')->withToastSuccess('New product added successfully!!');
+        return redirect()->route('customer.buy.index')->withToastSuccess('New product added successfully!!');
     }
 
     public function buyBook() {
-        $buys              = Buy::where('shop_id', SID())->orderBy('id', 'DESC')->whereMonth('created_at', now())->paginate(50);
+        $buys              = Buy::where('shop_id', SID())->orderBy('updated_at', 'DESC')->whereMonth('created_at', now())->paginate(50);
         $total_transaction = 0;
         $count             = 0;
 

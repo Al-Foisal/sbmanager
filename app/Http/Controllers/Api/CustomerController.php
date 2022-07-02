@@ -21,6 +21,30 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller {
+    public function buyBook($shop_id) {
+        $data              = [];
+        $data['buys']      = $buys      = Buy::where('shop_id', $shop_id)->with('supplier')->orderBy('updated_at', 'DESC')->whereMonth('created_at', now())->paginate(50);
+        $total_transaction = 0;
+        $count             = 0;
+
+        foreach ($buys as $item) {
+            $total_transaction += $item->subtotal;
+        }
+
+        $data['total_transaction'] = $total_transaction;
+        $data['count']             = $count;
+
+        return $data;
+    }
+
+    public function buyBookDetails($id) {
+
+        $data                = [];
+        $data['transaction'] = $t = buy::where('id', $id)->with('buyProduct')->first();
+
+        return $data;
+    }
+
     public function onlineShop($shop_id) {
         $data = [];
 
@@ -40,16 +64,22 @@ class CustomerController extends Controller {
     }
 
     public function shopDetails($id) {
-        $shop = Shop::where('id',$id)->with('division','district','area')->first();
+        $shop = Shop::where('id', $id)->with('division', 'district', 'area','shopType')->first();
 
         return $shop;
+    }
+
+    public function digitalBalance($shop_id) {
+        $balance = DigitalAmount::where('shop_id', $shop_id)->first();
+
+        return $balance;
     }
 
     public function storeWithdraw(Request $request) {
         $digital = DigitalAmount::where('shop_id', $request->shop_id)->first();
 
         if (!$digital || $digital->amount < 200) {
-            return back()->withToastError('Insufficient digital balance.');
+            return response()->json(['status'=>false,'message'=>'Insufficient digital balance.']);
         }
 
         $digital->update(['account_type' => $request->account_type, 'phone' => $request->phone]);
@@ -397,11 +427,11 @@ class CustomerController extends Controller {
         $carts = $request->cart;
 
         foreach ($carts as $cart) {
-            $order_product              = new BuyProduct();
-            $order_product->buy_id    = $buy->id;
-            $order_product->product_id  = $cart["id"];
-            $order_product->quantity    = $cart["qty"];
-            $order_product->price       = $cart["price"];
+            $order_product             = new BuyProduct();
+            $order_product->buy_id     = $buy->id;
+            $order_product->product_id = $cart["id"];
+            $order_product->quantity   = $cart["qty"];
+            $order_product->price      = $cart["price"];
             $order_product->save();
 
             $product          = Product::find($cart["id"]);
