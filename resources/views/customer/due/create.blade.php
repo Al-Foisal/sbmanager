@@ -62,21 +62,21 @@
                                                 <!-- checkbox -->
                                                 <div class="form-group d-flex justify-content-between">
                                                     <div class="icheck-success">
-                                                        <input type="radio" name="due_to" id="radioSuccess1"
-                                                            value="Consumer" @if($rc) checked @elseif($rs) disabled @endif>
+                                                        <input type="radio" name="due_to" required  id="radioSuccess1"
+                                                            value="Consumer" @if(!is_null($rc)) checked @elseif(!is_null($rs)) disabled @endif>
                                                         <label for="radioSuccess1">
                                                             Consumer
                                                         </label>
                                                     </div>
                                                     <div class="icheck-success">
-                                                        <input type="radio" name="due_to" id="radioSuccess2"
-                                                            value="Supplier" @if($rs) checked @endif>
+                                                        <input type="radio" name="due_to" required  id="radioSuccess2"
+                                                            value="Supplier" @if(!is_null($rs)) checked @endif>
                                                         <label for="radioSuccess2">
                                                             Supplier
                                                         </label>
                                                     </div>
                                                     <div class="icheck-success">
-                                                        <input type="radio" name="due_to" id="radioSuccess3"
+                                                        <input type="radio" name="due_to" required  id="radioSuccess3"
                                                             value="Employee" @if($rs) disabled @endif>
                                                         <label for="radioSuccess3">
                                                             Employee
@@ -98,14 +98,14 @@
                                                 <!-- checkbox -->
                                                 <div class="form-group d-flex justify-content-between">
                                                     <div class="icheck-danger">
-                                                        <input type="radio" name="due_type" id="radiodanger4"
+                                                        <input type="radio" name="due_type" required id="radiodanger4"
                                                             value="Due" @if($rc) checked @elseif($rs) disabled @endif>
                                                         <label for="radiodanger4">
                                                             Due
                                                         </label>
                                                     </div>
                                                     <div class="icheck-success">
-                                                        <input type="radio" name="due_type" id="radioSuccess5"
+                                                        <input type="radio" name="due_type" required id="radioSuccess5"
                                                             value="Deposit" @if($rs) checked @elseif($rc) disabled @endif>
                                                         <label for="radioSuccess5">
                                                             Deposit

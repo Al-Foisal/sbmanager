@@ -39,7 +39,7 @@
                     <h3>Shopping Cart</h3>
                 </div>
                 <div style="width: 50%;float: left;text-align:right">
-                    <a href="{{ route('customer.products.index') }}" class="btn btn-primary mb-2 text-right">Add
+                    <a href="{{ route('customer.products.index.list') }}" class="btn btn-primary mb-2 text-right">Add
                         Product to shopping cart
                     </a>
                 </div>

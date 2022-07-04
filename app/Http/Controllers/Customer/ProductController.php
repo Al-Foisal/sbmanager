@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Subcategory;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller {
@@ -24,13 +25,38 @@ class ProductController extends Controller {
     }
 
     public function indexList() {
-        session()->forget('discount');
-        session()->forget('subtotal');
-        Cart::destroy();
+        $data    = [];
+        $product = Product::where('shop_id', SID());
 
-        $products = Product::where('shop_id', SID())->get();
+        $sub                 = Product::where('shop_id', SID())->pluck('subcategory_id')->toArray();
+        $data['subcategory'] = Subcategory::whereIn('id', $sub)->get();
 
-        return view('customer.product.indexlist', compact('products'));
+        $subcategory = request()->id;
+
+        if ($subcategory) {
+            $product = $product->where('subcategory_id', $subcategory);
+        }
+
+        $data['products'] = $product->paginate(50);
+
+        return view('customer.product.indexlist', $data);
+    }
+
+    function fetch_search_data(Request $request) {
+
+        if ($request->ajax()) {
+            $name = $request->get('name');
+            $name = str_replace(" ", "%", $name);
+
+            $products = DB::table('products')
+                ->where('shop_id', SID())
+                ->where('name', 'like', '%' . $name . '%')
+                ->orderBy('name', 'ASC')
+                ->paginate(50);
+
+            return view('customer.product.product_search_paginate', compact('products'))->render();
+        }
+
     }
 
     /**

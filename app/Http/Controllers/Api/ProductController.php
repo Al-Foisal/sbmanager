@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -17,6 +18,23 @@ class ProductController extends Controller {
         $products = Product::where('shop_id', $shop_id)->with('category', 'subcategory')->get();
 
         return $products;
+    }
+
+    public function commonProduct($shop_id) {
+        $product = Product::where('shop_id', $shop_id);
+
+        $sub                 = Product::where('shop_id', $shop_id)->pluck('subcategory_id')->toArray();
+        $data['subcategory'] = Subcategory::whereIn('id', $sub)->get();
+
+        $subcategory = request()->id;
+
+        if ($subcategory) {
+            $product = $product->where('subcategory_id', $subcategory);
+        }
+
+        $data['products'] = $product->with('category', 'subcategory')->paginate(50);
+
+        return $data;
     }
 
     /**

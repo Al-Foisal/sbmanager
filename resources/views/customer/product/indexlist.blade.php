@@ -2,36 +2,30 @@
 @section('title', 'Product list')
 
 @section('backend')
-    <!-- Content Header (Page header) -->
-    <section class="content-header mmm">
+    <!-- Main content -->
+    <section class="content mmm">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <a href="{{ route('customer.quicksell') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.quicksell')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/sell.png') }}" style="height:27px;padding:0 10px 0 0"> Quick Sell</a>
-
-                    <a href="{{ route('customer.products.index.list') }}"
-                        class="@if (Illuminate\Support\Facades\Route::is('customer.products.index.list')) btn btn-info btn-sm @else btn btn-light btn-sm apply-border @endif" style="padding: 2px 35px;font-size:20px;"><img src="{{ asset('images/product-list-icon.png') }}" style="height:27px;padding:0 10px 0 0"> Product List</a>
-                </div>
-                <div class="col-sm-6">
-                    
+            <div class="row mb-3">
+                <div class="col-12 form-inline">
+                    <div class="form-group" style="width: 91%;margin-right:5%;">
+                        <input type="text" name="name" id="name" class="form-control"
+                            placeholder="Enter product name" style="width: 100%" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
+                            <i class="fas fa-angle-down"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body table-responsive" style="height: 400px;">
+                        <div class="card-body table-responsive" style="height: 430px;">
 
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        {{-- <th>Action</th> --}}
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Quantity</th>
@@ -40,37 +34,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($products as $product)
-                                        <tr>
-                                            {{-- <td class="d-flex justify-content-between">
-                                                <a href="{{ route('customer.products.edit', $product) }}"
-                                                    class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ route('customer.products.destroy', $product) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit"
-                                                        onclick="return(confirm('Are you sure want to delete this item?'))"
-                                                        class="btn btn-danger btn-xs"> <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </td> --}}
-                                            <td>
-                                                <img src="{{ asset($product->image === null ? 'images/user.png' : $product->image) }}"
-                                                    style="height:50px;width:50px">
-                                            </td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product->quantity }}</td>
-                                            <td>{{ $product->price }}</td>
-                                            <td>
-                                                <a onclick="add_to_cart({{ $product->id }})"
-                                                    class="btn btn-success btn-sm">Add to Cart</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    @include('customer.product.product_search_paginate')
                                 </tbody>
                             </table>
-                            {{-- {{ $products->links() }} --}}
+                            <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
                         </div>
                         <tfoot>
                             <tr>
@@ -82,10 +49,8 @@
                                         <p class="total_cart_subtotal">
                                             {{ Cart::subtotal() }}</p>
                                     </div>
-                                    <div class="d-flex justify-content-start bg-white"
-                                        style="width: 5%;float:left;">
-                                        <p class="total_cart_items" 
-                                        style="text-align:center;">
+                                    <div class="d-flex justify-content-start bg-white" style="width: 5%;float:left;">
+                                        <p class="total_cart_items" style="text-align:center;">
                                             {{ Cart::count() }}</p>
                                         <p>></p>
                                     </div>
@@ -103,22 +68,45 @@
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Category List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        @foreach ($subcategory as $sub)
+                            <li>
+                                <a
+                                    href="{{ route('customer.products.index.list', ['id' => $sub->id]) }}">{{ $sub->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('jsScript')
     <script>
         function add_to_cart(product_id) {
             $(document).ready(function(e) {
-                // const Toast = Swal.mixin({
-                //     toast: true,
-                //     position: 'top-end',
-                //     showConfirmButton: false,
-                //     timer: 3000,
-                //     timerProgressBar: true,
-                //     didOpen: (toast) => {
-                //         toast.addEventListener('mouseenter', Swal.stopTimer)
-                //         toast.addEventListener('mouseleave', Swal.resumeTimer)
-                //     }
-                // })
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -134,25 +122,45 @@
                     success: function(response) {
                         //  window.location.reload();
                         if (response.status === 'success') {
-                            // Toast.fire({
-                            //     icon: 'success',
-                            //     title: 'Product added to cart successfully'
-                            // })
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Product added to cart successfully'
+                            })
                             $('.total_cart_items').html(response.cart_count);
                         } else {
-                            // Toast.fire({
-                            //     icon: 'error',
-                            //     title: 'Product out of stock'
-                            // })
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Product out of stock'
+                            })
                         }
                         $('.total_cart_items').html(response.cart_count);
                         $('.total_cart_subtotal').html(response.cart_subtotal);
                     },
                     async: false,
-                    error: function(error) {
-                    }
+                    error: function(error) {}
                 })
             })
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            function fetch_data(page, name) {
+                $.ajax({
+                    url: "/customer/product/list/fetch_data?page=" + page + "&name=" + name,
+                    success: function(data) {
+                        $('tbody').html('');
+                        $('tbody').html(data);
+                    }
+                })
+            }
+
+            $(document).on('keyup', '#name', function() {
+                var name = $('#name').val();
+                var page = $('#hidden_page').val();
+                fetch_data(page, name);
+            });
+        });
     </script>
 @endsection

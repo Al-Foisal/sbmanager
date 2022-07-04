@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
 use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SubscriptionPaymentController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -127,6 +128,11 @@ Route::apiResource('shops.employees', EmployeeController::class);
 Route::apiResource('shops.suppliers', SupplierController::class);
 Route::apiResource('shops.products', ProductController::class);
 Route::apiResource('shops.digital_payments', DigitalPaymentController::class);
+Route::get('/common/{shop_id}/products', [ProductController::class, 'commonProduct']);
+
+Route::controller(SearchController::class)->prefix('/search')->group(function () {
+    Route::get('/product/fetch_data', 'fetchProductData');
+});
 
 Route::controller(GeneralController::class)->group(function () {
     Route::get('/category', 'category');

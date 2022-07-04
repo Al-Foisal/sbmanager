@@ -130,15 +130,15 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::post('/withdraw/store', 'storeWithdraw')->name('storeWithdraw');
     });
 
-    Route::controller(BuyController::class)->prefix('/buy')->as('buy.')->group(function(){
-        Route::get('/','index')->name('index');
-        Route::get('/cart','cart')->name('cart');
-        Route::post('/add-to-cart','addToCart');
-        Route::get('/checkout','checkout')->name('checkout');
-        Route::post('/placeOrder','placeOrder')->name('placeOrder');
-        Route::get('/buyBook','buyBook')->name('book');
-        Route::get('/buyBookDetails/{id}','buyBookDetails')->name('buyBookDetails');
-        Route::get('/cartOrder/{id}','cartOrder')->name('cartOrder');
+    Route::controller(BuyController::class)->prefix('/buy')->as('buy.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/cart', 'cart')->name('cart');
+        Route::post('/add-to-cart', 'addToCart');
+        Route::get('/checkout', 'checkout')->name('checkout');
+        Route::post('/placeOrder', 'placeOrder')->name('placeOrder');
+        Route::get('/buyBook', 'buyBook')->name('book');
+        Route::get('/buyBookDetails/{id}', 'buyBookDetails')->name('buyBookDetails');
+        Route::get('/cartOrder/{id}', 'cartOrder')->name('cartOrder');
     });
 
     Route::controller(ShopController::class)->prefix('/shop')->as('shop.')->group(function () {
@@ -146,7 +146,7 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::post('/store', 'store')->name('store');
         Route::get('/order-list', 'orderList')->name('orderList');
         Route::get('/order-details/{id}', 'orderDetails')->name('orderDetails');
-        
+
         //paid access//
         Route::get('/online-shop', 'onlineShop')->name('onlineShop')->middleware('checkAccess');
         Route::get('/edit-store', 'editStore')->name('editStore')->middleware('checkAccess');
@@ -172,6 +172,8 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
     });
 
     Route::get('/product/list', [ProductController::class, 'indexList'])->name('products.index.list');
+    Route::get('/product/list/fetch_data', [ProductController::class, 'fetch_search_data']);
+
     Route::resource('/consumers', ConsumerController::class);
     Route::resource('/suppliers', SupplierController::class);
     Route::resource('/employees', EmployeeController::class);

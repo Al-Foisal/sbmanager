@@ -78,25 +78,27 @@ class DueController extends Controller {
                 return back();
             }
 
+            if ($consumer_id !== 'Consumer') {
+                $data['rc'] = Consumer::find($consumer_id);
+
+            } else {
+                $data['rc'] = $consumer_id;
+            }
+
+            if ($supplier_id !== 'Supplier') {
+                $data['rs'] = Consumer::find($supplier_id);
+
+            } else {
+                $data['rs'] = $supplier_id;
+            }
+
+            $data['consumers'] = Consumer::all();
         } else {
-            return back();
+
+            $data['rc'] = null;
+            $data['rs'] = null;
+            // $data['rc']=null;
         }
-
-        if ($consumer_id !== 'Consumer') {
-            $data['rc'] = Consumer::find($consumer_id);
-
-        } else {
-            $data['rc'] = $consumer_id;
-        }
-
-        if ($supplier_id !== 'Supplier') {
-            $data['rs'] = Consumer::find($supplier_id);
-
-        } else {
-            $data['rs'] = $supplier_id;
-        }
-
-        $data['consumers'] = Consumer::all();
 
         return view('customer.due.create', $data);
     }

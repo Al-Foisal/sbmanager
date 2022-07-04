@@ -64,7 +64,7 @@ class CustomerController extends Controller {
     }
 
     public function shopDetails($id) {
-        $shop = Shop::where('id', $id)->with('division', 'district', 'area','shopType')->first();
+        $shop = Shop::where('id', $id)->with('division', 'district', 'area', 'shopType')->first();
 
         return $shop;
     }
@@ -79,7 +79,7 @@ class CustomerController extends Controller {
         $digital = DigitalAmount::where('shop_id', $request->shop_id)->first();
 
         if (!$digital || $digital->amount < 200) {
-            return response()->json(['status'=>false,'message'=>'Insufficient digital balance.']);
+            return response()->json(['status' => false, 'message' => 'Insufficient digital balance.']);
         }
 
         $digital->update(['account_type' => $request->account_type, 'phone' => $request->phone]);
@@ -342,12 +342,14 @@ class CustomerController extends Controller {
 
     public function orderSave(Request $request) {
 
+        $data = [];
+
         if ($request->cash === null && $request->payment_method === 'Cash' && ($request->cash - $request->subtotal) < 0) {
-            return redirect()->back()->withToastError('Cash payment input error.');
+            return 'Cash payment input error.';
         }
 
         if ($request->payment_method === 'Digital Payment' && $request->consumer_id === null) {
-            return redirect()->back()->withToastError('Customer information is needed for digital payment');
+            return 'Customer information is needed for digital payment';
         }
 
         if ($request->payment_method === 'Cash') {
@@ -369,7 +371,7 @@ class CustomerController extends Controller {
         $order = Order::create($data);
 
         if ($request->payment_method === 'Digital Payment') {
-            DigitalPayment::create([
+            $data['digital_payment'] = DigitalPayment::create([
                 'shop_id' => $request->shop_id,
                 'name'    => $order->consumer->name,
                 'phone'   => $order->consumer->name,
@@ -398,7 +400,10 @@ class CustomerController extends Controller {
             ]);
         }
 
-        return response()->json(['status' => true, 'message' => 'Order placed successfully!!']);
+
+        $data['order'] = Order::where('id', $order->id)->with('orderProduct', 'orderProduct.prod')->first();
+
+        return response()->json(['status' => true, 'message' => 'Order placed successfully!!', 'order' => $data]);
     }
 
     public function buyOrderSave(Request $request) {
