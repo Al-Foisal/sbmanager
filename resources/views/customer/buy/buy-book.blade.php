@@ -49,7 +49,7 @@
                                                 <span>#{{ $buy->id }}</span>
                                                 <br>
                                                 @if ($buy->supplier_id !== null)
-                                                    <b>{{ GET_CONSUMER_BY_ID($buy->supplier_id)->name }}</b>
+                                                    <b>{{ GET_CONSUMER_BY_ID($buy->supplier_id)->name??'' }}</b>
                                                     <br>
                                                 @endif
                                                 <span>{{ $buy->created_at }}</span>
