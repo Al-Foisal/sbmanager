@@ -9,8 +9,7 @@ use App\Models\EMI;
 use App\Models\EMITime;
 use Illuminate\Http\Request;
 
-class EMIController extends Controller 
-{
+class EMIController extends Controller {
     public function index() {
         $data         = [];
         $data['emis'] = EMI::where('shop_id', SID())->orderBy('id', 'DESC')->get();
@@ -81,16 +80,17 @@ class EMIController extends Controller
         }
 
         $socialShare = \Share::page(
-            $emi->link,
+            route('payment.consumerPayment', $emi->link),
             'Make your digital payment through this link.',
         )
-        ->facebook()
-        ->twitter()
-        ->reddit()
-        ->linkedin()
-        ->whatsapp()
-        ->telegram();
-        return view('customer.emi.details', compact('emi','socialShare'));
+            ->facebook()
+            ->twitter()
+            ->reddit()
+            ->linkedin()
+            ->whatsapp()
+            ->telegram();
+
+        return view('customer.emi.details', compact('emi', 'socialShare'));
     }
 
 }

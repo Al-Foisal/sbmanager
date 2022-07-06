@@ -18,6 +18,18 @@ class Product extends Model {
         return $this->belongsTo(Subcategory::class);
     }
 
+    public function orderProduct() {
+        return $this->hasMany(OrderProduct::class);
+    }
+
+    public function sellProduct() {
+        return $this->hasOne(OrderProduct::class)->latest();
+    }
+
+    public function buyProduct() {
+        return $this->hasOne(buyProduct::class)->latest();
+    }
+
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value) . rand();

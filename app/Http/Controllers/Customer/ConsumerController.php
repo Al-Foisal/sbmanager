@@ -7,6 +7,7 @@ use App\Models\Consumer;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class ConsumerController extends Controller {
@@ -16,7 +17,7 @@ class ConsumerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $consumers = Consumer::where('shop_id', SID())->paginate(50);
+        $consumers = Consumer::where('shop_id', SID())->paginate(500);
 
         return view('customer.contact.consumer.index', compact('consumers'));
     }

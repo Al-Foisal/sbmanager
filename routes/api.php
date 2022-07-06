@@ -89,6 +89,8 @@ Route::controller(CustomerController::class)->group(function () {
     Route::get('/subscription-list', 'subscriptionList');
 
     Route::put('/product/update-quantity', 'updateQuantity');
+
+    Route::post('/store-qr-code', 'storeQRCode');
 });
 
 //due
@@ -144,6 +146,13 @@ Route::controller(GeneralController::class)->group(function () {
     Route::get('/get_district/{division_id}', 'districtByDivision');
     Route::get('/get_area/{district_id}', 'areaByDistrict');
     Route::get('/payments/{link}', 'consumerPayment');
+
+    Route::get('/consumer/orders/{shop_id}', 'consumerOrders');
+    Route::get('/employee/orders/{shop_id}', 'employeeOrders');
+    Route::get('/supplier-report/{shop_id}', 'supplierReport');
+    Route::get('/stock-report/{shop_id}', 'stockReport');
+    Route::get('/product-report/{shop_id}', 'productReport');
+    Route::get('/PL-report/{shop_id}', 'plReport'); //parameter: "date_time"
 });
 
 //subscription payment

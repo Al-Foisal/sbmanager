@@ -26,7 +26,7 @@ class EMIController extends Controller {
 
     public function index($shop_id) {
         $data         = [];
-        $data['emis'] = EMI::where('shop_id', $shop_id)->orderBy('id', 'DESC')->get();
+        $data['emis'] = EMI::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(500);
 
         return $data;
     }
@@ -86,7 +86,7 @@ class EMIController extends Controller {
         $emi->emi_extra          = $request->emi_extra;
         $emi->emi_monthly_amount = $request->emi_monthly_amount;
         $emi->emi_paid_amount    = $request->emi_paid_amount;
-        $emi->link               = 'https://url.com/' . $request->shop_id . bin2hex(random_bytes(5)) . time();
+        $emi->link               = $request->shop_id . bin2hex(random_bytes(5)) . time();
         $emi->status             = 'Pending';
         $emi->save();
 

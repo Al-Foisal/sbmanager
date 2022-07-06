@@ -51,7 +51,7 @@ class OrderController extends Controller {
                 'phone'   => $order->consumer->phone,
                 'amount'  => $request->subtotal,
                 'status'  => 'pending',
-                'link'    => 'payment-link/' . SID() . bin2hex(random_bytes(5)) . time(),
+                'link'    => SID() . bin2hex(random_bytes(5)) . time(),
             ]);
         }
 

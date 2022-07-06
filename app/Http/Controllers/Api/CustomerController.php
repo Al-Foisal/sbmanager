@@ -13,6 +13,7 @@ use App\Models\OnlineOrder;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
+use App\Models\QRCode;
 use App\Models\Shop;
 use App\Models\Slider;
 use App\Models\Subscription;
@@ -21,9 +22,110 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller {
+    public function storeQRCode(Request $request) {
+
+        if ($request->hasFile('bkash')) {
+
+            $image_file = $request->file('bkash');
+
+            if ($image_file) {
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/qr/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name = $img_gen . '.' . $image_ext;
+                $bkash    = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+                QRCode::updateOrcreate(
+                    ['shop_id' => $request->shop_id],
+                    [
+                        'bkash' => $bkash,
+                    ]
+                );
+            }
+
+        }
+
+        if ($request->hasFile('nagad')) {
+
+            $image_file = $request->file('nagad');
+
+            if ($image_file) {
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/qr/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name = $img_gen . '.' . $image_ext;
+                $nagad    = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+                QRCode::updateOrcreate(
+                    ['shop_id' => $request->shop_id],
+                    [
+                        'nagad' => $nagad,
+                    ]
+                );
+            }
+
+        }
+
+        if ($request->hasFile('rocket')) {
+
+            $image_file = $request->file('rocket');
+
+            if ($image_file) {
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/qr/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name = $img_gen . '.' . $image_ext;
+                $rocket   = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+                QRCode::updateOrcreate(
+                    ['shop_id' => $request->shop_id],
+                    [
+                        'rocket' => $rocket,
+                    ]
+                );
+            }
+
+        }
+
+        if ($request->hasFile('others')) {
+
+            $image_file = $request->file('others');
+
+            if ($image_file) {
+
+                $img_gen   = hexdec(uniqid());
+                $image_url = 'images/qr/';
+                $image_ext = strtolower($image_file->getClientOriginalExtension());
+
+                $img_name = $img_gen . '.' . $image_ext;
+                $others   = $image_url . $img_gen . '.' . $image_ext;
+
+                $image_file->move($image_url, $img_name);
+                QRCode::updateOrcreate(
+                    ['shop_id' => $request->shop_id],
+                    [
+                        'others' => $others,
+                    ]
+                );
+            }
+
+        }
+
+        return redirect()->back()->withToastSuccess('QR code updated !!');
+    }
+
     public function buyBook($shop_id) {
         $data              = [];
-        $data['buys']      = $buys      = Buy::where('shop_id', $shop_id)->with('supplier')->orderBy('updated_at', 'DESC')->whereMonth('created_at', now())->paginate(50);
+        $data['buys']      = $buys      = Buy::where('shop_id', $shop_id)->with('supplier')->orderBy('updated_at', 'DESC')->paginate(500);
         $total_transaction = 0;
         $count             = 0;
 
@@ -40,7 +142,7 @@ class CustomerController extends Controller {
     public function buyBookDetails($id) {
 
         $data                = [];
-        $data['transaction'] = $t = buy::where('id', $id)->with('buyProduct')->first();
+        $data['transaction'] = buy::where('id', $id)->with('buyProduct')->first();
 
         return $data;
     }
@@ -174,18 +276,14 @@ class CustomerController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $shop->update(
-                    [
-                        'image' => $final_name1,
-                    ]
-                );
 
-                return response()->json(['status' => true, 'message' => 'dddddddddd']);
+                $shop->image = $final_name1;
+                $shop->save();
+
+                return response()->json(['status' => true, 'message' => 'Shop image updated!']);
             }
 
         }
-
-        return response()->json(['status' => true, 'message' => 'dddddddddd']);
 
     }
 
@@ -377,7 +475,7 @@ class CustomerController extends Controller {
                 'phone'   => $order->consumer->name,
                 'amount'  => $request->subtotal,
                 'status'  => 'pending',
-                'link'    => 'payment-link/' . $request->shop_id . bin2hex(random_bytes(5)) . time(),
+                'link'    => $request->shop_id . bin2hex(random_bytes(5)) . time(),
             ]);
         }
 
@@ -399,7 +497,6 @@ class CustomerController extends Controller {
                 'quantity' => $updated_quantity <= 0 ? 0 : $updated_quantity,
             ]);
         }
-
 
         $data['order'] = Order::where('id', $order->id)->with('orderProduct', 'orderProduct.prod')->first();
 
@@ -451,7 +548,7 @@ class CustomerController extends Controller {
 
     public function transaction($shop_id) {
         $data              = [];
-        $data['orders']    = $orders    = Order::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(50);
+        $data['orders']    = $orders    = Order::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(500);
         $total_transaction = 0;
         $count             = 0;
 
@@ -474,7 +571,10 @@ class CustomerController extends Controller {
 
     public function orderList($shop_id) {
         $data           = [];
-        $data['orders'] = Order::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('orderProduct')->paginate(50);
+        $data['orders'] = Order::where('shop_id', $shop_id)->orderBy('id', 'desc')->with(['orderProduct', 'orderProduct.prod' => function ($query) {
+            return $query->select(['id', 'name']);
+        },
+        ])->paginate(500);
 
         return $data;
     }
@@ -483,13 +583,17 @@ class CustomerController extends Controller {
         $data          = [];
         $data['order'] = $order = Order::find($id);
 
-        $data['orderProduct'] = OrderProduct::where('order_id', $order->id)->get();
+        $data['orderProduct'] = OrderProduct::with(['prod' => function ($query) {
+            return $query->select(['id', 'name']);
+        },
+
+        ])->where('order_id', $order->id)->get();
 
         return $data;
     }
 
     public function onlineProduct($shop_id) {
-        $products = Product::where('shop_id', $shop_id)->where('online', 1)->whereNotNull('category_id')->paginate(50);
+        $products = Product::where('shop_id', $shop_id)->where('online', 1)->whereNotNull('category_id')->paginate(500);
 
         return $products;
     }
@@ -506,7 +610,7 @@ class CustomerController extends Controller {
 
     public function onlineOrderList($shop_id) {
         $data                 = [];
-        $data['online_order'] = OnlineOrder::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('onlineOrderProducts')->paginate(50);
+        $data['online_order'] = OnlineOrder::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('onlineOrderProducts')->paginate(500);
 
         return $data;
     }
@@ -519,7 +623,7 @@ class CustomerController extends Controller {
             ->where('shop_id', $request->shop_id)
             ->where('phone', 'LIKE', "%{$search}%")
             ->orWhere('status', $request->status)
-            ->paginate(28);
+            ->paginate(500);
         $data['search'] = $search;
 
         return $data;

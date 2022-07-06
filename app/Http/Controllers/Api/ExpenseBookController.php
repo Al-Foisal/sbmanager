@@ -12,11 +12,22 @@ use Illuminate\Support\Facades\File;
 class ExpenseBookController extends Controller {
     public function expenseBook($shop_id) {
         $data                  = [];
-        $data['expenses']      = ExpenseBook::where('shop_id', $shop_id)->orWhere('shop_id', null)->with('expenseBookDetails')->get();
+        $data['expenses']      = $e      = ExpenseBook::where('shop_id', $shop_id)->orWhere('shop_id', null)->withSum('expenseBookDetails', 'amount')->get();
         $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
             ->whereMonth('created_at', '=', now())
             ->select('amount')
             ->sum('amount');
+        // $total = 0;
+
+        // foreach ($e as $i) {
+        //     $total += $i->expense_book_details_sum_amount;
+        // }
+
+        // $data['total'] = $total;
+
+        // foreach($e as $key=>$p){
+        //     $data[$key]=(($p->expense_book_details_sum_amount*$total)/100)/$e->count();
+        // }
 
         return $data;
     }
@@ -76,11 +87,8 @@ class ExpenseBookController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $expense->update(
-                    [
-                        'image' => $final_name1,
-                    ]
-                );
+                $expense->image = $final_name1;
+                $expense->save();
             }
 
         }
@@ -134,7 +142,7 @@ class ExpenseBookController extends Controller {
         if ($type === 'today') {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereDay('created_at', '=', now())
                 ->with('expenseBook')
-                ->get();
+                ->paginate(500);
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereDay('created_at', '=', now())
                 ->select('amount')
@@ -145,7 +153,7 @@ class ExpenseBookController extends Controller {
                 Carbon::now()->endOfWeek(Carbon::SATURDAY),
             ])
                 ->with('expenseBook')
-                ->get();
+                ->paginate(500);
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereBetween('created_at', [
                 Carbon::now()->startOfWeek(Carbon::SUNDAY),
@@ -156,7 +164,7 @@ class ExpenseBookController extends Controller {
         } elseif ($type === 'month') {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', '=', now())
                 ->with('expenseBook')
-                ->get();
+                ->paginate(500);
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', '=', now())
                 ->select('amount')
@@ -164,7 +172,7 @@ class ExpenseBookController extends Controller {
         } elseif ($type === 'year') {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->with('expenseBook')
-                ->get();
+                ->paginate(500);
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->select('amount')
@@ -174,7 +182,7 @@ class ExpenseBookController extends Controller {
             $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->whereMonth('created_at', '=', now())
                 ->with('expenseBook')
-                ->get();
+                ->paginate(500);
 
             $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
                 ->whereMonth('created_at', '=', now())

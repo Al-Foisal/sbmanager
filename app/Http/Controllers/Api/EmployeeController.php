@@ -78,6 +78,7 @@ class EmployeeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id, Employee $employee) {
+
         if ($request->hasFile('image')) {
 
             $image_file = $request->file('image');
@@ -98,11 +99,8 @@ class EmployeeController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $employee->update(
-                    [
-                        'image' => $final_name1,
-                    ]
-                );
+                $employee->image = $final_name1;
+                $employee->save();
             }
 
         }
@@ -135,7 +133,7 @@ class EmployeeController extends Controller {
 
         $employee->delete();
 
-        return response()->json(['status'=>'ok']);
+        return response()->json(['status' => 'ok']);
     }
 
 }

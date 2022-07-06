@@ -12,10 +12,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header bg-success" style="height: 10%">
-                            <p>
-                            <h3>Total Balance</h3>
-                            {{ date('F Y') }}
+                        <div class="card-header bg-success d-flex justify-content-between" style="height: 10%">
+                            <p class="d-flex justify-content-start">
+                            <h3>Total Balance <br>{{ date('F Y') }}</h3>
                             </p>
                             <h2>
                                 <b>৳ {{ number_format($total_balance, 2) }}</b>
@@ -39,32 +38,20 @@
             </div>
         </div>
     </section>
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="">
-                <div class="d-flex justify-content-around">
-                    <a href="{{ route('customer.expense.expenseBookList') }}"
-                        class="btn btn-light border pr-5 pl-5 @if($type === null) btn-dark @endif">ALL</a>
-                    <a href="{{ route('customer.expense.expenseBookList', ['type' => 'today']) }}"
-                        class="btn btn-light border pr-5 pl-5 @if($type === 'today') btn-dark @endif">Today</a>
-                    <a href="{{ route('customer.expense.expenseBookList', ['type' => 'week']) }}"
-                        class="btn btn-light border pr-5 pl-5 @if($type === 'week') btn-dark @endif">This Week</a>
-                    <a href="{{ route('customer.expense.expenseBookList', ['type' => 'month']) }}"
-                        class="btn btn-light border pr-5 pl-5 @if($type === 'month') btn-dark @endif">This Month</a>
-                    <a href="{{ route('customer.expense.expenseBookList', ['type' => 'year']) }}"
-                        class="btn btn-light border pr-5 pl-5 @if($type === 'year') btn-dark @endif">This Year</a>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table id="" class="table table-bordered table-striped">
-
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Expense</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach ($expenses as $expense)
                                         <tr>
@@ -77,6 +64,7 @@
                                             </td>
                                             <td style="vertical-align: middle;">৳
                                                 {{ number_format($expense->amount, 2) }}</td>
+                                                <td style="vertical-align: middle;font-weight:bold">{{ $expense->created_at->format('d F, Y') }} <br>{{ $expense->created_at->format('H:i:s A') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

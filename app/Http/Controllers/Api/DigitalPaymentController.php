@@ -16,8 +16,8 @@ class DigitalPaymentController extends Controller {
     public function index($shop_id) {
         $data = [];
 
-        $data['payments']  = DigitalPayment::where('shop_id', $shop_id)->get();
-        $data['consumers'] = Consumer::where('shop_id', $shop_id)->get();
+        $data['payments']  = DigitalPayment::where('shop_id', $shop_id)->paginate(500);
+        $data['consumers'] = Consumer::where('shop_id', $shop_id)->paginate(500);
 
         return $data;
     }
@@ -35,7 +35,7 @@ class DigitalPaymentController extends Controller {
             'phone'   => $request->phone,
             'amount'  => $request->amount,
             'status'  => 'pending',
-            'link'    => 'payment-link/' . $request->shop_id . bin2hex(random_bytes(5)) . time(),
+            'link'    => $request->shop_id . bin2hex(random_bytes(5)) . time(),
         ]);
 
         return response()->json(['status' => true, 'payment' => $payment]);

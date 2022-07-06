@@ -10,8 +10,7 @@ use App\Models\SubscriptionHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SubscriptionPaymentController extends Controller
-{
+class SubscriptionPaymentController extends Controller {
     public function subscriptionPayment(Request $request) {
         $subscription = Subscription::find($request->subscription_id);
         $shop         = Shop::find($request->shop_id);
@@ -52,7 +51,7 @@ class SubscriptionPaymentController extends Controller
         $post_data['cus_state']    = "N/A";
         $post_data['cus_postcode'] = "N/A";
         $post_data['cus_country']  = "Bangladesh";
-        $post_data['cus_phone']    = $shop->phone;
+        $post_data['cus_phone']    = $shop->phone ?? '017896325';
         $post_data['cus_fax']      = "N/A";
 
         # SHIPMENT INFORMATION
@@ -129,7 +128,7 @@ class SubscriptionPaymentController extends Controller
                     $next_date = date("Y-m-d", strtotime('+' . $sub->life_time . ' years'));
                 }
 
-                $shop = Shop::find($order_detials->shop_id);
+                $shop           = Shop::find($order_detials->shop_id);
                 $shop->end_date = $next_date;
                 $shop->save();
 

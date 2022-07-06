@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\Buy;
 use App\Models\Category;
 use App\Models\DigitalPayment;
 use App\Models\District;
 use App\Models\Division;
+use App\Models\ExpenseBookDetail;
+use App\Models\OnlineOrder;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopType;
 use App\Models\Subcategory;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GeneralController extends Controller {
     public function category() {
@@ -72,6 +79,85 @@ class GeneralController extends Controller {
         }
 
         $data['shop'] = Shop::find($consumer->shop_id) ?? [];
+
+        return $data;
+    }
+
+    public function consumerOrders($shop_id) {
+        $data             = [];
+        $data['consumer'] = DB::table('consumers')
+            ->join('orders', 'consumers.id', 'orders.consumer_id')
+            ->join('order_products', 'orders.id', 'order_products.order_id')
+            ->groupBy('orders.consumer_id')
+            ->where('consumers.shop_id', $shop_id)
+            ->selectRaw('consumers.id, consumers.name as consumerName, sum(orders.subtotal) as amount, count(orders.id) as totalOrder, sum(order_products.quantity) as quantity')
+            ->orderBy('quantity', 'desc')
+            ->paginate(500);
+
+        return $data;
+    }
+
+    public function employeeOrders($shop_id) {
+        $data             = [];
+        $data['employee'] = DB::table('employees')
+            ->join('orders', 'employees.id', 'orders.employee_id')
+            ->join('order_products', 'orders.id', 'order_products.order_id')
+            ->groupBy('orders.employee_id')
+            ->where('employees.shop_id', $shop_id)
+            ->selectRaw('employees.id, employees.name as employeeName, (int)sum(orders.subtotal) as amount, count(orders.id) as totalOrder, sum(order_products.quantity) as quantity')
+            ->orderBy('quantity', 'desc')
+            ->paginate(500);
+
+        return $data;
+    }
+
+    public function supplierReport($shop_id) {
+        $data             = [];
+        $data['supplier'] = DB::table('suppliers')
+            ->join('buys', 'suppliers.id', 'buys.supplier_id')
+            ->join('buy_products', 'buys.id', 'buy_products.buy_id')
+            ->groupBy('buys.supplier_id')
+            ->where('suppliers.shop_id', $shop_id)
+            ->selectRaw('suppliers.id, suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
+            ->orderBy('quantity', 'desc')
+            ->paginate(500);
+
+        return $data;
+    }
+
+    public function stockReport($shop_id) {
+        $data            = [];
+        $data['product'] = Product::where('shop_id', $shop_id)
+            ->select(['id', 'name', 'quantity'])
+            ->with('sellProduct', 'buyProduct')
+            ->get();
+
+        return $data;
+
+    }
+
+    public function productReport($shop_id) {
+        $product = Product::where('shop_id', $shop_id)
+            ->select(['id', 'name'])
+            ->withSum('orderProduct', 'quantity')
+            ->withSum('orderProduct', 'price')
+            ->get();
+
+        return $product;
+    }
+
+    public function plReport($shop_id) {
+        $data          = [];
+        $date_time     = request()->date_time ?? date("Y-m-d");
+        $selected_date = Carbon::parse($date_time)->format('d-m-Y');
+
+        $data['sell'] = Order::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('subtotal');
+        $data['cost'] = Buy::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('subtotal');
+
+        $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->where('status', 5)->sum('subtotal');
+        $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('amount');
+
+        $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
 
         return $data;
     }

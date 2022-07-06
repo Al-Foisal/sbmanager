@@ -50,12 +50,12 @@ class AuthController extends Controller {
     public function login(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'phone'    => 'required',
+            'phone'    => 'required|numeric|digits:11',
             'password' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['status' => false]);
+            return response()->json(['status' => false, 'message' => 'Invalid phone number!!']);
         }
 
         if (Auth::guard('customer')->attempt(['phone' => $request->phone, 'password' => $request->password])) {

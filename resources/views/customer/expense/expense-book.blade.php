@@ -66,8 +66,8 @@
                                                 $amount = DB::table('expense_book_details')
                                                     ->where('expense_book_id', $expense->id)
                                                     ->where('shop_id', SID())
-                                                    ->whereYear('created_at','=', $expense->created_at)
-                                                    ->whereMonth('created_at','=', $expense->created_at)
+                                                    ->whereYear('created_at','=', now())
+                                                    ->whereMonth('created_at','=', now())
                                                     ->select('amount')
                                                     ->sum('amount');
                                             @endphp

@@ -5,9 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Consumer extends Model
-{
+class Consumer extends Model {
     use HasFactory;
 
     protected $guarded = [];
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
+
+    public function products() {
+        return $this->orders()->order_product;
+    }
 }

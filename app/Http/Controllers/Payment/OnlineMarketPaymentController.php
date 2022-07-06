@@ -53,15 +53,15 @@ class OnlineMarketPaymentController extends Controller {
 // tran_id must be unique
 
         # CUSTOMER INFORMATION
-        $post_data['cus_name']     = $shop->name;
+        $post_data['cus_name']     = $shop->name ?? "N/A";
         $post_data['cus_email']    = "N/A";
-        $post_data['cus_add1']     = $shop->address;
+        $post_data['cus_add1']     = $shop->address ?? "N/A";
         $post_data['cus_add2']     = "N/A";
         $post_data['cus_city']     = "N/A";
         $post_data['cus_state']    = "N/A";
         $post_data['cus_postcode'] = "N/A";
         $post_data['cus_country']  = "Bangladesh";
-        $post_data['cus_phone']    = $shop->phone;
+        $post_data['cus_phone']    = $shop->phone ?? '01478963258';
         $post_data['cus_fax']      = "N/A";
 
         # SHIPMENT INFORMATION

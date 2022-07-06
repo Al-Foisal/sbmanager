@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Crypt;
 
 class TransactionController extends Controller {
     public function transaction() {
-        $orders            = Order::where('shop_id', SID())->orderBy('id', 'DESC')->whereMonth('created_at', now())->paginate(50);
+        $orders            = Order::where('shop_id', SID())->orderBy('id', 'DESC')->paginate(500);
         $total_transaction = 0;
         $count             = 0;
 

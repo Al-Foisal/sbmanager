@@ -14,7 +14,7 @@ class ConsumerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($shop_id) {
-        $consumers = Consumer::where('shop_id', $shop_id)->paginate(50);
+        $consumers = Consumer::where('shop_id', $shop_id)->paginate(500);
 
         return response()->json(['consumers' => $consumers]);
     }
@@ -96,11 +96,9 @@ class ConsumerController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $consumer->update(
-                    [
-                        'image' => $final_name1,
-                    ]
-                );
+
+                $consumer->image = $final_name1;
+                $consumer->save();
             }
 
         }

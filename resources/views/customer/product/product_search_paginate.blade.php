@@ -12,6 +12,8 @@
         </td>
     </tr>
 @endforeach
-<td>
-    {{ $products->links() }}
-</td>
+<tr>
+    <td colspan="5" class="text-center">
+        {!! $products->links() !!}
+    </td>
+</tr>

@@ -20,7 +20,7 @@ class DigitalPaymentController extends Controller {
         $data['payments']    = DigitalPayment::where('shop_id', SID())->paginate();
         $data['consumers']   = Consumer::where('shop_id', SID())->get();
         $data['socialShare'] = \Share::page(
-            'https://abc.com/digitalpayment',
+            route('payment.consumerPayment', SHOP()->payment_link),
             'Make your digital payment through this link.',
         )
             ->facebook()

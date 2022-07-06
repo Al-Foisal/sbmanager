@@ -54,7 +54,8 @@
                                                 </span>
                                             </div>
                                             <input type="text" class="form-control js-copytextarea"
-                                                id="validationTooltipUsername" value="{{ $emi->link }}"
+                                                id="validationTooltipUsername"
+                                                value="{{ route('payment.consumerPayment', $emi->link) }}"
                                                 aria-describedby="validationTooltipUsernamePrepend" readonly>
                                         </div>
                                         <div class="text-center">

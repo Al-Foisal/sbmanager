@@ -16,7 +16,7 @@ class SupplierController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $suppliers = Supplier::where('shop_id', SID())->paginate(50);
+        $suppliers = Supplier::where('shop_id', SID())->paginate(500);
 
         return view('customer.contact.supplier.index', compact('suppliers'));
     }

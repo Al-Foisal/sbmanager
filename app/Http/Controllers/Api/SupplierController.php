@@ -76,6 +76,7 @@ class SupplierController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id, Supplier $supplier) {
+
         if ($request->hasFile('image')) {
 
             $image_file = $request->file('image');
@@ -96,11 +97,8 @@ class SupplierController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $supplier->update(
-                    [
-                        'image' => $final_name1,
-                    ]
-                );
+                $supplier->image = $final_name1;
+                $supplier->save();
             }
 
         }
@@ -131,7 +129,7 @@ class SupplierController extends Controller {
 
         $supplier->delete();
 
-        return response()->json(['status'=>'ok']);
+        return response()->json(['status' => 'ok']);
     }
 
 }

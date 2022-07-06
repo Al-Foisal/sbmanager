@@ -127,11 +127,8 @@ class ProductController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $product->update(
-                    [
-                        'image' => $final_name1,
-                    ]
-                );
+                $product->image=$final_name1;
+                $product->save();
             }
 
         }

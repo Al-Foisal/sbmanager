@@ -142,7 +142,7 @@
                                                 <td>Payment Ok</td>
                                             @endif
                                             <td style="vertical-align: middle;">
-                                                <button class="btn btn-primary btn-xs">{{ $payment->status }}</button>
+                                                <button class="btn btn-primary btn-xs @if($payment->status=='Pending') btn-danger @endif">{{ $payment->status }}</button>
                                             </td>
                                         </tr>
                                     @endforeach
