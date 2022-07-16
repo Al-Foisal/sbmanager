@@ -86,10 +86,10 @@ class GeneralController extends Controller {
     public function consumerOrders($shop_id) {
         $data             = [];
         $data['consumer'] = DB::table('consumers')
+            ->where('consumers.shop_id', $shop_id)
             ->join('orders', 'consumers.id', 'orders.consumer_id')
             ->join('order_products', 'orders.id', 'order_products.order_id')
             ->groupBy('orders.consumer_id')
-            ->where('consumers.shop_id', $shop_id)
             ->selectRaw('consumers.id, consumers.name as consumerName, sum(orders.subtotal) as amount, count(orders.id) as totalOrder, sum(order_products.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->paginate(500);
@@ -100,10 +100,10 @@ class GeneralController extends Controller {
     public function employeeOrders($shop_id) {
         $data             = [];
         $data['employee'] = DB::table('employees')
+            ->where('employees.shop_id', $shop_id)
             ->join('orders', 'employees.id', 'orders.employee_id')
             ->join('order_products', 'orders.id', 'order_products.order_id')
             ->groupBy('orders.employee_id')
-            ->where('employees.shop_id', $shop_id)
             ->selectRaw('employees.id, employees.name as employeeName, sum(orders.subtotal) as amount, count(orders.id) as totalOrder, sum(order_products.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->paginate(500);
@@ -114,10 +114,10 @@ class GeneralController extends Controller {
     public function supplierReport($shop_id) {
         $data             = [];
         $data['supplier'] = DB::table('suppliers')
+            ->where('suppliers.shop_id', $shop_id)
             ->join('buys', 'suppliers.id', 'buys.supplier_id')
             ->join('buy_products', 'buys.id', 'buy_products.buy_id')
             ->groupBy('buys.supplier_id')
-            ->where('suppliers.shop_id', $shop_id)
             ->selectRaw('suppliers.id, suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->paginate(500);
