@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller {
     public function fetchProductData(Request $request) {
-
+        $name = request()->name;
+        $shop_id = request()->shop_id;
         $products = Product::query()
-            ->where('shop_id', $request->shop_id)
-            ->where('name', 'LIKE', "%{$request->name}%")
+            ->where('shop_id', $shop_id)
+            ->where('name', 'LIKE', "%{$name}%")
             ->get();
 
         return $products;

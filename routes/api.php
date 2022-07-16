@@ -87,6 +87,7 @@ Route::controller(CustomerController::class)->group(function () {
 
     //subscription
     Route::get('/subscription-list', 'subscriptionList');
+    Route::get('/subscription-history', 'subscriptionHistory');
 
     Route::put('/product/update-quantity', 'updateQuantity');
 

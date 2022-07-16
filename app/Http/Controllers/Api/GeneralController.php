@@ -118,7 +118,7 @@ class GeneralController extends Controller {
             ->join('buy_products', 'buys.id', 'buy_products.buy_id')
             ->groupBy('buys.supplier_id')
             ->where('suppliers.shop_id', $shop_id)
-            ->selectRaw('suppliers.id, suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
+            ->selectRaw('suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->paginate(500);
 

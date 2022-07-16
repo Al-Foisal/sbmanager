@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Library\SslCommerz\SslCommerzSubscriptionNotification;
+use App\Library\SslCommerz\SslCommerzSubscriptionNotificationApi;
 use App\Models\Shop;
 use App\Models\Subscription;
 use App\Models\SubscriptionHistory;
@@ -80,7 +80,7 @@ class SubscriptionPaymentController extends Controller {
         $post_data['subscription_fail_url']    = '/subscription_fail';
         $post_data['subscription_cancel_url']  = '/subscription_cancel';
 
-        $sslc = new SslCommerzSubscriptionNotification();
+        $sslc = new SslCommerzSubscriptionNotificationApi();
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
         $payment_options = $sslc->makePayment($post_data, 'hosted');
 
@@ -99,7 +99,7 @@ class SubscriptionPaymentController extends Controller {
         $amount   = $request->input('amount');
         $currency = $request->input('currency');
 
-        $sslc = new SslCommerzSubscriptionNotification();
+        $sslc = new SslCommerzSubscriptionNotificationApi();
 
         #Check order status in order tabel against the transaction id or order id.
         $order_detials = DB::table('subscription_histories')
@@ -234,7 +234,7 @@ class SubscriptionPaymentController extends Controller {
                 ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
             if ($order_details->status == 'Pending') {
-                $sslc       = new SslCommerzSubscriptionNotification();
+                $sslc       = new SslCommerzSubscriptionNotificationApi();
                 $validation = $sslc->orderValidate($request->all(), $tran_id, $order_details->amount, $order_details->currency);
 
                 if ($validation == TRUE) {

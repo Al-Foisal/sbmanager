@@ -287,7 +287,7 @@ class ShopController extends Controller {
 
         $data                 = [];
         $data['subscription'] = Subscription::find($id);
-        $data['histories'] = SubscriptionHistory::where('shop_id',SID())->orderBy('id','desc')->with('subscription')->get();
+        $data['histories']    = SubscriptionHistory::where('shop_id', SID())->where('status', '!=', 'Pending')->orderBy('id', 'desc')->with('subscription')->get();
 
         return view('customer.shop.subscription-booking', $data);
     }

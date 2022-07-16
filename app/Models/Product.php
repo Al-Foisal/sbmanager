@@ -27,7 +27,7 @@ class Product extends Model {
     }
 
     public function buyProduct() {
-        return $this->hasOne(buyProduct::class)->latest();
+        return $this->hasOne(BuyProduct::class)->latest();
     }
 
     public function setNameAttribute($value) {
