@@ -104,7 +104,7 @@ class GeneralController extends Controller {
             ->join('order_products', 'orders.id', 'order_products.order_id')
             ->groupBy('orders.employee_id')
             ->where('employees.shop_id', $shop_id)
-            ->selectRaw('employees.id, employees.name as employeeName, (int)sum(orders.subtotal) as amount, count(orders.id) as totalOrder, sum(order_products.quantity) as quantity')
+            ->selectRaw('employees.id, employees.name as employeeName, sum(orders.subtotal) as amount, count(orders.id) as totalOrder, sum(order_products.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->paginate(500);
 
@@ -118,7 +118,7 @@ class GeneralController extends Controller {
             ->join('buy_products', 'buys.id', 'buy_products.buy_id')
             ->groupBy('buys.supplier_id')
             ->where('suppliers.shop_id', $shop_id)
-            ->selectRaw('suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
+            ->selectRaw('suppliers.id, suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
             ->orderBy('quantity', 'desc')
             ->paginate(500);
 
