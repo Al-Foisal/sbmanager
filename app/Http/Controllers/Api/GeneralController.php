@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopType;
 use App\Models\Subcategory;
+use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -113,14 +114,9 @@ class GeneralController extends Controller {
 
     public function supplierReport($shop_id) {
         $data             = [];
-        $data['supplier'] = DB::table('suppliers')
-            ->where('suppliers.shop_id', $shop_id)
-            ->join('buys', 'suppliers.id', 'buys.supplier_id')
-            ->join('buy_products', 'buys.id', 'buy_products.buy_id')
-            ->groupBy('buys.supplier_id')
-            ->selectRaw('suppliers.id, suppliers.name as supplierName, sum(buys.subtotal) as amount, count(buys.id) as totalOrder, sum(buy_products.quantity) as quantity')
-            ->orderBy('quantity', 'desc')
-            ->paginate(500);
+        $data['supplier'] = Supplier::where('shop_id', $shop_id)
+            ->with('buy.buyProduct')
+            ->get();
 
         return $data;
     }
@@ -157,7 +153,33 @@ class GeneralController extends Controller {
         $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->where('status', 5)->sum('subtotal');
         $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('amount');
 
-        $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
+        $order = Order::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->with('orderProduct', 'orderProduct.prod')->get();
+        $online_order = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->where('status', 5)->with('onlineOrderProducts','onlineOrderProducts.prod')->get();
+
+        $selling_price = 0;
+        $buying_price  = 0;
+
+        foreach ($order as $o) {
+
+            foreach ($o->orderProduct as $op) {
+                $selling_price += $op->price;
+                $buying_price += $op->prod->buying_price;
+            }
+
+        }
+
+        foreach ($online_order as $o) {
+
+            foreach ($o->onlineOrderProducts as $op) {
+                $selling_price += $op->price;
+                $buying_price += $op->prod->buying_price;
+            }
+
+        }
+
+        $data['profit'] = $selling_price - $buying_price;
+
+        $data['total']  = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
 
         return $data;
     }

@@ -547,8 +547,14 @@ class CustomerController extends Controller {
     }
 
     public function transaction($shop_id) {
-        $data              = [];
-        $data['orders']    = $orders    = Order::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(500);
+        $data           = [];
+        $data['orders'] = $orders = Order::where('shop_id', $shop_id)
+            ->with(['consumer', 'employee', 'orderProduct.prod' => function ($query) {
+                return $query->select('id', 'name', 'buying_price');
+            },
+            ])
+            ->orderBy('id', 'DESC')
+            ->paginate(500);
         $total_transaction = 0;
         $count             = 0;
 
@@ -610,9 +616,23 @@ class CustomerController extends Controller {
 
     public function onlineOrderList($shop_id) {
         $data                 = [];
-        $data['online_order'] = OnlineOrder::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('onlineOrderProducts')->paginate(500);
+        $data['online_order'] = OnlineOrder::where('shop_id', $shop_id)
+            ->with(['division', 'district', 'area', 'onlineOrderProducts.prod' => function ($query) {
+                return $query->select('id', 'name', 'buying_price');
+            },
+            ])
+            ->orderBy('id', 'desc')
+            ->paginate(500);
 
         return $data;
+    }
+
+    public function onlineOrderStatus(Request $request, $id) {
+        $order         = OnlineOrder::find($id);
+        $order->status = $request->status;
+        $order->save();
+
+        return response()->json(['status' => true, 'message' => 'Order status updated successfully!!']);
     }
 
     public function searchOnlineOrderList(Request $request) {

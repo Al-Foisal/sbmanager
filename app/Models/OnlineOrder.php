@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class OnlineOrder extends Model {
     use HasFactory;
     protected $guarded = [];
+    public function division() {
+        return $this->belongsTo(Division::class);
+    }
+
+    public function district() {
+        return $this->belongsTo(District::class);
+    }
+
+    public function area() {
+        return $this->belongsTo(Area::class);
+    }
+
     public function onlineOrderProducts() {
         return $this->hasMany(OnlineOrderProduct::class);
     }
