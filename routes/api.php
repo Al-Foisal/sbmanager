@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\EMIController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
 use App\Http\Controllers\Api\GeneralController;
+use App\Http\Controllers\Api\IncomeBookController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SubscriptionPaymentController;
@@ -116,6 +117,18 @@ Route::controller(ExpenseBookController::class)->prefix('/expense')->group(funct
     //expense list
     Route::get('/list/{shop_id}', 'expenseBookList');
     Route::post('/list/store', 'storeExpenseBookList');
+});
+
+//income
+Route::controller(IncomeBookController::class)->prefix('/income')->group(function () {
+    Route::get('/{shop_id}', 'incomeBook');
+    Route::post('/store', 'storeIncomeBook');
+    Route::put('/update/{income}', 'updateIncomeBook');
+    Route::delete('/delete/{income}', 'deleteIncomeBook');
+
+    //income list
+    Route::get('/list/{shop_id}', 'incomeBookList');
+    Route::post('/list/store', 'storeIncomeBookList');
 });
 
 //emi

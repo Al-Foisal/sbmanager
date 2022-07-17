@@ -22,6 +22,7 @@ use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\ShopTypeController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubscriptionController;
+use App\Http\Controllers\Customer\IncomeBookController;
 use App\Http\Controllers\Customer\Auth\CustomerForgotPasswordController;
 use App\Http\Controllers\Customer\Auth\CustomerLoginController;
 use App\Http\Controllers\Customer\Auth\CustomerRegisterController;
@@ -235,6 +236,19 @@ Route::prefix('/customer')->as('customer.')->middleware(['auth:customer'])->grou
         Route::get('/list', 'expenseBookList')->name('expenseBookList');
         Route::get('/list/create/{expense_book}', 'createExpenseBookList')->name('createExpenseBookList');
         Route::post('/list/store', 'storeExpenseBookList')->name('storeExpenseBookList');
+    });
+
+    Route::controller(IncomeBookController::class)->prefix('/income')->as('income.')->group(function () {
+        Route::get('/', 'incomeBook')->name('incomeBook');
+        Route::post('/store', 'storeIncomeBook')->name('storeIncomeBook');
+        Route::get('/edit/{income}', 'editIncomeBook')->name('editIncomeBook');
+        Route::put('/update/{income}', 'updateIncomeBook')->name('updateIncomeBook');
+        Route::delete('/delete/{income}', 'deleteIncomeBook')->name('deleteIncomeBook');
+
+        //income list
+        Route::get('/list', 'incomeBookList')->name('incomeBookList');
+        Route::get('/list/create/{income_book}', 'createIncomeBookList')->name('createIncomeBookList');
+        Route::post('/list/store', 'storeIncomeBookList')->name('storeIncomeBookList');
     });
 
     Route::middleware('checkAccess')->group(function () {

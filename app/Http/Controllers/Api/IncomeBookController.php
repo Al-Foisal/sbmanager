@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ExpenseBook;
-use App\Models\ExpenseBookDetail;
+use App\Models\IncomeBook;
+use App\Models\IncomeBookDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class ExpenseBookController extends Controller 
-{
-    public function expenseBook($shop_id) {
+class IncomeBookController extends Controller {
+    public function incomeBook($shop_id) {
         $data                  = [];
-        $data['expenses']      = $e      = ExpenseBook::where('shop_id', $shop_id)->orWhere('shop_id', null)->withSum('expenseBookDetails', 'amount')->get();
-        $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
+        $data['incomes']       = $e       = IncomeBook::where('shop_id', $shop_id)->withSum('incomeBookDetails', 'amount')->get();
+        $data['total_balance'] = (int) IncomeBookDetail::where('shop_id', $shop_id)->whereYear('created_at', '=', now())
             ->whereMonth('created_at', '=', now())
             ->select('amount')
             ->sum('amount');
@@ -21,7 +20,7 @@ class ExpenseBookController extends Controller
         return $data;
     }
 
-    public function storeExpenseBook(Request $request) {
+    public function storeIncomeBook(Request $request) {
 
         if ($request->hasFile('image')) {
 
@@ -30,7 +29,7 @@ class ExpenseBookController extends Controller
             if ($image_file) {
 
                 $img_gen   = hexdec(uniqid());
-                $image_url = 'images/expense/';
+                $image_url = 'images/income/';
                 $image_ext = strtolower($image_file->getClientOriginalExtension());
 
                 $img_name    = $img_gen . '.' . $image_ext;
@@ -41,18 +40,18 @@ class ExpenseBookController extends Controller
 
         }
 
-        ExpenseBook::create([
+        IncomeBook::create([
             'shop_id' => $request->shop_id,
             'image'   => $final_name1 ?? null,
             'name'    => $request->name,
         ]);
 
-        return response()->json(['status' => true, 'message' => 'Expense book created!!']);
+        return response()->json(['status' => true, 'message' => 'Income book created!!']);
     }
 
-    public function updateExpenseBook(Request $request, ExpenseBook $expense) {
+    public function updateIncomeBook(Request $request, IncomeBook $income) {
 
-        if ($expense->shop_id === null) {
+        if ($income->shop_id === null) {
             return response()->json(['status' => false]);
         }
 
@@ -62,60 +61,60 @@ class ExpenseBookController extends Controller
 
             if ($image_file) {
 
-                $image_path = public_path($expense->image);
+                $image_path = public_path($income->image);
 
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
 
                 $img_gen   = hexdec(uniqid());
-                $image_url = 'images/expense/';
+                $image_url = 'images/income/';
                 $image_ext = strtolower($image_file->getClientOriginalExtension());
 
                 $img_name    = $img_gen . '.' . $image_ext;
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $expense->image = $final_name1;
-                $expense->save();
+                $income->image = $final_name1;
+                $income->save();
             }
 
         }
 
-        $expense->update([
+        $income->update([
             'name' => $request->name,
         ]);
 
-        return response()->json(['status' => true, 'message' => 'Expense book updated successfully!!']);
+        return response()->json(['status' => true, 'message' => 'Income book updated successfully!!']);
     }
 
-    public function deleteExpenseBook(Request $request, ExpenseBook $expense) {
-        $image_path = public_path($expense->image);
+    public function deleteIncomeBook(Request $request, IncomeBook $income) {
+        $image_path = public_path($income->image);
 
         if (File::exists($image_path)) {
             File::delete($image_path);
         }
 
-        $expense->delete();
+        $income->delete();
 
         return response()->json(['status' => true]);
     }
 
-    public function expenseBookList(Request $request, $shop_id) {
-        $data             = [];
-        $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)
-            ->with('expenseBook')
+    public function incomeBookList(Request $request, $shop_id) {
+        $data            = [];
+        $data['incomes'] = IncomeBookDetail::where('shop_id', $shop_id)
+            ->with('incomeBook')
             ->latest()
             ->paginate(500);
 
-        $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)
+        $data['total_balance'] = IncomeBookDetail::where('shop_id', $shop_id)
             ->select('amount')
             ->sum('amount');
 
         return $data;
     }
 
-    public function storeExpenseBookList(Request $request) {
+    public function storeIncomeBookList(Request $request) {
 
         if ($request->hasFile('image')) {
 
@@ -124,7 +123,7 @@ class ExpenseBookController extends Controller
             if ($image_file) {
 
                 $img_gen   = hexdec(uniqid());
-                $image_url = 'images/expense/';
+                $image_url = 'images/income/';
                 $image_ext = strtolower($image_file->getClientOriginalExtension());
 
                 $img_name    = $img_gen . '.' . $image_ext;
@@ -135,18 +134,17 @@ class ExpenseBookController extends Controller
 
         }
 
-        ExpenseBookDetail::create([
-            'shop_id'         => $request->shop_id,
-            'expense_book_id' => $request->expense_book_id,
-            'image'           => $final_name1 ?? null,
-            'name'            => $request->name,
-            'reason'          => $request->reason,
-            'amount'          => $request->amount,
-            'details'         => $request->details,
-            'created_at'      => $request->current_date ?? now(),
+        IncomeBookDetail::create([
+            'shop_id'        => $request->shop_id,
+            'income_book_id' => $request->income_book_id,
+            'image'          => $final_name1 ?? null,
+            'reason'         => $request->reason,
+            'amount'         => $request->amount,
+            'details'        => $request->details,
+            'created_at'     => $request->current_date ?? now(),
         ]);
 
-        return response()->json(['status' => true, 'message' => 'Expense updated successfully!!']);
+        return response()->json(['status' => true, 'message' => 'Income updated successfully!!']);
     }
 
 }

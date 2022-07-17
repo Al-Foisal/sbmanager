@@ -109,6 +109,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('customer.income.incomeBook') }}" class="nav-link">
+                                <i class="nav-icon far fa-circle text-dark"></i>
+                                <p>Income Book</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('customer.consumers.index') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-dark"></i>
                                 <p>Contact</p>
