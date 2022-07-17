@@ -136,6 +136,7 @@ Route::get('/common/{shop_id}/products', [ProductController::class, 'commonProdu
 
 Route::controller(SearchController::class)->prefix('/search')->group(function () {
     Route::get('/product/fetch_data', 'fetchProductData');
+    Route::get('/emi/fetch_data', 'fetchEMIData');
 });
 
 Route::controller(GeneralController::class)->group(function () {
