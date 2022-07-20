@@ -84,6 +84,7 @@ Route::controller(CustomerController::class)->group(function () {
 
     //online order
     Route::get('/online-order-list/{shop_id}', 'onlineOrderList');
+    Route::get('/online-order-details/{order_id}', 'onlineOrderDetails');
     Route::post('/search-online-order-list', 'searchOnlineOrderList');
     Route::post('/online-order-status/{order_id}','onlineOrderStatus');
 

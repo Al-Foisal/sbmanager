@@ -627,6 +627,17 @@ class CustomerController extends Controller {
         return $data;
     }
 
+    public function onlineOrderDetails($order_id) {
+        $data                 = [];
+        $data['online_order'] = OnlineOrder::where('id', $order_id)
+            ->with(['division', 'district', 'area', 'onlineOrderProducts.prod' => function ($query) {
+                return $query->select('id', 'name', 'buying_price');
+            },
+            ])->first();
+
+        return $data;
+    }
+
     public function onlineOrderStatus(Request $request, $id) {
         $order         = OnlineOrder::find($id);
         $order->status = $request->status;
