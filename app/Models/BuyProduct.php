@@ -10,5 +10,8 @@ class BuyProduct extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function prod() {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
     
 }

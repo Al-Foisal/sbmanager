@@ -125,7 +125,12 @@ class CustomerController extends Controller {
 
     public function buyBook($shop_id) {
         $data              = [];
-        $data['buys']      = $buys      = Buy::where('shop_id', $shop_id)->with('supplier')->orderBy('updated_at', 'DESC')->paginate(500);
+        $data['buys']      = $buys      = Buy::where('shop_id', $shop_id)
+            ->with(['supplier','buyProduct.prod'=>function($query){
+                return $query->select('id','name');
+            }])
+            ->orderBy('updated_at', 'DESC')
+            ->paginate(500);
         $total_transaction = 0;
         $count             = 0;
 
