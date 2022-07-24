@@ -90,10 +90,11 @@ Route::controller(CustomerController::class)->group(function () {
 
     //subscription
     Route::get('/subscription-list', 'subscriptionList');
-    Route::get('/subscription-history', 'subscriptionHistory');
+    Route::get('/subscription-history/{shop_id}', 'subscriptionHistory');
 
     Route::put('/product/update-quantity', 'updateQuantity');
 
+    Route::get('/get-qr-code/{shop_id}', 'getQRCode');
     Route::post('/store-qr-code', 'storeQRCode');
 });
 

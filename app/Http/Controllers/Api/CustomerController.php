@@ -17,11 +17,18 @@ use App\Models\QRCode;
 use App\Models\Shop;
 use App\Models\Slider;
 use App\Models\Subscription;
+use App\Models\SubscriptionHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller {
+    public function getQRCode($shop_id) {
+        $qr = QRCode::where('shop_id', $shop_id)->first();
+
+        return $qr;
+    }
+
     public function storeQRCode(Request $request) {
 
         if ($request->hasFile('bkash')) {
@@ -120,15 +127,16 @@ class CustomerController extends Controller {
 
         }
 
-        return redirect()->back()->withToastSuccess('QR code updated !!');
+        return response()->json(['status'=>true]);
     }
 
     public function buyBook($shop_id) {
-        $data              = [];
-        $data['buys']      = $buys      = Buy::where('shop_id', $shop_id)
-            ->with(['supplier','buyProduct.prod'=>function($query){
-                return $query->select('id','name');
-            }])
+        $data         = [];
+        $data['buys'] = $buys = Buy::where('shop_id', $shop_id)
+            ->with(['supplier', 'buyProduct.prod' => function ($query) {
+                return $query->select('id', 'name');
+            },
+            ])
             ->orderBy('updated_at', 'DESC')
             ->paginate(500);
         $total_transaction = 0;
@@ -669,6 +677,12 @@ class CustomerController extends Controller {
         $subscription = Subscription::all();
 
         return $subscription;
+    }
+
+    public function subscriptionHistory($shop_id) {
+        $histories = SubscriptionHistory::where('shop_id', $shop_id)->where('status', '!=', 'Pending')->orderBy('id', 'desc')->with('subscription')->get();
+
+        return $histories;
     }
 
     public function updateQuantity(Request $request) {
