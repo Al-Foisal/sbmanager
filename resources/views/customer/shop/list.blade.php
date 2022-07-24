@@ -36,7 +36,7 @@
     </div>
 
     <div class="container pt-5">
-        <div class="d-flex justify-content-center">
+        <div class="row">
             @foreach ($shops as $shop)
                 <div class="card mr-2" style="width: 13rem">
                     <img style="padding: 1rem;height:200px;width:200px;" class="card-img-top"
