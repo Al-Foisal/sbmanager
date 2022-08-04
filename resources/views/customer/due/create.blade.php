@@ -44,7 +44,7 @@
                                     <div class="form-group mr-2">
                                         <label for="">Select Date</label>
                                         <input type="datetime-local" name="current_date" id="" class="form-control"
-                                            value="{{ date('Y-m-d') }}">
+                                            value="{{ now() }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="image">Add Image</label>
@@ -135,9 +135,9 @@
                                         placeholder="Enter phone number" @if ($rc && $rc != 'Consumer' || $rs && $rs != 'Supplier') value="{{ $rc->phone ?? $rs->phone }}" @endif>
                                 </div>
                                 <div class="form-group">
-                                    <label>Amount</label>
+                                    <label>Amount @if ($rc || $rs) {{ $amount }} @endif</label>
                                     <input type="number" class="form-control" name="amount" placeholder="Enter due amount"
-                                        @if ($rc || $rs) value="{{ $amount }}" @endif required>
+                                        @if ($rc || $rs) value="{{ $amount-$cash }}" @endif required>
                                 </div>
                                 <div class="form-group">
                                     <label>Due details(optional)</label>

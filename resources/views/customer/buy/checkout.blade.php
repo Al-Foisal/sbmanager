@@ -154,7 +154,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <input type="text" class="form-control pl-5" placeholder="Comment"
-                                style="    background: whitesmoke;" name="comment">
+                                style="background: whitesmoke;" name="comment">
                         </div>
                     </div>
                 </div>

@@ -74,6 +74,7 @@ class DueController extends Controller {
                 }
 
                 $data['amount'] = Crypt::decryptString($request->amount);
+                $data['cash'] = Crypt::decryptString($request->cash);
             } catch (DecryptException $e) {
                 return back();
             }

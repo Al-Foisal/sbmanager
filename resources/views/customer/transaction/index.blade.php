@@ -12,7 +12,7 @@
                     <h1>Transaction List</h1>
                 </div>
                 <div class="col-sm-6">
-                    
+
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -55,7 +55,12 @@
                                                 <span>{{ $order->created_at }}</span>
                                             </td>
                                             <td style="vertical-align: middle;">৳
-                                                {{ number_format($order->subtotal, 2) }}</td>
+                                            @if($order->payment_method === 'Due')
+                                            {{ number_format($order->subtotal - $order->cash, 2) }}
+                                            @else
+                                            {{ number_format($order->subtotal, 2) }}
+                                            @endif
+                                            </td>
                                             <td class="text-center" style="vertical-align: middle;">
                                                 <button class="btn btn-{{ $order->button_color }} btn-xs"
                                                     style="width: 100%;letter-spacing: 2px;">

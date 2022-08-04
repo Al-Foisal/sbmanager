@@ -463,10 +463,10 @@ class CustomerController extends Controller {
             return 'Customer information is needed for digital payment';
         }
 
-        if ($request->payment_method === 'Cash') {
-            $cash = $request->subtotal;
+        if ($request->payment_method === 'Due') {
+            $cash = $request->cash;
         } else {
-            $cash = 0;
+            $cash = $request->subtotal;
         }
 
         $data                   = [];

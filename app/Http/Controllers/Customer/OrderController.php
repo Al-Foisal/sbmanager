@@ -26,10 +26,10 @@ class OrderController extends Controller {
             return redirect()->back()->withToastError('Customer information is needed for digital payment');
         }
 
-        if ($request->payment_method === 'Cash') {
-            $cash = $request->subtotal;
+        if ($request->payment_method === 'Due') {
+            $cash = $request->cash;
         } else {
-            $cash = 0;
+            $cash = $request->subtotal;
         }
 
         $data                   = [];
@@ -79,11 +79,12 @@ class OrderController extends Controller {
         if ($request->payment_method === 'Due') {
             $data['consumer_id']    = Crypt::encryptString($request->consumer_id ?? 'Consumer');
             $data['amount']         = Crypt::encryptString($request->subtotal);
+            $data['cash']         = Crypt::encryptString($cash);
 
             return redirect()->route('customer.due.create', $data);
         }
 
-        return redirect()->route('customer.products.index')->withToastSuccess('Order placed successfully!!');
+        return redirect()->route('customer.products.index.list')->withToastSuccess('Order placed successfully!!');
     }
 
 }

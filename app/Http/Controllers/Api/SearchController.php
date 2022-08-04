@@ -31,4 +31,15 @@ class SearchController extends Controller {
 
         return $products;
     }
+
+    public function barcodeSearch(Request $request) {
+        $barcode     = request()->barcode;
+        $shop_id  = request()->shop_id;
+        $products = Product::query()
+            ->where('shop_id', $shop_id)
+            ->where('barcode', 'LIKE', "%{$barcode}%")
+            ->get();
+
+        return $products;
+    }
 }

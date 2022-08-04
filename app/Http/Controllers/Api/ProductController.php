@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller {
     /**
@@ -74,6 +75,7 @@ class ProductController extends Controller {
             'subcategory_id'     => $request->subcategory_id,
             'online'             => $request->online,
             'unit'               => $request->unit,
+            'barcode'            => $request->barcode,
             'wholesale_price'    => $request->wholesale_price,
             'wholesale_quantity' => $request->wholesale_quantity,
             'stock_alert'        => $request->stock_alert,
@@ -127,7 +129,7 @@ class ProductController extends Controller {
                 $final_name1 = $image_url . $img_gen . '.' . $image_ext;
 
                 $image_file->move($image_url, $img_name);
-                $product->image=$final_name1;
+                $product->image = $final_name1;
                 $product->save();
             }
 
@@ -143,6 +145,7 @@ class ProductController extends Controller {
             'subcategory_id'     => $request->subcategory_id,
             'online'             => $request->online,
             'unit'               => $request->unit,
+            'barcode'               => $request->barcode,
             'wholesale_price'    => $request->wholesale_price,
             'wholesale_quantity' => $request->wholesale_quantity,
             'stock_alert'        => $request->stock_alert,
