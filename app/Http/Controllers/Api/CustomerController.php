@@ -558,7 +558,7 @@ class CustomerController extends Controller {
                 if ($request->cash > 0) {
                     DueDetail::create([
                         'due_id'   => $due->id,
-                        'amount'   => $request->cart_subtotal - $session_order->subtotal + $request->cash,
+                        'amount'   => $session_order->subtotal + $request->cash - $request->cart_subtotal,
                         'due_type' => 'Due',
                     ]);
                 } else {
@@ -704,7 +704,10 @@ class CustomerController extends Controller {
 
     public function transactionDetails($id) {
         $data                = [];
-        $data['transaction'] = Order::where('id', $id)->with('orderProduct')->first();
+        $data['transaction'] = Order::where('id', $id)->with(['consumer', 'employee', 'orderProduct.prod' => function ($query) {
+            return $query->select(['id', 'name'])->get();
+        },
+        ])->first();
 
         return $data;
     }
