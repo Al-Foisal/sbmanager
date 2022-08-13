@@ -8,6 +8,7 @@ use App\Models\BuyProduct;
 use App\Models\DigitalAmount;
 use App\Models\DigitalPayment;
 use App\Models\Due;
+use App\Models\DueDetail;
 use App\Models\ExpenseBookDetail;
 use App\Models\OnlineOrder;
 use App\Models\Order;
@@ -127,7 +128,7 @@ class CustomerController extends Controller {
 
         }
 
-        return response()->json(['status'=>true]);
+        return response()->json(['status' => true]);
     }
 
     public function buyBook($shop_id) {
@@ -514,6 +515,126 @@ class CustomerController extends Controller {
         $data['order'] = Order::where('id', $order->id)->with('orderProduct', 'orderProduct.prod')->first();
 
         return response()->json(['status' => true, 'message' => 'Order placed successfully!!', 'order' => $data]);
+    }
+
+    public function deleteOrderProduct($id) {
+
+        $op = OrderProduct::whereIn('id', $id)->get();
+
+        foreach ($op as $p) {
+            $p->delete();
+        }
+
+        return response()->json(['status' => true]);
+    }
+
+    public function transactionUpdate(Request $request) {
+/**
+ * order_id
+ * cash
+ * cart_subtotal
+ * cart
+ */
+
+        $session_order = Order::where('id', $request->order_id)->with(['orderProduct.prod' => function ($query) {
+            return $query->select(['id', 'name']);
+        },
+        ])->first();
+
+// return $session_order;
+
+        if ($session_order->payment_method === 'Due') {
+            $cash = $session_order->cash + $request->cash;
+            $due  = Due::where('due_to', 'Consumer')->where('due_to_id', $session_order->consumer_id)->first();
+
+            if ($session_order->subtotal < $request->cart_subtotal) {
+                DueDetail::create([
+                    'due_id'   => $due->id,
+                    'amount'   => $request->cart_subtotal - $session_order->subtotal,
+                    'due_type' => 'Due',
+                ]);
+            } elseif ($session_order->subtotal > $request->cart_subtotal) {
+
+                if ($request->cash > 0) {
+                    DueDetail::create([
+                        'due_id'   => $due->id,
+                        'amount'   => $request->cart_subtotal - $session_order->subtotal + $request->cash,
+                        'due_type' => 'Due',
+                    ]);
+                } else {
+                    DueDetail::create([
+                        'due_id'   => $due->id,
+                        'amount'   => $session_order->subtotal - $request->cart_subtotal,
+                        'due_type' => 'Deposit',
+                    ]);
+                }
+
+            }
+
+            if ($request->cash > 0) {
+                DueDetail::create([
+                    'due_id'   => $due->id,
+                    'amount'   => $request->cash,
+                    'due_type' => 'Deposit',
+                ]);
+            }
+
+            $subtotal = $request->cart_subtotal;
+        } else {
+            $subtotal = $request->cart_subtotal;
+            $cash     = $request->cart_subtotal;
+        }
+
+        $session_order->update([
+            'total'    => $subtotal,
+            'discount' => $request->discount,
+            'subtotal' => $subtotal,
+            'cash'     => $cash,
+        ]);
+
+        if ($request->cart) {
+
+            foreach ($request->cart as $cart) {
+                $check = OrderProduct::where('order_id', $request->order_id)->where('product_id', $cart["id"])->first();
+
+                if ($check) {
+                    $check->quantity = $cart["qty"];
+                    $check->save();
+                } else {
+                    OrderProduct::create([
+                        'product_id' => $cart["id"],
+                        'order_id'   => $request["order_id"],
+                        'quantity'   => $cart["qty"],
+                        'price'      => $cart["price"],
+                    ]);
+                }
+
+            }
+
+        }
+
+        return response()->json(['status' => true]);
+    }
+
+    public function transactionDelete($id) {
+        $order = Order::where('id', $id)->with('orderProduct')->first();
+
+        if ($order->payment_method === 'Due') {
+            $due = Due::where('due_to', 'Consumer')->where('due_to_id', $order->consumer_id)->first();
+            DueDetail::create([
+                'due_id'   => $due->id,
+                'amount'   => $order->subtotal - $order->cash,
+                'due_type' => 'Deposit',
+            ]);
+        }
+
+        foreach ($order->orderProduct as $p) {
+            $p->delete();
+        }
+
+        $order->delete();
+
+        return response()->json(['status' => true]);
     }
 
     public function buyOrderSave(Request $request) {

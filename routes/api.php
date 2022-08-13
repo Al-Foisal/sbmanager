@@ -81,6 +81,9 @@ Route::controller(CustomerController::class)->group(function () {
     //transaction
     Route::get('/transaction/{shop_id}', 'transaction');
     Route::get('/transaction-details/{id}', 'transactionDetails');
+    Route::post('/transaction-update', 'transactionUpdate');
+    Route::delete('/transaction-delete/{id}', 'transactionDelete');
+    Route::delete('/delete/order-product/{order_id}/{product_id}','deleteOrderProduct');
 
     //online order
     Route::get('/online-order-list/{shop_id}', 'onlineOrderList');

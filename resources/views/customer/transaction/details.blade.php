@@ -115,7 +115,7 @@
                                     <tr>
                                         <td style="border: none"></td>
                                         <td style="border:none"></td>
-                                        <td style="border:none">Extara Discount:(৳)</td>
+                                        <td style="border:none">Extra Discount:(৳)</td>
                                         <td style="border:none">
                                             ৳{{ number_format($transaction->discount, 2) }}
                                         </td>

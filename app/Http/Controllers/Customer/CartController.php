@@ -4,22 +4,25 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
-class CartController extends Controller 
-{
+class CartController extends Controller {
     public function cart() {
         $data = [];
 
         $data['cart']     = Cart::content();
         $data['total']    = Cart::subtotal();
         $data['discount'] = session()->get('discount') ?? null;
+        $order_cash       = Order::find(session('order'))->cash;
 
-        if (session()->get('discount') > 0) {
+        if (session('payment_method') === 'Due') {
+            $subtotal = Cart::subtotal() - $order_cash;
+        } elseif (session()->get('discount') > 0) {
             $subtotal = Cart::subtotal() - session()->get('discount');
         } else {
             $subtotal = Cart::subtotal();
@@ -41,6 +44,7 @@ class CartController extends Controller
 
         session()->forget('discount');
         session()->forget('subtotal');
+        session()->forget('payment_method');
         session()->forget('order');
         Cart::destroy();
 
@@ -65,9 +69,10 @@ class CartController extends Controller
         }
 
         session([
-            'discount' => $t->discount,
-            'subtotal' => $t->subtotal,
-            'order'    => $id,
+            'discount'       => $t->discount,
+            'subtotal'       => $t->subtotal,
+            'payment_method' => $t->payment_method,
+            'order'          => $id,
         ]);
 
         return redirect()->route('customer.cart');
@@ -106,6 +111,12 @@ class CartController extends Controller
     }
 
     public function removeFromCart($rowId) {
+
+        if (session('order')) {
+            $cart_data = Cart::get($rowId);
+            OrderProduct::where('order_id', session('order'))->where('product_id', $cart_data->id)->first()->delete();
+        }
+
         Cart::remove($rowId);
 
         return redirect()->back()->withToastSuccess('Product removed successfully!!');
@@ -124,7 +135,12 @@ class CartController extends Controller
     }
 
     public function extraDiscount(Request $request) {
-        session(['discount' => $request->discount, 'subtotal' => $request->subtotal]);
+
+        if (session('payment_method') === 'Due') {
+            session(['cash' => $request->due]);
+        } else {
+            session(['discount' => $request->discount, 'subtotal' => $request->subtotal]);
+        }
 
         return response()->json();
     }

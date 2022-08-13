@@ -13,7 +13,6 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
 @endsection
 @section('backend')
@@ -25,7 +24,7 @@
                     <h1>Cart List</h1>
                 </div>
                 <div class="col-sm-6">
-                    
+
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -84,49 +83,96 @@
                                             </tr>
                                         @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th style="border: none">
-                                            @if (Cart::count() > 0)
-                                                <button type="submit" class="btn btn-dark">Update Cart</button>
-                                            @endif
-                                        </th>
-                                        <th style="border: none"></th>
-                                        <th style="border-top: 3px solid">Total</th>
-                                        <th style="border-top: 3px solid"></th>
-                                        <th style="border-top: 3px solid">৳{{ $total }}/=</th>
-                                    </tr>
-                                    </form>
-                                    <tr>
-                                        <th style="border: none"></th>
-                                        <th style="border: none"></th>
-                                        <td style="border:none">Extara Discount:(৳)</td>
-                                        <td style="border:none"></td>
-                                        <td style="border:none">
-                                            ৳<input type="number" style="width: 20%;" id="discount"
-                                                value="{{ $discount }}">
-                                            <input type="hidden" id="total" value="{{ $total }}">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th style="border: none"></th>
-                                        <th style="border: none"></th>
-                                        <th style="border-top: 3px solid whitesmoke">Subtotal</th>
-                                        <th style="border-top: 3px solid whitesmoke"></th>
-                                        <th style="border-top: 3px solid whitesmoke">৳<span
-                                                id="subtotal">{{ $subtotal }}</span>/=</th>
-                                    </tr>
-                                    <tr></tr>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th>
-                                            <a href="{{ route('customer.checkout') }}" class="btn btn-primary btn-sm btn-block">Proceed to Checkout</span></a>
-                                        </th>
-                                    </tr>
-                                </tfoot>
+                                @if (session('payment_method') === 'Due')
+                                    <tfoot>
+                                        <tr>
+                                            <th style="border: none">
+                                                @if (Cart::count() > 0)
+                                                    <button type="submit" class="btn btn-dark">Update Cart</button>
+                                                @endif
+                                            </th>
+                                            <th style="border: none"></th>
+                                            <th style="border-top: 3px solid">Total</th>
+                                            <th style="border-top: 3px solid"></th>
+                                            <th style="border-top: 3px solid">৳{{ $total }}/=</th>
+                                        </tr>
+                                        </form>
+                                        <tr>
+                                            <th style="border: none"></th>
+                                            <th style="border: none"></th>
+                                            <td style="border:none">Pay Due Amount:(৳)</td>
+                                            <td style="border:none"></td>
+                                            <td style="border:none">
+                                                ৳<input type="number" name="due" style="width: 20%;" id="due">
+                                                <input type="hidden" id="due_total" value="{{ $subtotal }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th style="border: none"></th>
+                                            <th style="border: none"></th>
+                                            <th style="border-top: 3px solid whitesmoke">Total Due</th>
+                                            <th style="border-top: 3px solid whitesmoke"></th>
+                                            <th style="border-top: 3px solid whitesmoke">৳<span
+                                                    id="due_subtotal">{{ $subtotal }}</span>/=</th>
+                                        </tr>
+                                        <tr></tr>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>
+                                                <a href="{{ route('customer.checkout') }}"
+                                                    class="btn btn-primary btn-sm btn-block">Proceed to Checkout</span></a>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                @else
+                                    <tfoot>
+                                        <tr>
+                                            <th style="border: none">
+                                                @if (Cart::count() > 0)
+                                                    <button type="submit" class="btn btn-dark">Update Cart</button>
+                                                @endif
+                                            </th>
+                                            <th style="border: none"></th>
+                                            <th style="border-top: 3px solid">Total</th>
+                                            <th style="border-top: 3px solid"></th>
+                                            <th style="border-top: 3px solid">৳{{ $total }}/=</th>
+                                        </tr>
+                                        </form>
+                                        <tr>
+                                            <th style="border: none"></th>
+                                            <th style="border: none"></th>
+                                            <td style="border:none">Extara Discount:(৳)</td>
+                                            <td style="border:none"></td>
+                                            <td style="border:none">
+                                                ৳<input type="number" style="width: 20%;" id="discount"
+                                                    value="{{ $discount }}">
+                                                <input type="hidden" id="total" value="{{ $total }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th style="border: none"></th>
+                                            <th style="border: none"></th>
+                                            <th style="border-top: 3px solid whitesmoke">Subtotal</th>
+                                            <th style="border-top: 3px solid whitesmoke"></th>
+                                            <th style="border-top: 3px solid whitesmoke">৳<span
+                                                    id="subtotal">{{ $subtotal }}</span>/=</th>
+                                        </tr>
+                                        <tr></tr>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>
+                                                <a href="{{ route('customer.checkout') }}"
+                                                    class="btn btn-primary btn-sm btn-block">Proceed to Checkout</span></a>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                @endif
                             </table>
                         </div>
 
@@ -143,6 +189,36 @@
     <!-- /.content -->
 @endsection
 @section('jsScript')
+    <script>
+        $(document).ready(function() {
+            $("#due").keyup(function() {
+                var due_total = $("#due_total").val();
+                var due = $("#due").val();
+                var due_subtotal = due_total - due;
+                $("#due_subtotal").html(due_subtotal);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    method: 'POST',
+
+                    url: "{{ asset('/') }}customer/add-to-cart/discount",
+                    data: {
+                        due: due,
+                    },
+                    cache: false,
+                    async: false,
+                    error: function(error) {
+
+                    }
+                })
+            });
+            
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $("#discount").keyup(function() {

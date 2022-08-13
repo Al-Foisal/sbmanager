@@ -4,25 +4,66 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Consumer;
+use App\Models\Due;
+use App\Models\DueDetail;
 use App\Models\Employee;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\Request;
 
 class CheckoutController extends Controller {
-    public function checkout() {
+    public function checkout(Request $request) {
 
         if (session()->get('order')) {
             $session_order = Order::find(session()->get('order'));
-            if($session_order->payment_method === 'Cash'){
+
+            if (session('payment_method') === 'Due') {
+                $cash = $session_order->cash + session('cash');
+                $due  = Due::where('due_to', 'Consumer')->where('due_to_id', $session_order->consumer_id)->first();
+
+                if ($session_order->subtotal < Cart::subtotal()) {
+                    DueDetail::create([
+                        'due_id'   => $due->id,
+                        'amount'   => session()->get('subtotal')-$session_order->subtotal,
+                        'due_type' => 'Due',
+                    ]);
+                } elseif ($session_order->subtotal > Cart::subtotal()) {
+
+                    if (session('cash') > 0) {
+                        DueDetail::create([
+                            'due_id'   => $due->id,
+                            'amount'   => session()->get('subtotal') - $session_order->subtotal + session()->get('cash'),
+                            'due_type' => 'Due',
+                        ]);
+                    } else {
+                        DueDetail::create([
+                            'due_id'   => $due->id,
+                            'amount'   => $session_order->subtotal - Cart::subtotal(),
+                            'due_type' => 'Deposit',
+                        ]);
+                    }
+
+                }
+
+                if (session('cash') > 0) {
+                    DueDetail::create([
+                        'due_id'   => $due->id,
+                        'amount'   => session()->get('cash'),
+                        'due_type' => 'Deposit',
+                    ]);
+                }
+
+                $subtotal = $session_order->cash + session()->get('subtotal');
+            } else {
+                $subtotal = Cart::subtotal();
                 $cash = Cart::subtotal();
-            }else {
-                $cash = 0;
             }
+
             $session_order->update([
                 'total'    => Cart::subtotal(),
                 'discount' => session()->get('discount'),
-                'subtotal' => session()->get('subtotal'),
+                'subtotal' => $subtotal,
                 'cash'     => $cash,
             ]);
 
@@ -44,6 +85,8 @@ class CheckoutController extends Controller {
 
             session()->forget('discount');
             session()->forget('subtotal');
+            session()->forget('payment_method');
+            session()->forget('cash');
             session()->forget('order');
             Cart::destroy();
 
