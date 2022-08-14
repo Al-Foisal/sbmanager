@@ -473,15 +473,22 @@ class CustomerController extends Controller {
             $cash = $request->subtotal;
         }
 
-        $data                   = [];
-        $data['shop_id']        = $request->shop_id;
-        $data['consumer_id']    = $request->consumer_id;
-        $data['employee_id']    = $request->employee_id;
-        $data['total']          = $request->total;
-        $data['subtotal']       = $request->subtotal;
-        $data['discount']       = $request->discount;
-        $data['cash']           = $cash;
-        $data['payment_method'] = $request->payment_method;
+        if ($request->discount && $request->discount_type == 1) {
+            $discount = ($request->subtotal * $request->discount) / 100;
+        } else {
+            $discount = $request->discount;
+        }
+
+        $data                    = [];
+        $data['shop_id']         = $request->shop_id;
+        $data['consumer_id']     = $request->consumer_id;
+        $data['employee_id']     = $request->employee_id;
+        $data['total']           = $request->total;
+        $data['subtotal']        = $request->subtotal - $discount;
+        $data['discount']        = $discount;
+        $data['cash']            = $cash;
+        $data['payment_method']  = $request->payment_method;
+        $data['delivery_charge'] = $request->delivery_charge;
 
         $order = Order::create($data);
 
@@ -588,11 +595,17 @@ class CustomerController extends Controller {
             $cash     = $request->cart_subtotal;
         }
 
+        if ($request->discount && $request->discount_type == 1) {
+            $discount = ($subtotal * $request->discount) / 100;
+        } else {
+            $discount = $request->discount;
+        }
+
         $session_order->update([
             'total'           => $subtotal + $request->delivery_charge,
-            'discount'        => $request->discount,
+            'discount'        => $discount,
             'delivery_charge' => $request->delivery_charge,
-            'subtotal'        => $subtotal + $request->delivery_charge - $request->discount,
+            'subtotal'        => $subtotal + $request->delivery_charge - $discount,
             'cash'            => $cash,
         ]);
 
@@ -661,14 +674,21 @@ class CustomerController extends Controller {
             $cash = $request->subtotal;
         }
 
-        $data                   = [];
-        $data['shop_id']        = $request->shop_id;
-        $data['supplier_id']    = $request->supplier_id;
-        $data['total']          = $request->total;
-        $data['subtotal']       = $request->subtotal;
-        $data['discount']       = $request->discount;
-        $data['cash']           = $cash;
-        $data['payment_method'] = $request->payment_method;
+        if ($request->discount && $request->discount_type == 1) {
+            $discount = ($request->subtotal * $request->discount) / 100;
+        } else {
+            $discount = $request->discount;
+        }
+
+        $data                    = [];
+        $data['shop_id']         = $request->shop_id;
+        $data['supplier_id']     = $request->supplier_id;
+        $data['total']           = $request->total;
+        $data['subtotal']        = $request->subtotal - $discount;
+        $data['discount']        = $discount;
+        $data['cash']            = $cash;
+        $data['payment_method']  = $request->payment_method;
+        $data['delivery_charge'] = $request->delivery_charge;
 
         $buy = Buy::create($data);
 
@@ -702,13 +722,20 @@ class CustomerController extends Controller {
             $cash = $request->subtotal;
         }
 
-        $data                   = [];
-        $data['supplier_id']    = $request->supplier_id;
-        $data['total']          = $request->total;
-        $data['subtotal']       = $request->subtotal;
-        $data['discount']       = $request->discount;
-        $data['cash']           = $cash;
-        $data['payment_method'] = $request->payment_method;
+        if ($request->discount && $request->discount_type == 1) {
+            $discount = ($request->subtotal * $request->discount) / 100;
+        } else {
+            $discount = $request->discount;
+        }
+
+        $data                    = [];
+        $data['supplier_id']     = $request->supplier_id;
+        $data['total']           = $request->total;
+        $data['subtotal']        = $request->subtotal - $discount;
+        $data['discount']        = $discount;
+        $data['cash']            = $cash;
+        $data['payment_method']  = $request->payment_method;
+        $data['delivery_charge'] = $request->delivery_charge;
 
         $buy->update($data);
 
