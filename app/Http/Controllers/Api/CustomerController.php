@@ -156,7 +156,10 @@ class CustomerController extends Controller {
     public function buyBookDetails($id) {
 
         $data                = [];
-        $data['transaction'] = buy::where('id', $id)->with('buyProduct')->first();
+        $data['transaction'] = buy::where('id', $id)->with(['supplier', 'buyProduct.prod' => function ($query) {
+            return $query->select('id', 'name');
+        },
+        ])->first();
 
         return $data;
     }
@@ -508,7 +511,7 @@ class CustomerController extends Controller {
             $product          = Product::find($cart["id"]);
             $updated_quantity = $product->quantity - $cart["qty"];
             $product->update([
-                'quantity' => $updated_quantity <= 0 ? 0 : $updated_quantity,
+                'quantity' => $updated_quantity,
             ]);
         }
 
@@ -517,9 +520,9 @@ class CustomerController extends Controller {
         return response()->json(['status' => true, 'message' => 'Order placed successfully!!', 'order' => $data]);
     }
 
-    public function deleteOrderProduct($id) {
+    public function deleteOrderProduct(Request $request) {
 
-        $op = OrderProduct::whereIn('id', $id)->get();
+        $op = OrderProduct::whereIn('id', $request->id)->get();
 
         foreach ($op as $p) {
             $p->delete();
@@ -586,10 +589,11 @@ class CustomerController extends Controller {
         }
 
         $session_order->update([
-            'total'    => $subtotal,
-            'discount' => $request->discount,
-            'subtotal' => $subtotal,
-            'cash'     => $cash,
+            'total'           => $subtotal + $request->delivery_charge,
+            'discount'        => $request->discount,
+            'delivery_charge' => $request->delivery_charge,
+            'subtotal'        => $subtotal + $request->delivery_charge - $request->discount,
+            'cash'            => $cash,
         ]);
 
         if ($request->cart) {
@@ -600,12 +604,24 @@ class CustomerController extends Controller {
                 if ($check) {
                     $check->quantity = $cart["qty"];
                     $check->save();
+
+                    $product          = Product::find($cart["id"]);
+                    $updated_quantity = $product->quantity - $cart["qty"];
+                    $product->update([
+                        'quantity' => $updated_quantity,
+                    ]);
                 } else {
                     OrderProduct::create([
                         'product_id' => $cart["id"],
                         'order_id'   => $request["order_id"],
                         'quantity'   => $cart["qty"],
                         'price'      => $cart["price"],
+                    ]);
+
+                    $product          = Product::find($cart["id"]);
+                    $updated_quantity = $product->quantity - $cart["qty"];
+                    $product->update([
+                        'quantity' => $updated_quantity,
                     ]);
                 }
 
@@ -639,14 +655,10 @@ class CustomerController extends Controller {
 
     public function buyOrderSave(Request $request) {
 
-        if ($request->cash === null && $request->payment_method === 'Cash' && ($request->cash - $request->subtotal) < 0) {
-            return redirect()->back()->withToastError('Cash payment input error.');
-        }
-
-        if ($request->payment_method === 'Cash') {
-            $cash = $request->subtotal;
+        if ($request->payment_method === 'Due') {
+            $cash = $request->cash;
         } else {
-            $cash = 0;
+            $cash = $request->subtotal;
         }
 
         $data                   = [];
@@ -678,6 +690,95 @@ class CustomerController extends Controller {
         }
 
         return response()->json(['status' => true, 'message' => 'Order placed successfully!!']);
+    }
+
+    public function buyOrderUpdate(Request $request) {
+
+        $buy = Buy::find($request->id);
+
+        if ($request->payment_method === 'Due') {
+            $cash = $buy->cash + $request->cash;
+        } else {
+            $cash = $request->subtotal;
+        }
+
+        $data                   = [];
+        $data['supplier_id']    = $request->supplier_id;
+        $data['total']          = $request->total;
+        $data['subtotal']       = $request->subtotal;
+        $data['discount']       = $request->discount;
+        $data['cash']           = $cash;
+        $data['payment_method'] = $request->payment_method;
+
+        $buy->update($data);
+
+        $carts = $request->cart;
+
+        if ($carts) {
+            foreach ($carts as $cart) {
+                $check = BuyProduct::where('order_id', $request->id)->where('product_id', $cart["id"])->first();
+
+                if ($check) {
+                    $check->quantity = $cart["qty"];
+                    $check->save();
+
+                    $product          = Product::find($cart["id"]);
+                    $updated_quantity = $product->quantity + $cart["qty"];
+                    $product->update([
+                        'quantity' => $updated_quantity,
+                    ]);
+                } else {
+                    BuyProduct::create([
+                        'product_id' => $cart["id"],
+                        'buy_id'     => $request["id"],
+                        'quantity'   => $cart["qty"],
+                        'price'      => $cart["price"],
+                    ]);
+
+                    $product          = Product::find($cart["id"]);
+                    $updated_quantity = $product->quantity + $cart["qty"];
+                    $product->update([
+                        'quantity' => $updated_quantity,
+                    ]);
+                }
+
+            }
+
+        }
+
+        return response()->json(['status' => true, 'pre_subtotal' => $buy->subtotal, 'data' => $buy]);
+    }
+
+    public function buyProductDelete(Request $request) {
+
+        $op = BuyProduct::whereIn('id', $request->id)->get();
+
+        foreach ($op as $p) {
+            $p->delete();
+        }
+
+        return response()->json(['status' => true]);
+    }
+
+    public function buyOrderdelete($id) {
+        $buy = Buy::where('id', $id)->with('buyProduct')->first();
+
+        if ($buy->payment_method === 'Due') {
+            $due = Due::where('due_to', 'Supplier')->where('due_to_id', $buy->supplier_id)->first();
+            DueDetail::create([
+                'due_id'   => $due->id,
+                'amount'   => $buy->subtotal - $buy->cash,
+                'due_type' => 'Deposit',
+            ]);
+        }
+
+        foreach ($buy->buyProduct as $p) {
+            $p->delete();
+        }
+
+        $buy->delete();
+
+        return response()->json(['status' => true]);
     }
 
     public function transaction($shop_id) {

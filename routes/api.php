@@ -77,19 +77,36 @@ Route::controller(CustomerController::class)->group(function () {
     Route::get('/buy-book/{shop_id}', 'buyBook');
     Route::get('/buy-book-details/{shop_id}', 'buyBookDetails');
     Route::post('/buy-order-save', 'buyOrderSave');
+    Route::post('/buy-order-update', 'buyOrderUpdate');
+    /**
+     * id
+     * cash
+     * supplier_id
+     * total
+     * subtotal
+     * discount
+     * payment_method
+     * cart:[{
+     * id,
+     * qty,
+     * price
+     * }]
+     */
+    Route::delete('/buy-order-delete/{id}', 'buyOrderdelete');
+    Route::post('/buy-product-delete', 'buyProductDelete');//[id]
 
     //transaction
     Route::get('/transaction/{shop_id}', 'transaction');
     Route::get('/transaction-details/{id}', 'transactionDetails');
     Route::post('/transaction-update', 'transactionUpdate');
     Route::delete('/transaction-delete/{id}', 'transactionDelete');
-    Route::delete('/delete/order-product/{order_id}/{product_id}','deleteOrderProduct');
+    Route::delete('/delete/order-product', 'deleteOrderProduct');
 
     //online order
     Route::get('/online-order-list/{shop_id}', 'onlineOrderList');
     Route::get('/online-order-details/{order_id}', 'onlineOrderDetails');
     Route::post('/search-online-order-list', 'searchOnlineOrderList');
-    Route::post('/online-order-status/{order_id}','onlineOrderStatus');
+    Route::post('/online-order-status/{order_id}', 'onlineOrderStatus');
 
     //subscription
     Route::get('/subscription-list', 'subscriptionList');

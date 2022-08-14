@@ -86,11 +86,14 @@ class BuyController extends Controller {
 
         $product = Product::where('id', $request->id)->first();
 
-        if (!$product || $product->quantity === 0) {
-            return response()->json([
-                'status' => 'noSuccess',
-            ]);
-        }
+// if (!$product || $product->quantity === 0) {
+
+//     return response()->json([
+
+//         'status' => 'noSuccess',
+
+//     ]);
+        // }
 
         $data['id']               = $product->id;
         $data['name']             = $product->name;
@@ -142,10 +145,10 @@ class BuyController extends Controller {
         if (session()->get('buy')) {
             $session_buy = Buy::find(session()->get('buy'));
 
-            if ($session_buy->payment_method === 'Cash') {
-                $cash = Cart::subtotal();
+            if ($session_buy->payment_method === 'Due') {
+                $cash = request()->cash;
             } else {
-                $cash = 0;
+                $cash = Cart::subtotal();
             }
 
             $session_buy->update([
@@ -192,14 +195,16 @@ class BuyController extends Controller {
             return back();
         }
 
-        if ($request->cash === null && $request->payment_method === 'Cash' && ($request->cash - $request->subtotal) < 0) {
-            return redirect()->back()->withToastError('Cash payment input error.');
-        }
+// if ($request->cash === null && $request->payment_method === 'Cash' && ($request->cash - $request->subtotal) < 0) {
 
-        if ($request->payment_method === 'Cash') {
-            $cash = $request->subtotal;
+//     return redirect()->back()->withToastError('Cash payment input error.');
+
+// }
+
+        if ($request->payment_method === 'Due') {
+            $cash = $request->cash;
         } else {
-            $cash = 0;
+            $cash = $request->subtotal;
         }
 
         $data                   = [];
@@ -234,7 +239,7 @@ class BuyController extends Controller {
 
         if ($request->payment_method === 'Due') {
             $data['supplier_id'] = Crypt::encryptString($request->supplier_id ?? 'Supplier');
-            $data['amount']      = Crypt::encryptString($request->subtotal);
+            $data['amount']      = Crypt::encryptString($request->subtotal - $request->cash);
 
             return redirect()->route('customer.due.create', $data);
         }
