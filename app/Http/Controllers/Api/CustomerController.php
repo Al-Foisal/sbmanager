@@ -743,7 +743,7 @@ class CustomerController extends Controller {
 
         if ($carts) {
             foreach ($carts as $cart) {
-                $check = BuyProduct::where('order_id', $request->id)->where('product_id', $cart["id"])->first();
+                $check = BuyProduct::where('buy_id', $request->id)->where('product_id', $cart["id"])->first();
 
                 if ($check) {
                     $check->quantity = $cart["qty"];
