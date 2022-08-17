@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller {
     /**
@@ -75,6 +74,7 @@ class ProductController extends Controller {
             'subcategory_id'     => $request->subcategory_id,
             'online'             => $request->online,
             'unit'               => $request->unit,
+            'delivery_charge'    => $request->delivery_charge,
             'barcode'            => $request->barcode,
             'wholesale_price'    => $request->wholesale_price,
             'wholesale_quantity' => $request->wholesale_quantity,
@@ -145,7 +145,8 @@ class ProductController extends Controller {
             'subcategory_id'     => $request->subcategory_id,
             'online'             => $request->online,
             'unit'               => $request->unit,
-            'barcode'               => $request->barcode,
+            'delivery_charge'    => $request->delivery_charge,
+            'barcode'            => $request->barcode,
             'wholesale_price'    => $request->wholesale_price,
             'wholesale_quantity' => $request->wholesale_quantity,
             'stock_alert'        => $request->stock_alert,

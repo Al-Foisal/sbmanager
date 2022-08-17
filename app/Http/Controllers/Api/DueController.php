@@ -27,7 +27,7 @@ class DueController extends Controller {
 
     public function index($shop_id) {
         $data         = [];
-        $data['dues'] = $dues = Due::where('shop_id', $shop_id)->orderBy('id', 'desc')->with('dueDetails')->paginate(500);
+        $data['dues'] = $dues = Due::where('shop_id', $shop_id)->orderBy('updated_at', 'desc')->with('dueDetails')->paginate(500);
 
         $data['consumer'] = Due::where('shop_id', $shop_id)->where('due_to', 'Consumer')->count();
         $data['supplier'] = Due::where('shop_id', $shop_id)->where('due_to', 'Supplier')->count();

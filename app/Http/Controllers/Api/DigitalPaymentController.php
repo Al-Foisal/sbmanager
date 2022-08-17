@@ -16,7 +16,7 @@ class DigitalPaymentController extends Controller {
     public function index($shop_id) {
         $data = [];
 
-        $data['payments']  = DigitalPayment::where('shop_id', $shop_id)->paginate(500);
+        $data['payments']  = DigitalPayment::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(500);
         $data['consumers'] = Consumer::where('shop_id', $shop_id)->paginate(500);
 
         return $data;

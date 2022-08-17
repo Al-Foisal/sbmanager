@@ -191,7 +191,7 @@ class CustomerController extends Controller {
     public function digitalBalance($shop_id) {
         $balance = DigitalAmount::where('shop_id', $shop_id)->first();
 
-        return $balance;
+        return $balance ?? [];
     }
 
     public function storeWithdraw(Request $request) {
