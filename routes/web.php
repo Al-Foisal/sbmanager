@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DistrictController;
 use App\Http\Controllers\Backend\DivisionController;
 use App\Http\Controllers\Backend\EMITimeController;
+use App\Http\Controllers\Backend\FAQController;
 use App\Http\Controllers\Backend\FeatureController;
 use App\Http\Controllers\Backend\GeneralController;
 use App\Http\Controllers\Backend\MainMenu\CategoryController;
@@ -360,6 +361,7 @@ Route::prefix('/admin')->as('admin.')->middleware('auth:admin')->group(function 
     Route::resource('/packages', PackageController::class);
 
     Route::resource('/shop_types', ShopTypeController::class);
+    Route::resource('/faqs', FAQController::class);
     Route::resource('/divisions', DivisionController::class);
     Route::resource('/districts', DistrictController::class);
     Route::resource('/areas', AreaController::class);

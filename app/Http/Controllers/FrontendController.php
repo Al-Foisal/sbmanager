@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminOrder;
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\FAQ;
 use App\Models\Feature;
 use App\Models\Package;
 use App\Models\Product;
@@ -17,6 +18,7 @@ class FrontendController extends Controller {
         $data             = [];
         $data['slider']   = Slider::where('shop_id', null)->get();
         $data['features'] = Feature::all();
+        $data['faq']      = FAQ::all();
         $data['packages'] = Package::with('packageDetails')->get();
 
         return view('frontend.master', $data);

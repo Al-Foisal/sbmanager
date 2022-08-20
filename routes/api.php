@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DueController;
 use App\Http\Controllers\Api\EMIController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\ExpenseBookController;
+use App\Http\Controllers\Api\FAQController;
 use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Api\IncomeBookController;
 use App\Http\Controllers\Api\ProductController;
@@ -93,7 +94,7 @@ Route::controller(CustomerController::class)->group(function () {
      * }]
      */
     Route::delete('/buy-order-delete/{id}', 'buyOrderdelete');
-    Route::post('/buy-product-delete', 'buyProductDelete');//[id]
+    Route::post('/buy-product-delete', 'buyProductDelete'); //[id]
 
     //transaction
     Route::get('/transaction/{shop_id}', 'transaction');
@@ -116,6 +117,12 @@ Route::controller(CustomerController::class)->group(function () {
 
     Route::get('/get-qr-code/{shop_id}', 'getQRCode');
     Route::post('/store-qr-code', 'storeQRCode');
+});
+
+Route::controller(FAQController::class)->prefix('/faq')->group(function () {
+    Route::get('faq_categories', 'FAQCategory');
+    Route::get('faq_category/{id}', 'FAQCategoryDetails');
+
 });
 
 //due

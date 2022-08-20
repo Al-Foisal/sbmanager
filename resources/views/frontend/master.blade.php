@@ -46,6 +46,9 @@
                             <a class="nav-link pagescroll" href="#pricing">Our Pricing</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link pagescroll" href="#faq">Our FAQ</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link pagescroll" href="#cantact">Contract Us</a>
                         </li>
                         <li class="nav-item">
@@ -76,6 +79,9 @@
                             <a class="nav-link pagescroll" href="#pricing">Our Pricing</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link pagescroll" href="#faq">FAQ</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link pagescroll" href="#cantact">Contract Us</a>
                         </li>
                         <li class="nav-item">
@@ -94,8 +100,7 @@
                                 </a> </li>
                         @endif
                         @if ($company->linkedin)
-                            <li><a href="{{ $company->linkedin }}" class="linkedin"><i
-                                        class="fab fa-linkedin-in"></i>
+                            <li><a href="{{ $company->linkedin }}" class="linkedin"><i class="fab fa-linkedin-in"></i>
                                 </a> </li>
                         @endif
                         @if ($company->inatagram)
@@ -108,7 +113,8 @@
                         @endif
 
                         @if ($company->pinterest)
-                            <li><a href="{{ $company->pinterest }}" class="whatsapp"><i class="fab fa-pinterest"></i>
+                            <li><a href="{{ $company->pinterest }}" class="whatsapp"><i
+                                        class="fab fa-pinterest"></i>
                                 </a> </li>
                         @endif
                     </ul>
@@ -211,8 +217,48 @@
         </div>
     </section>
     <!--Pricing ends-->
+    <section id="faq" class="single-feature padding mt-n5">
+        <div class="container">
+            @foreach ($faq as $key => $item)
+                <div class="row d-flex align-items-center mb-5">
+                    <div class="col-lg-12 col-md-12 col-sm-12 text-sm-start text-center wow fadeInLeft"
+                        data-wow-delay="300ms">
+                        <div class="heading-title mb-4">
+                            <h2 class="darkcolor font-normal bottom30">{{ $item->name }}</h2>
+                        </div>
+                        @if ($item->video)
+                            <video style="height: 400px;width:100%;" controls preload="auto" autoplay loop muted>
+                                <source src="{{ asset($item->video) }}" type='video/mp4'>
+                            </video>
+                        @else
+                            <p class="bottom35">
+                                {!! $item->details !!}
+                            </p>
+                        @endif
+                    </div>
+                </div>
+                {{-- @else
+                    <div class="row d-flex align-items-center">
+                        <div class="col-lg-5 offset-lg-1 col-md-5 col-sm-5 wow fadeInRight" data-wow-delay="300ms">
+                            <div class="image"><img alt="SEO" src="{{ asset($feature->image) }}"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-7 col-sm-7 text-sm-start text-center wow fadeInLeft"
+                            data-wow-delay="300ms">
+                            <div class="heading-title mb-4">
+                                <h2 class="darkcolor font-normal bottom30">{{ $feature->name }}</h2>
+                            </div>
+                            <p class="bottom35">
+                                {!! $feature->details !!}
+                            </p>
+                        </div>
+                    </div>
+                @endif --}}
+            @endforeach
+        </div>
+    </section>
+    <!--Some Feature ends-->
     <!--contact us-->
-    <section id="cantact" class="position-relative padding_bottom_half">
+    <section id="cantact" class="position-relative padding_bottom_half bglight">
         <div class="container whitebox padding_bottom_half">
             <div class="padding_top">
                 <div class="row">
@@ -236,8 +282,7 @@
                                 <p class="bottom10">{{ $company->phone_one }}</p>
                                 <p class="bottom10">{{ $company->phone_two }}</p>
                                 <p class="bottom10">{{ $company->phone_three }}</p>
-                                <p class="bottom10"><a
-                                        href="mailto:{{ $company->email }}">{{ $company->email }}</a>
+                                <p class="bottom10"><a href="mailto:{{ $company->email }}">{{ $company->email }}</a>
                                 </p>
                             </div>
                             <ul class="social-icons no-border mb-4 mb-md-0 wow fadeInUp" data-wow-delay="300ms">
@@ -355,8 +400,7 @@
                                     </a> </li>
                             @endif
                             @if ($company->twitter)
-                                <li><a href="{{ $company->twitter }}" class="twitter"><i
-                                            class="fab fa-twitter"></i>
+                                <li><a href="{{ $company->twitter }}" class="twitter"><i class="fab fa-twitter"></i>
                                     </a> </li>
                             @endif
                             @if ($company->linkedin)
