@@ -227,9 +227,11 @@ class CustomerController extends Controller {
         }
 
         Shop::create([
-            'customer_id' => $request->customer_id,
-            'name'        => $request->name,
-            'image'       => $final_name1,
+            'customer_id'        => $request->customer_id,
+            'name'               => $request->name,
+            'image'              => $final_name1,
+            'payment_link'       => Str::slug($request->name),
+            'online_market_link' => Str::slug($request->name),
         ]);
 
         return response()->json(['status' => true, 'message' => 'New shop created successfully!!']);
