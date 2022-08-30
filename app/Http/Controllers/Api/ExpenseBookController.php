@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ExpenseBook;
 use App\Models\ExpenseBookDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class ExpenseBookController extends Controller 
-{
+class ExpenseBookController extends Controller {
     public function expenseBook($shop_id) {
         $data                  = [];
         $data['expenses']      = $e      = ExpenseBook::where('shop_id', $shop_id)->orWhere('shop_id', null)->withSum('expenseBookDetails', 'amount')->get();
@@ -103,14 +103,35 @@ class ExpenseBookController extends Controller
 
     public function expenseBookList(Request $request, $shop_id) {
         $data             = [];
-        $data['expenses'] = ExpenseBookDetail::where('shop_id', $shop_id)
-            ->with('expenseBook')
+        $expenses         = ExpenseBookDetail::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $expenses = $expenses->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year   = Carbon::parse(request()->selected_date)->format('Y');
+            $month  = Carbon::parse(request()->selected_date)->format('m');
+            $expenses = $expenses->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $expenses    = $expenses->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $expenses = $expenses->whereYear('created_at', $date);
+        }
+
+        $data['expenses'] = $expenses = $expenses->with('expenseBook')
             ->latest()
             ->paginate(500);
 
-        $data['total_balance'] = ExpenseBookDetail::where('shop_id', $shop_id)
-            ->select('amount')
-            ->sum('amount');
+            $total = 0;
+
+            foreach($expenses as $e){
+                $total += $e->amount;
+            }
+
+        $data['total_balance'] = (int) $total;
 
         return $data;
     }

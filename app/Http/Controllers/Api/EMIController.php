@@ -7,6 +7,7 @@ use App\Models\Bank;
 use App\Models\Consumer;
 use App\Models\EMI;
 use App\Models\EMITime;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EMIController extends Controller {
@@ -26,7 +27,25 @@ class EMIController extends Controller {
 
     public function index($shop_id) {
         $data         = [];
-        $data['emis'] = EMI::where('shop_id', $shop_id)->orderBy('id', 'DESC')->paginate(500);
+        $emi = EMI::where('shop_id', $shop_id);
+        
+        if (request()->type == 1) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $emi = $emi->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year   = Carbon::parse(request()->selected_date)->format('Y');
+            $month  = Carbon::parse(request()->selected_date)->format('m');
+            $emi = $emi->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $emi    = $emi->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $emi = $emi->whereYear('created_at', $date);
+        }
+
+        $data['emis'] = $emi->orderBy('id', 'DESC')->paginate(500);
 
         return $data;
     }

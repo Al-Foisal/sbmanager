@@ -8,6 +8,7 @@ use App\Models\Due;
 use App\Models\DueDetail;
 use App\Models\Employee;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -26,8 +27,26 @@ class DueController extends Controller {
     }
 
     public function index($shop_id) {
-        $data         = [];
-        $data['dues'] = $dues = Due::where('shop_id', $shop_id)->orderBy('updated_at', 'desc')->with('dueDetails')->paginate(500);
+        $data = [];
+        $dues = Due::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $dues = $dues->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year   = Carbon::parse(request()->selected_date)->format('Y');
+            $month  = Carbon::parse(request()->selected_date)->format('m');
+            $dues = $dues->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $dues    = $dues->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $dues = $dues->whereYear('created_at', $date);
+        }
+
+        $data['dues'] = $dues = $dues->orderBy('updated_at', 'desc')->with('dueDetails')->paginate(500);
 
         $data['consumer'] = Due::where('shop_id', $shop_id)->where('due_to', 'Consumer')->count();
         $data['supplier'] = Due::where('shop_id', $shop_id)->where('due_to', 'Supplier')->count();

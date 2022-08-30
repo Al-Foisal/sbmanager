@@ -134,8 +134,25 @@ class CustomerController extends Controller {
 
     public function buyBook($shop_id) {
         $data         = [];
-        $data['buys'] = $buys = Buy::where('shop_id', $shop_id)
-            ->with(['supplier', 'buyProduct.prod' => function ($query) {
+        $buys = Buy::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $buys = $buys->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year   = Carbon::parse(request()->selected_date)->format('Y');
+            $month  = Carbon::parse(request()->selected_date)->format('m');
+            $buys = $buys->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $buys    = $buys->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $buys = $buys->whereYear('created_at', $date);
+        }
+
+        $data['buys'] = $buys = $buys->with(['supplier', 'buyProduct.prod' => function ($query) {
                 return $query->select('id', 'name');
             },
             ])
@@ -826,7 +843,7 @@ class CustomerController extends Controller {
         } elseif (request()->type == 3) {
             $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
             $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
-            $orders    = $orders->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 00:00:00"]);
+            $orders    = $orders->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
         } elseif (request()->type == 4) {
             $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
             $orders = $orders->whereYear('created_at', $date);

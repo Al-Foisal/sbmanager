@@ -75,7 +75,7 @@ Route::controller(CustomerController::class)->group(function () {
     Route::post('/order-save', 'orderSave');
 
     //buy
-    Route::get('/buy-book/{shop_id}', 'buyBook');
+    Route::get('/buy-book/{shop_id}', 'buyBook'); //sorted
     Route::get('/buy-book-details/{shop_id}', 'buyBookDetails');
     Route::post('/buy-order-save', 'buyOrderSave');
     Route::post('/buy-order-update', 'buyOrderUpdate');
@@ -128,7 +128,7 @@ Route::controller(FAQController::class)->prefix('/faq')->group(function () {
 //due
 Route::controller(DueController::class)->prefix('/due')->group(function () {
     Route::get('/get-category/{category}/{shop_id}', 'category');
-    Route::get('/{shop_id}', 'index');
+    Route::get('/{shop_id}', 'index'); //sorted
     Route::post('/store', 'store');
     Route::get('/show/{id}', 'show');
     Route::put('/update', 'update');
@@ -144,7 +144,7 @@ Route::controller(ExpenseBookController::class)->prefix('/expense')->group(funct
     Route::delete('/delete/{expense}', 'deleteExpenseBook');
 
     //expense list
-    Route::get('/list/{shop_id}', 'expenseBookList');
+    Route::get('/list/{shop_id}', 'expenseBookList');//sorted
     Route::post('/list/store', 'storeExpenseBookList');
 });
 
@@ -156,7 +156,7 @@ Route::controller(IncomeBookController::class)->prefix('/income')->group(functio
     Route::delete('/delete/{income}', 'deleteIncomeBook');
 
     //income list
-    Route::get('/list/{shop_id}', 'incomeBookList');
+    Route::get('/list/{shop_id}', 'incomeBookList'); //sorted
     Route::post('/list/store', 'storeIncomeBookList');
 });
 
