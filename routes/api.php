@@ -164,7 +164,7 @@ Route::controller(IncomeBookController::class)->prefix('/income')->group(functio
 Route::controller(EMIController::class)->prefix('/emi')->group(function () {
     Route::get('/bank', 'bank');
     Route::get('/emi_time', 'emiTime');
-    Route::get('/{shop_id}', 'index')->name('index');
+    Route::get('/{shop_id}', 'index')->name('index'); //sorted
     Route::post('/store', 'store')->name('store');
     Route::get('/details/{id}', 'details')->name('details');
 });
