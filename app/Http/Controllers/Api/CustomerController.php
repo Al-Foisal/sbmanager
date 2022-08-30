@@ -19,6 +19,7 @@ use App\Models\Shop;
 use App\Models\Slider;
 use App\Models\Subscription;
 use App\Models\SubscriptionHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -811,14 +812,33 @@ class CustomerController extends Controller {
     }
 
     public function transaction($shop_id) {
-        $data           = [];
-        $data['orders'] = $orders = Order::where('shop_id', $shop_id)
+
+        $data   = [];
+        $orders = Order::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $orders = $orders->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year   = Carbon::parse(request()->selected_date)->format('Y');
+            $month  = Carbon::parse(request()->selected_date)->format('m');
+            $orders = $orders->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $orders    = $orders->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 00:00:00"]);
+            // $orders->whereDate('created_at', '>=', $date_from)->whereDate('created_at', '<=', $date_from);
+        } elseif (request()->type == 4) {
+            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $orders = $orders->whereYear('created_at', $date);
+        }
+        
+        $data['orders'] = $orders = $orders->where('shop_id', $shop_id)
             ->with(['consumer', 'employee', 'orderProduct.prod' => function ($query) {
                 return $query->select('id', 'name', 'buying_price');
             },
-            ])
-            ->orderBy('id', 'DESC')
-            ->paginate(500);
+            ])->orderBy('id', 'DESC')->paginate(500);
+
         $total_transaction = 0;
         $count             = 0;
 
