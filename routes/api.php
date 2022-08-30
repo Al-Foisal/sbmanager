@@ -195,9 +195,9 @@ Route::controller(GeneralController::class)->group(function () {
 
     Route::get('/consumer/orders/{shop_id}', 'consumerOrders');
     Route::get('/employee/orders/{shop_id}', 'employeeOrders');
-    Route::get('/supplier-report/{shop_id}', 'supplierReport');
-    Route::get('/stock-report/{shop_id}', 'stockReport');
-    Route::get('/product-report/{shop_id}', 'productReport');
+    Route::get('/supplier-report/{shop_id}', 'supplierReport');//sorted
+    Route::get('/stock-report/{shop_id}', 'stockReport');//sorted
+    Route::get('/product-report/{shop_id}', 'productReport');//sorted
     Route::get('/PL-report/{shop_id}', 'plReport'); //sorted
 });
 

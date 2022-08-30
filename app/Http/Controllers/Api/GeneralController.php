@@ -113,18 +113,52 @@ class GeneralController extends Controller {
     }
 
     public function supplierReport($shop_id) {
-        $data             = [];
-        $data['supplier'] = Supplier::where('shop_id', $shop_id)
-            ->with('buy.buyProduct')
+        $data     = [];
+        $supplier = Supplier::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date     = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $supplier = $supplier->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year     = Carbon::parse(request()->selected_date)->format('Y');
+            $month    = Carbon::parse(request()->selected_date)->format('m');
+            $supplier = $supplier->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $supplier  = $supplier->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date     = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $supplier = $supplier->whereYear('created_at', $date);
+        }
+
+        $data['supplier'] = $supplier->with('buy.buyProduct')
             ->get();
 
         return $data;
     }
 
     public function stockReport($shop_id) {
-        $data            = [];
-        $data['product'] = Product::where('shop_id', $shop_id)
-            ->select(['id', 'name', 'quantity'])
+        $data    = [];
+        $product = Product::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date    = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $product = $product->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year    = Carbon::parse(request()->selected_date)->format('Y');
+            $month   = Carbon::parse(request()->selected_date)->format('m');
+            $product = $product->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $product   = $product->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date    = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $product = $product->whereYear('created_at', $date);
+        }
+
+        $data['product'] = $product->select(['id', 'name', 'quantity'])
             ->with('sellProduct', 'buyProduct')
             ->get();
 
@@ -133,8 +167,25 @@ class GeneralController extends Controller {
     }
 
     public function productReport($shop_id) {
-        $product = Product::where('shop_id', $shop_id)
-            ->select(['id', 'name'])
+        $product = Product::where('shop_id', $shop_id);
+
+        if (request()->type == 1) {
+            $date    = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $product = $product->whereDate('created_at', $date);
+        } elseif (request()->type == 2) {
+            $year    = Carbon::parse(request()->selected_date)->format('Y');
+            $month   = Carbon::parse(request()->selected_date)->format('m');
+            $product = $product->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $product   = $product->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"]);
+        } elseif (request()->type == 4) {
+            $date    = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $product = $product->whereYear('created_at', $date);
+        }
+
+        $product->select(['id', 'name'])
             ->withSum('orderProduct', 'quantity')
             ->withSum('orderProduct', 'price')
             ->get();
@@ -143,7 +194,7 @@ class GeneralController extends Controller {
     }
 
     public function plReport($shop_id) {
-        $data          = [];
+        $data = [];
 
         if (request()->type == 1) {
             $date = Carbon::parse(request()->selected_date)->format('Y-m-d');
@@ -182,8 +233,8 @@ class GeneralController extends Controller {
 
             $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
         } elseif (request()->type == 2) {
-            $year         = Carbon::parse(request()->selected_date)->format('Y');
-            $month        = Carbon::parse(request()->selected_date)->format('m');
+            $year  = Carbon::parse(request()->selected_date)->format('Y');
+            $month = Carbon::parse(request()->selected_date)->format('m');
 
             $data['sell'] = Order::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->sum('subtotal');
             $data['cost'] = Buy::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->sum('subtotal');
@@ -219,8 +270,8 @@ class GeneralController extends Controller {
 
             $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
         } elseif (request()->type == 3) {
-            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
-            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $date_from    = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to      = Carbon::parse(request()->date_to)->format('Y-m-d');
             $data['sell'] = Order::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->sum('subtotal');
             $data['cost'] = Buy::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->sum('subtotal');
 
