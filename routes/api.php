@@ -97,7 +97,7 @@ Route::controller(CustomerController::class)->group(function () {
     Route::post('/buy-product-delete', 'buyProductDelete'); //[id]
 
     //transaction
-    Route::get('/transaction/{shop_id}', 'transaction');
+    Route::get('/transaction/{shop_id}', 'transaction'); //sorted
     Route::get('/transaction-details/{id}', 'transactionDetails');
     Route::post('/transaction-update', 'transactionUpdate');
     Route::delete('/transaction-delete/{id}', 'transactionDelete');
