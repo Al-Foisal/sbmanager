@@ -144,42 +144,188 @@ class GeneralController extends Controller {
 
     public function plReport($shop_id) {
         $data          = [];
-        $date_time     = request()->date_time ?? date("Y-m-d");
-        $selected_date = Carbon::parse($date_time)->format('d-m-Y');
 
-        $data['sell'] = Order::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('subtotal');
-        $data['cost'] = Buy::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('subtotal');
+        if (request()->type == 1) {
+            $date = Carbon::parse(request()->selected_date)->format('Y-m-d');
 
-        $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->where('status', 5)->sum('subtotal');
-        $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->sum('amount');
+            $data['sell'] = Order::where('shop_id', $shop_id)->whereDate('created_at', $date)->sum('subtotal');
+            $data['cost'] = Buy::where('shop_id', $shop_id)->whereDate('created_at', $date)->sum('subtotal');
 
-        $order = Order::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->with('orderProduct', 'orderProduct.prod')->get();
-        $online_order = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', $selected_date)->where('status', 5)->with('onlineOrderProducts','onlineOrderProducts.prod')->get();
+            $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereDate('created_at', $date)->where('status', 5)->sum('subtotal');
+            $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereDate('created_at', $date)->sum('amount');
 
-        $selling_price = 0;
-        $buying_price  = 0;
+            $order        = Order::where('shop_id', $shop_id)->whereDate('created_at', $date)->with('orderProduct', 'orderProduct.prod')->get();
+            $online_order = OnlineOrder::where('shop_id', $shop_id)->whereDate('created_at', $date)->where('status', 5)->with('onlineOrderProducts', 'onlineOrderProducts.prod')->get();
 
-        foreach ($order as $o) {
+            $selling_price = 0;
+            $buying_price  = 0;
 
-            foreach ($o->orderProduct as $op) {
-                $selling_price += $op->price;
-                $buying_price += $op->prod->buying_price;
+            foreach ($order as $o) {
+
+                foreach ($o->orderProduct as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
             }
 
-        }
+            foreach ($online_order as $o) {
 
-        foreach ($online_order as $o) {
+                foreach ($o->onlineOrderProducts as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
 
-            foreach ($o->onlineOrderProducts as $op) {
-                $selling_price += $op->price;
-                $buying_price += $op->prod->buying_price;
             }
 
+            $data['profit'] = $selling_price - $buying_price;
+
+            $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
+        } elseif (request()->type == 2) {
+            $year         = Carbon::parse(request()->selected_date)->format('Y');
+            $month        = Carbon::parse(request()->selected_date)->format('m');
+
+            $data['sell'] = Order::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->sum('subtotal');
+            $data['cost'] = Buy::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->sum('subtotal');
+
+            $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->where('status', 5)->sum('subtotal');
+            $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->sum('amount');
+
+            $order        = Order::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->with('orderProduct', 'orderProduct.prod')->get();
+            $online_order = OnlineOrder::where('shop_id', $shop_id)->whereYear('created_at', $year)->whereMonth('created_at', $month)->where('status', 5)->with('onlineOrderProducts', 'onlineOrderProducts.prod')->get();
+
+            $selling_price = 0;
+            $buying_price  = 0;
+
+            foreach ($order as $o) {
+
+                foreach ($o->orderProduct as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            foreach ($online_order as $o) {
+
+                foreach ($o->onlineOrderProducts as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            $data['profit'] = $selling_price - $buying_price;
+
+            $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
+        } elseif (request()->type == 3) {
+            $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
+            $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
+            $data['sell'] = Order::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->sum('subtotal');
+            $data['cost'] = Buy::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->sum('subtotal');
+
+            $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->where('status', 5)->sum('subtotal');
+            $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->sum('amount');
+
+            $order        = Order::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->with('orderProduct', 'orderProduct.prod')->get();
+            $online_order = OnlineOrder::where('shop_id', $shop_id)->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"])->where('status', 5)->with('onlineOrderProducts', 'onlineOrderProducts.prod')->get();
+
+            $selling_price = 0;
+            $buying_price  = 0;
+
+            foreach ($order as $o) {
+
+                foreach ($o->orderProduct as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            foreach ($online_order as $o) {
+
+                foreach ($o->onlineOrderProducts as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            $data['profit'] = $selling_price - $buying_price;
+
+            $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
+        } elseif (request()->type == 4) {
+            $date = Carbon::parse(request()->selected_date)->format('Y-m-d');
+
+            $data['sell'] = Order::where('shop_id', $shop_id)->whereYear('created_at', $date)->sum('subtotal');
+            $data['cost'] = Buy::where('shop_id', $shop_id)->whereYear('created_at', $date)->sum('subtotal');
+
+            $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereYear('created_at', $date)->where('status', 5)->sum('subtotal');
+            $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereYear('created_at', $date)->sum('amount');
+
+            $order        = Order::where('shop_id', $shop_id)->whereYear('created_at', $date)->with('orderProduct', 'orderProduct.prod')->get();
+            $online_order = OnlineOrder::where('shop_id', $shop_id)->whereYear('created_at', $date)->where('status', 5)->with('onlineOrderProducts', 'onlineOrderProducts.prod')->get();
+
+            $selling_price = 0;
+            $buying_price  = 0;
+
+            foreach ($order as $o) {
+
+                foreach ($o->orderProduct as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            foreach ($online_order as $o) {
+
+                foreach ($o->onlineOrderProducts as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            $data['profit'] = $selling_price - $buying_price;
+
+            $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
+        } else {
+
+            $data['sell'] = Order::where('shop_id', $shop_id)->whereMonth('created_at', date("Y-m-d"))->sum('subtotal');
+            $data['cost'] = Buy::where('shop_id', $shop_id)->whereMonth('created_at', date("Y-m-d"))->sum('subtotal');
+
+            $data['other_sell'] = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', date("Y-m-d"))->where('status', 5)->sum('subtotal');
+            $data['other_cost'] = ExpenseBookDetail::where('shop_id', $shop_id)->whereMonth('created_at', date("Y-m-d"))->sum('amount');
+
+            $order        = Order::where('shop_id', $shop_id)->whereMonth('created_at', date("Y-m-d"))->with('orderProduct', 'orderProduct.prod')->get();
+            $online_order = OnlineOrder::where('shop_id', $shop_id)->whereMonth('created_at', date("Y-m-d"))->where('status', 5)->with('onlineOrderProducts', 'onlineOrderProducts.prod')->get();
+
+            $selling_price = 0;
+            $buying_price  = 0;
+
+            foreach ($order as $o) {
+
+                foreach ($o->orderProduct as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            foreach ($online_order as $o) {
+
+                foreach ($o->onlineOrderProducts as $op) {
+                    $selling_price += $op->price;
+                    $buying_price += $op->prod->buying_price;
+                }
+
+            }
+
+            $data['profit'] = $selling_price - $buying_price;
+
+            $data['total'] = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
         }
-
-        $data['profit'] = $selling_price - $buying_price;
-
-        $data['total']  = ($data['sell'] + $data['other_sell']) - ($data['cost'] + $data['other_cost']);
 
         return $data;
     }

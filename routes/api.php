@@ -198,7 +198,7 @@ Route::controller(GeneralController::class)->group(function () {
     Route::get('/supplier-report/{shop_id}', 'supplierReport');
     Route::get('/stock-report/{shop_id}', 'stockReport');
     Route::get('/product-report/{shop_id}', 'productReport');
-    Route::get('/PL-report/{shop_id}', 'plReport'); //parameter: "date_time"
+    Route::get('/PL-report/{shop_id}', 'plReport'); //sorted
 });
 
 //subscription payment
