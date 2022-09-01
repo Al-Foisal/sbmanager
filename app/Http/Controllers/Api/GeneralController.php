@@ -185,7 +185,7 @@ class GeneralController extends Controller {
             $product = $product->whereYear('created_at', $date);
         }
 
-        $product->select(['id', 'name'])
+        $product = $product->select(['id', 'name'])
             ->withSum('orderProduct', 'quantity')
             ->withSum('orderProduct', 'price')
             ->get();
