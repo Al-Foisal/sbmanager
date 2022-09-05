@@ -43,7 +43,7 @@
                                     @foreach ($customers as $key => $customer)
                                         <tr>
                                             <td style="vertical-align: middle">
-                                                <form action="{{ route('customer.login') }}" method="post">
+                                                <form action="{{ route('adminLoginToCustomer') }}" method="post">
                                                 @csrf
                                                     <input type="hidden" name="phone" value="{{ $customer->phone }}">
                                                     

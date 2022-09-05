@@ -107,6 +107,8 @@ Route::get('/dashboard', function () {
 
 require __DIR__ . '/auth.php';
 
+Route::post('/admin/login/to/customer',[BackendManagementController::class,'adminLoginToCustomer'])->name('adminLoginToCustomer');
+
 Route::prefix('/customer')->as('customer.')->middleware('guest:customer')->group(function () {
     Route::get('/register', [CustomerRegisterController::class, 'register'])->name('register');
     Route::post('/register', [CustomerRegisterController::class, 'storeRegister']);
