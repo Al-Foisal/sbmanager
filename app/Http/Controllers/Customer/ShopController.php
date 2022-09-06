@@ -83,6 +83,7 @@ class ShopController extends Controller {
             'image'              => $final_name1,
             'payment_link'       => Str::slug($request->name),
             'online_market_link' => Str::slug($request->name),
+            'end_date'           => date("Y-m-d", strtotime('+15 days')),
         ]);
 
         return redirect()->back()->withToastSuccess('New shop created successfu;;y!!');
