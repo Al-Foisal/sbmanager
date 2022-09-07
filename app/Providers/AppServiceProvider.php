@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\CompanyInfo;
 use App\Models\Page;
+use App\Models\SubscriptionHistory;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;

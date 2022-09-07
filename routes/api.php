@@ -110,8 +110,11 @@ Route::controller(CustomerController::class)->group(function () {
     Route::post('/online-order-status/{order_id}', 'onlineOrderStatus');
 
     //subscription
-    Route::get('/subscription-list', 'subscriptionList');
+    //type=Standard or
+    //type=Advanced
+    Route::get('/subscription-list/{type}', 'subscriptionList');
     Route::get('/subscription-history/{shop_id}', 'subscriptionHistory');
+    Route::get('/subscription-present/{shop_id}', 'presentSubscription');
 
     Route::put('/product/update-quantity', 'updateQuantity');
 

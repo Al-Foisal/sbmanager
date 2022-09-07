@@ -35,7 +35,8 @@
                                     @foreach ($subscriptions as $subscription)
                                         <tr>
                                             <td style="vertical-align: middle">
-                                                Name: <b>{{ $subscription->name }}</b> <br>
+                                                Package Type: <b>{{ $subscription->package_type }}</b> <br>
+                                                Package Name: <b>{{ $subscription->life_time . ' ' . $subscription->life_time_type }} Subscription</b>  <br>
                                                 Duration:
                                                 <b>{{ $subscription->life_time . ' ' . $subscription->life_time_type }}</b>
                                             </td>

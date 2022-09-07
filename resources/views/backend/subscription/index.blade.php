@@ -42,7 +42,6 @@
                                         <th>Price</th>
                                         <th>Discount</th>
                                         <th>Discount Price</th>
-                                        <th>Cashback</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -53,12 +52,11 @@
                                                 <a href="{{ route('admin.subscriptions.edit', $subscription->id) }}"
                                                     class="btn btn-info btn-xs"><i class="fas fa-edit"></i></a>
                                             </td>
-                                            <td>{{ $subscription->name }}</td>
+                                            <td>{{ $subscription->package_type }}</td>
                                             <td>{{ $subscription->life_time . ' ' . $subscription->life_time_type }}</td>
                                             <td>{{ $subscription->price }}</td>
                                             <td>{{ $subscription->discount }}</td>
                                             <td>{{ $subscription->discount_price }}</td>
-                                            <td>{{ $subscription->cashback }}</td>
                                             <td>{{ $subscription->status === 1 ? 'Y' : 'N' }}</td>
                                         </tr>
                                     @endforeach

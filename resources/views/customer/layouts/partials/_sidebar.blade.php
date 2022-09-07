@@ -77,7 +77,7 @@
                                 <p>Buy</p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a href="{{ route('customer.buy.book') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-dark"></i>
@@ -164,6 +164,9 @@
                         </ul>
                     </li>
                     {{-- instructor activities --}}
+                    @php
+                        $access = App\Models\SubscriptionHistory::where('shop_id',SID())->orderBy('id','desc')->first();
+                    @endphp
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-circle text-warning"></i>
@@ -173,22 +176,39 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview nav-header">
-                            <li class="nav-item">
-                                <a href="{{ route('customer.shop.onlineShop') }}" class="nav-link">
-                                    <i class="nav-icon far fa-circle text-dark"></i>
-                                    <p>Online Shop</p>
-                                </a>
-                            </li>
+                            @if ($access && $access->subscription->package_type == 'Standard')
+                                <li class="nav-item">
+                                    <a href="javascript:;" class="nav-link">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>Top Up</p>
+                                        <i class="fas fa-lock right"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:;" class="nav-link">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>Online Shop</p>
+                                        <i class="fas fa-lock right"></i>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a href="{{ route('customer.topup.index') }}" class="nav-link">
+                                        <i class="nav-icon far fa-circle text-dark"></i>
+                                        <p>Top UP</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('customer.shop.onlineShop') }}" class="nav-link">
+                                        <i class="nav-icon far fa-circle text-dark"></i>
+                                        <p>Online Shop</p>
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{ route('customer.emi.index') }}" class="nav-link">
                                     <i class="nav-icon far fa-circle text-dark"></i>
                                     <p>EMI</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('customer.topup.index') }}" class="nav-link">
-                                    <i class="nav-icon far fa-circle text-dark"></i>
-                                    <p>Top UP</p>
                                 </a>
                             </li>
                         </ul>

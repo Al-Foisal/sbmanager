@@ -13,7 +13,6 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
 @endsection
 @section('backend')
@@ -39,7 +38,7 @@
                     <div class="card card-primary">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('admin.subscriptions.update',$subscription) }}" method="POST"
+                        <form action="{{ route('admin.subscriptions.update', $subscription) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('put')
@@ -47,40 +46,42 @@
 
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="name">Name<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="name"
-                                                value="{{ $subscription->name }}" placeholder="Enter Package name" name="name"
-                                                required>
+                                            <label>Package Type<span class="text-danger">*</span></label>
+                                            <select class="form-control  select2bs4" style="width: 100%" name="package_type"
+                                                data-placeholder="Select package type" required>
+                                                <option value="Standard" @if($subscription->package_type === 'Standard') selected @endif>Standard</option>
+                                                <option value="Advanced" @if($subscription->package_type === 'Advanced') selected @endif>Advanced</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="name">Package life time<span class="text-danger">*</span></label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="number" class="form-control" id="life_time"
-                                                        value="{{ $subscription->life_time }}"
-                                                        placeholder="Enter Package life time" name="life_time" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <select class="form-control  select2bs4" style="width: 100%"
-                                                        name="life_time_type">
-                                                        <option value="">Select life time</option>
-                                                        <option value="Year" @if($subscription->life_time_type === 'Year') selected @endif>Year</option>
-                                                        <option value="Month" @if($subscription->life_time_type === 'Month') selected @endif>Month</option>
-                                                        <option value="Day" @if($subscription->life_time_type === 'Day') selected @endif>Day</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="name">Package life time<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="life_time"
+                                                value="{{ $subscription->life_time }}" placeholder="Enter Package life time"
+                                                name="life_time" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <select class="form-control  select2bs4" style="width: 100%"
+                                                name="life_time_type">
+                                                <option value="">Select life time</option>
+                                                <option value="Year" @if ($subscription->life_time_type === 'Year') selected @endif>
+                                                    Year</option>
+                                                <option value="Month" @if ($subscription->life_time_type === 'Month') selected @endif>
+                                                    Month</option>
+                                                <option value="Day" @if ($subscription->life_time_type === 'Day') selected @endif>Day
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="price">Price<span class="text-danger">*</span></label>
                                             <input type="number" class="form-control" id="price"
@@ -88,28 +89,19 @@
                                                 name="price" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="discount">Discount(%)</label>
                                             <input type="number" value="{{ $subscription->discount }}" class="form-control"
                                                 id="discount" placeholder="Enter discount" name="discount">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="discount_price">Discount Price</label>
                                             <input type="number" class="form-control" id="discount_price"
-                                                value="{{ $subscription->discount_price }}" placeholder="Enter discount price"
-                                                name="discount_price">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="cashback">Cashback Price</label>
-                                            <input type="number" class="form-control" id="cashback"
-                                                value="{{ $subscription->cashback }}" placeholder="Enter cashback price"
-                                                name="cashback">
+                                                value="{{ $subscription->discount_price }}"
+                                                placeholder="Enter discount price" name="discount_price">
                                         </div>
                                     </div>
 

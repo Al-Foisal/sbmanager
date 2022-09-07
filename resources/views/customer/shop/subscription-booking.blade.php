@@ -29,16 +29,18 @@
                                 <input type="hidden" name="shop_id" value="{{ SID() }}">
                                 <input type="hidden" name="subscription_id" value="{{ $subscription->id }}">
 
-                                <div class="card border-success mb-3" style="max-width: 18rem;margin:auto;">
+                                <div class="card border-success mb-3" style="max-width: 25rem;margin:auto;">
                                     <div class="card-header bg-transparent border-success">Package Details</div>
                                     <div class="card-body text-dark ">
                                         <h5 class="card-title">
-                                            <b>Pckage Name: </b>{{ $subscription->name }}
+                                            <b>Pckage Name: </b>{{ $subscription->life_time . ' ' . $subscription->life_time_type }} Subscription
                                         </h5>
+                                        <br>
                                         <h5 class="card-title">
                                             <b>Pckage Duration:
                                             </b>{{ $subscription->life_time . ' ' . $subscription->life_time_type }}
                                         </h5>
+                                        <br>
                                         <h5 class="card-title">
                                             <b>Pckage Price: </b>
                                             @if ($subscription->discount > 0)
@@ -77,7 +79,9 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Package Info</th>
+                                        <th>Package Type</th>
+                                        <th>Package Name</th>
+                                        <th>Package Duration</th>
                                         <th>Package Amount</th>
                                     </tr>
                                 </thead>

@@ -13,7 +13,6 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
 @endsection
 @section('backend')
@@ -46,69 +45,61 @@
 
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="name">Name<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="name"
-                                                value="{{ old('name') }}" placeholder="Enter Package name" name="name"
-                                                required>
+                                            <label>Package Type<span class="text-danger">*</span></label>
+                                            <select class="form-control  select2bs4" style="width: 100%" name="package_type"
+                                                data-placeholder="Select package type" required>
+                                                <option value="">Package Type</option>
+                                                <option value="Standard">Standard</option>
+                                                <option value="Advanced">Advanced</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="name">Package life time<span class="text-danger">*</span></label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="number" class="form-control" id="life_time"
-                                                        value="{{ old('life_time') }}"
-                                                        placeholder="Enter Package life time" name="life_time" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <select class="form-control  select2bs4" style="width: 100%"
-                                                        name="life_time_type">
-                                                        <option value="">Select life time</option>
-                                                        <option value="Year">Year</option>
-                                                        <option value="Month">Month</option>
-                                                        <option value="Day">Day</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="name">Package life time<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="life_time"
+                                                value="{{ old('life_time') }}" placeholder="Enter Package life time"
+                                                name="life_time" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Package life time Type<span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            <select class="form-control  select2bs4" style="width: 100%"
+                                                name="life_time_type">
+                                                <option value="">Select life time</option>
+                                                <option value="Year">Year</option>
+                                                <option value="Month">Month</option>
+                                                <option value="Day">Day</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="price">Price<span class="text-danger">*</span></label>
                                             <input type="number" class="form-control" id="price"
-                                                value="{{ old('price') }}" placeholder="Enter Buying Price"
-                                                name="price" required>
+                                                value="{{ old('price') }}" placeholder="Enter Buying Price" name="price"
+                                                required>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="discount">Discount(%)</label>
                                             <input type="number" value="{{ old('discount') }}" class="form-control"
                                                 id="discount" placeholder="Enter discount" name="discount">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="discount_price">Discount Price</label>
                                             <input type="number" class="form-control" id="discount_price"
                                                 value="{{ old('discount_price') }}" placeholder="Enter discount price"
                                                 name="discount_price">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="cashback">Cashback Price</label>
-                                            <input type="number" class="form-control" id="cashback"
-                                                value="{{ old('cashback') }}" placeholder="Enter cashback price"
-                                                name="cashback">
                                         </div>
                                     </div>
 

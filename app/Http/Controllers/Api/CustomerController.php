@@ -964,8 +964,8 @@ class CustomerController extends Controller {
         return $data;
     }
 
-    public function subscriptionList() {
-        $subscription = Subscription::all();
+    public function subscriptionList($type) {
+        $subscription = Subscription::where('package_type',$type)->get();
 
         return $subscription;
     }
@@ -974,6 +974,13 @@ class CustomerController extends Controller {
         $histories = SubscriptionHistory::where('shop_id', $shop_id)->where('status', '!=', 'Pending')->orderBy('id', 'desc')->with('subscription')->get();
 
         return $histories;
+    }
+
+    public function presentSubscription($shop_id)
+    {
+        $access = SubscriptionHistory::with('subscription')->where('shop_id',$shop_id)->orderBy('id','desc')->first();
+
+        return $access;
     }
 
     public function updateQuantity(Request $request) {
