@@ -116,6 +116,10 @@ Route::controller(CustomerController::class)->group(function () {
     Route::get('/subscription-history/{shop_id}', 'subscriptionHistory');
     Route::get('/subscription-present/{shop_id}', 'presentSubscription');
 
+    // {
+    //     "id":["2","3"],
+    //     "quantity":["6565","56565"]
+    // }
     Route::put('/product/update-quantity', 'updateQuantity');
 
     Route::get('/get-qr-code/{shop_id}', 'getQRCode');

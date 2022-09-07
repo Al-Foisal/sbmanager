@@ -74,4 +74,17 @@
             </div>
         </div>
     </section>
+@php
+    $access = App\Models\SubscriptionHistory::where('shop_id',SID())->orderBy('id','desc')->first();
+@endphp
+    <section class="content">
+        <div class="container-fluid">
+            <div class="">
+                <h1>Current subscription status</h1>
+                <p>Package Type: <b>{{ $access->subscription->package_type }}</b></p>
+                <p>Package Name: <b>{{ $access->subscription->life_time . ' ' . $access->subscription->life_time_type }} Subscription</b></p>
+                <p>Package Expiration: <b>{{ SHOP()->end_date }}</b></p>
+            </div>
+        </div>
+    </section>
 @endsection

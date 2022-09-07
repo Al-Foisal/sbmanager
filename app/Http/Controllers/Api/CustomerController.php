@@ -133,29 +133,29 @@ class CustomerController extends Controller {
     }
 
     public function buyBook($shop_id) {
-        $data         = [];
+        $data = [];
         $buys = Buy::where('shop_id', $shop_id);
 
         if (request()->type == 1) {
-            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $date = Carbon::parse(request()->selected_date)->format('Y-m-d');
             $buys = $buys->whereDate('created_at', $date);
         } elseif (request()->type == 2) {
-            $year   = Carbon::parse(request()->selected_date)->format('Y');
-            $month  = Carbon::parse(request()->selected_date)->format('m');
-            $buys = $buys->whereYear('created_at', $year)->whereMonth('created_at', $month);
+            $year  = Carbon::parse(request()->selected_date)->format('Y');
+            $month = Carbon::parse(request()->selected_date)->format('m');
+            $buys  = $buys->whereYear('created_at', $year)->whereMonth('created_at', $month);
         } elseif (request()->type == 3) {
             $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
             $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
-            $buys    = $buys->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
+            $buys      = $buys->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"]);
         } elseif (request()->type == 4) {
-            $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
+            $date = Carbon::parse(request()->selected_date)->format('Y-m-d');
             $buys = $buys->whereYear('created_at', $date);
         }
 
         $data['buys'] = $buys = $buys->with(['supplier', 'buyProduct.prod' => function ($query) {
-                return $query->select('id', 'name');
-            },
-            ])
+            return $query->select('id', 'name');
+        },
+        ])
             ->orderBy('updated_at', 'DESC')
             ->paginate(500);
         $total_transaction = 0;
@@ -844,12 +844,12 @@ class CustomerController extends Controller {
         } elseif (request()->type == 3) {
             $date_from = Carbon::parse(request()->date_from)->format('Y-m-d');
             $date_to   = Carbon::parse(request()->date_to)->format('Y-m-d');
-            $orders    = $orders->whereBetween('created_at', [$date_from." 00:00:00", $date_to." 23:59:59"]);
+            $orders    = $orders->whereBetween('created_at', [$date_from . " 00:00:00", $date_to . " 23:59:59"]);
         } elseif (request()->type == 4) {
             $date   = Carbon::parse(request()->selected_date)->format('Y-m-d');
             $orders = $orders->whereYear('created_at', $date);
         }
-        
+
         $data['orders'] = $orders = $orders->where('shop_id', $shop_id)
             ->with(['consumer', 'employee', 'orderProduct.prod' => function ($query) {
                 return $query->select('id', 'name', 'buying_price');
@@ -965,7 +965,7 @@ class CustomerController extends Controller {
     }
 
     public function subscriptionList($type) {
-        $subscription = Subscription::where('package_type',$type)->get();
+        $subscription = Subscription::where('package_type', $type)->get();
 
         return $subscription;
     }
@@ -976,18 +976,20 @@ class CustomerController extends Controller {
         return $histories;
     }
 
-    public function presentSubscription($shop_id)
-    {
-        $access = SubscriptionHistory::with('subscription')->where('shop_id',$shop_id)->orderBy('id','desc')->first();
+    public function presentSubscription($shop_id) {
+        $access = SubscriptionHistory::with('subscription')->where('shop_id', $shop_id)->orderBy('id', 'desc')->first();
 
         return $access;
     }
 
     public function updateQuantity(Request $request) {
-        $product = Product::find($request->id);
-        $product->update(['quantity' => $request->quantity]);
+        foreach ($request->id as $key => $value) {
+            $product = Product::find($value);
+            $product->update(['quantity' => $request->quantity[$key]]);
 
-        return $product;
+        }
+
+        return response()->json(['status' => true]);
     }
 
 }
