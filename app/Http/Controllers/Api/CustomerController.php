@@ -247,6 +247,10 @@ class CustomerController extends Controller {
         Shop::create([
             'customer_id'        => $request->customer_id,
             'name'               => $request->name,
+            'division_id'        => $request->division_id,
+            'district_id'        => $request->district_id,
+            'area_id'            => $request->area_id,
+            'shop_type_id'       => $request->shop_type_id,
             'image'              => $final_name1,
             'payment_link'       => Str::slug($request->name),
             'online_market_link' => Str::slug($request->name),
