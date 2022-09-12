@@ -77,6 +77,7 @@
 @php
     $access = App\Models\SubscriptionHistory::where('shop_id',SID())->orderBy('id','desc')->first();
 @endphp
+    @if($access)
     <section class="content">
         <div class="container-fluid">
             <div class="">
@@ -87,4 +88,5 @@
             </div>
         </div>
     </section>
+    @endif
 @endsection
