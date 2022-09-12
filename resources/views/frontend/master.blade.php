@@ -435,6 +435,7 @@
                             <li><a href="#feature" class="pagescroll scrollupto">Our Feature</a></li>
                             <li><a href="#pricing" class="pagescroll">Our Pricing</a></li>
                             <li><a href="#cantact" class="pagescroll">Contact Us</a></li>
+                            <li><a href="{{ route('privecy') }}" >Our Privecy</a></li>
                         </ul>
                     </div>
                 </div>

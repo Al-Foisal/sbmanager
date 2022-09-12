@@ -67,6 +67,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', [FrontendController::class, 'homePage'])->name('home');
+Route::get('/privecy', [FrontendController::class, 'privecy'])->name('privecy');
 Route::post('/submit-contact', [FrontendController::class, 'submitContact'])->name('submitContact');
 
 Route::controller(FrontendController::class)->group(function () {

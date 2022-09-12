@@ -24,6 +24,11 @@ class FrontendController extends Controller {
         return view('frontend.master', $data);
     }
 
+    public function privecy()
+    {
+        return view('frontend.privecy');
+    }
+
     public function submitContact(Request $request) {
         Contact::create([
             'name'    => $request->name,
